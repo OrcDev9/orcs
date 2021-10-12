@@ -1,14 +1,19 @@
 import ConnectWallet from "./ConnectWallet";
 import {
   getCurrentWalletConnected, //import here
-  mintNFT, getTokenSupply, getGasPrice, getEthPrice, isSaleActive, getContractPrice, tokensByOwner, getContract, getErc
+  mintNFT, getTokenSupply, getGasPrice, getEthPrice, isSaleActive, getContractPrice, tokensByOwner, getContract, getErc,
+  claimZug
 } from "./utils/interact.js";
 import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import {app, analytics} from "./initFirebase"
 import logo from "./media/logo.svg"
+import { Alert } from "react-bootstrap";
 import Orc from "./Orc"
 import Stake from "./staking";
+import Levels from "./levels";
+import { Form } from "react-bootstrap";
+
 function App() {
   // Define the string
 var encodedStringAtoB = 'SGVsbG8gV29ybGQh';
@@ -22,6 +27,7 @@ const [qty, setQty] = useState(0);
 const [walletAddress, setWallet] = useState("");
 const [status, setStatus] = useState("");
 const [zug, setZug] = useState("");
+const [zugClaim, setZugClaim] = useState("");
 const [cost, setCost] = useState(0);
 const [price, setPrice] = useState(qty * cost);
 const [ethprice, setEthPrice] = useState(0);
@@ -46,7 +52,6 @@ const wallet3 = "0xb3fab8bdf13d493f64e63c2849b0da224994fa76"
                 
 
  useEffect(async () => {
-  
 
 
    const {address, status} = await getCurrentWalletConnected();
@@ -60,7 +65,7 @@ const wallet3 = "0xb3fab8bdf13d493f64e63c2849b0da224994fa76"
   setZug(web3.utils.fromWei(await ercContract.methods.balanceOf(address).call()))
 
   //const orcProp = await nftContract.methods.orcs(2).call(34)
-  console.log(await nftContract.methods.activities(2).call());
+  
   
 
 
@@ -107,7 +112,6 @@ getGasPrice().then(function(gasPriceData){
 }, []);
 
 
-  
 function addWalletListener() {
    if (window.ethereum) {      
      window.ethereum.on("accountsChanged", (accounts) => {
@@ -176,6 +180,28 @@ function addWalletListener() {
      }
  };
 
+ const handleZugClaimChange = async (event) => { //TODO: implement
+  event.preventDefault()
+  setZugClaim(event.target.value)
+ };
+  
+ 
+
+ const onClaimZugPressed = async (event) => { //TODO: implement
+  setTxProgress(33)
+   const { status, txHash, success } = await claimZug(zugClaim);
+   setStatus(status);
+   
+   ///check for successful transaction
+     if(success ===true){
+         setTxProgress(100)
+          
+       }else{
+         setTxProgress(0)
+      
+
+     }
+ };
 
  function MintButtonLogic(props) {    
 
@@ -212,7 +238,7 @@ function addWalletListener() {
   <h1 class="text-5xl md:text-6xl xl:text-9xl font-bold">Ether Orcs</h1>
 
   </div>
-<p class="text-lg font-medium">Front end concept by Husky Studios, creators of Hilarious Huskies</p>
+<p class="font-medium">Front end concept by Husky Studios, creators of <a target="_blank" href="https://hilarioushuskies.life">Hilarious Huskies </a>, minting on Friday October 15th.</p>
 
 <ConnectWallet />
 <div class="space-y-2 p-2 border-2">
@@ -238,11 +264,35 @@ zug {zug}
 
 </div>
 
-<div class="space-y-2 p-2 border-2">        
-<h2>Mint</h2>
-
+<div class="space-y-2 p-2 border-2">
+  <div class="flex flex-wrap justify-around">
+    <div>
+    <h2>Mint</h2>
 <MintButtonLogic />
+
+    </div>
+    <div>
+    <h2>Claim Zug</h2>
+    <div class="flex items-bottom space-x-2">
+    <Form.Group value={zugClaim} onChange={handleZugClaimChange}>
+          <Form.Label>Orc ID</Form.Label>
+          <Form.Control />
+        </Form.Group>
+    <div class="align-self-end">
+    <Button disabled onClick={onClaimZugPressed}>Claim Zug</Button>
+    </div>
+      
+
+    </div>
+   
+    </div>
+  </div>        
+  <Alert>{status}</Alert>
 </div>
+
+     
+
+
 
 <Stake nftContract={nftContract} />
 
@@ -250,14 +300,14 @@ zug {zug}
 <div class="space-y-2 p-2 border-2">        
 <h2>Look up Orc</h2>
 <div class="flex flex-wrap justify-evenly">
+  
   <div>
-    Look up orc, type orc id here
-  </div>
-  <div>
-  <input type="text"
-  min="1" max={tokenSupply}
-  onChange={handleOrcChange}
-  /> 
+
+  <Form.Group onChange={handleOrcChange}>
+      <Form.Label>Look up orc, type orc id here</Form.Label>
+      <Form.Control />
+    </Form.Group>
+ 
 
   </div>
  
@@ -268,7 +318,25 @@ zug {zug}
 </div>
 
 
+
+Credit:
+<a target="_blank" href="https://hilarioushuskies.life" class="no-underline text-current">
+<div class="sm:w-full lg:w-1/2 p-2">
+          <div class="flex flex-wrap items-center">
+
+              <div class="">
+                  <div class="flex flex-wrap content-start">
+                  <img class="shadow-lg rounded-3xl w-32" src={`https://huskies.s3.eu-west-2.amazonaws.com/images/logo.gif`} />
+                  </div>
+            </div>
+            <div class="w-1/2 pl-3">
+            <h1 class="text-5xl md:text-6xl xl:text-9xl font-bold ">Hilarious Huskies</h1>
+            </div>
+         
+            </div> </div>
+</a>
 </div>
+
 
 
   );

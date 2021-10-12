@@ -12,7 +12,7 @@ import { Row } from "react-bootstrap";
 import { Col } from "react-bootstrap";
 import { Alert } from "react-bootstrap";
 
-function Stake({nftContract}) {
+function Levels({nftContract}) {
  
 const [action, setAction] = useState("Unstake");
 const [orcData, setOrcData] = useState(null);
@@ -30,28 +30,20 @@ const handleOrdDataChange = async (event) => { //TODO: implement
 
 
   const doActionClick = async (event) => { //TODO: implement
-
-    
-    let actionInt = null
+    let actionInt = 0
     switch(action) {
-        case "Farm":
+        case "Train":
             actionInt = 1
           break;
-        case "Train":
+        case "Farm":
             actionInt = 2
           break;
         default:
             actionInt = 0
       }
     
-      if(actionInt && orcData){
-        const {success, status} = await doAction(actionInt, orcData)
-        setStatus(status);
-    }else{
-        setStatus("empty fields somewhere")
-    }
-
-  
+    const {success, status} = await doAction(actionInt, orcData)
+    setStatus(status);
     /*
     setTxProgress(33)
      const { status, txHash, success } = await mintNFT(qty);
@@ -110,6 +102,6 @@ const handleOrdDataChange = async (event) => { //TODO: implement
   );
 }
 
-export default Stake;
+export default Levels;
 
 

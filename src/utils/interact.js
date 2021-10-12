@@ -231,3 +231,44 @@ export const mintNFT = async() => {
 
   }
   
+
+  export const claimZug = async(id) => {
+  
+    const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
+   
+    //the transaction
+    const tx = {
+      'from': window.ethereum.selectedAddress,
+      'to': contractAddress,
+      'nonce': nonce.toString(),
+      'data': nftContract.methods.claim(id).encodeABI()
+    };
+  
+   
+    //sign the transaction via Metamask
+ try {
+    const txHash = await window.ethereum
+        .request({
+            method: 'eth_sendTransaction',
+            params: [tx],
+        })
+        
+    
+        
+    return {
+        success: true,
+        status: (<>✅ Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+        txHash: txHash
+        
+
+    }
+ } catch (error) {
+    return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+    }
+
+ }
+
+  }
+  

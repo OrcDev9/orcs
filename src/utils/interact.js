@@ -8,16 +8,18 @@ const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(alchemyKey); 
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 
-const contract = require('../orcs-abi.json')
+const orcs = require('../orcs-abi.json')
+const zug = require('../zug-abi.json')
 const ethWallet = "0x7d9d3659dcfbea08a87777c52020bc672deece13"
-const nftContract = new web3.eth.Contract(contract.abi, contractAddress);
+const nftContract = new web3.eth.Contract(orcs.abi, contractAddress);
+const ercContract = new web3.eth.Contract(zug.abi, contractAddress);
 
 const etherscanKey = process.env.REACT_APP_ETHERSCAN_KEY;
 var api = require('etherscan-api').init(etherscanKey);
 
 export function getContract(){
     
-    return nftContract
+    return {nftContract, ercContract, web3}
   }
 
 export async function getContractPrice(){
@@ -44,6 +46,7 @@ export const getTokenSupply = async () => {
   var supply = nftContract.methods.totalSupply().call();
   return(supply)
   }
+  
 
   export const isSaleActive = async () => {
     var sale = nftContract.methods.isSaleActive().call();
@@ -150,17 +153,13 @@ export const connectWallet = async () => {
 export const mintNFT = async(tokenCount) => {
   
     const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
-    const price = await nftContract.methods.getPrice().call();  
-    let txTotal = tokenCount * price
-    const hexString = txTotal.toString(16);
-
+   
     //the transaction
     const tx = {
       'from': window.ethereum.selectedAddress,
       'to': contractAddress,
       'nonce': nonce.toString(),
-      'value': hexString,
-      'data': nftContract.methods.mint(tokenCount).encodeABI()
+      'data': nftContract.methods.mint().encodeABI()
     };
   
    

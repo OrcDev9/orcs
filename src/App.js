@@ -7,6 +7,8 @@ import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import {app, analytics} from "./initFirebase"
 import logo from "./media/logo.svg"
+import Orc from "./Orc"
+import Stake from "./staking";
 function App() {
   // Define the string
 var encodedStringAtoB = 'SGVsbG8gV29ybGQh';
@@ -30,20 +32,18 @@ const [isMetamask, setIsMetamask] = useState(true);
 const [activeSale, setActiveSale] = useState(true);
 const [gasPrice, setGasPrice] = useState(0);
 const [collections, setCollection] = useState([]);
+const [orcId, setOrcId] = useState(1);
 const [showCollectionToggle, setShowCollectionToggle] = useState(false);
 
 const places = [{ "places": ["TOWN", "DUNGEON", "CRYPT", "CASTLE", "DRAGONS_LAIR", "THE_ETHER", 
   "TAINTED_KINGDOM", "OOZING_DEN", "ANCIENT_CHAMBER", "ORC_GODS"] }]
- 
-  const actions = [{"farm" : 1,
-                    "train" : 2,
-                    "unstake" : 0   
-                      }]
 
-                      const wallet1 = "0x3edc863789a36f508340ea3f2aa40674139cf5b6"
-                      const wallet2 = "0x80e09203480a49f3cf30a4714246f7af622ba470"
-                      const wallet3 = "0xb3fab8bdf13d493f64e63c2849b0da224994fa76"
-                      
+///Test
+const wallet1 = "0x3edc863789a36f508340ea3f2aa40674139cf5b6"
+const wallet2 = "0x80e09203480a49f3cf30a4714246f7af622ba470"
+const wallet3 = "0xb3fab8bdf13d493f64e63c2849b0da224994fa76"
+
+                
 
  useEffect(async () => {
   
@@ -57,11 +57,11 @@ const places = [{ "places": ["TOWN", "DUNGEON", "CRYPT", "CASTLE", "DRAGONS_LAIR
 
    
   setTokenSupply(await nftContract.methods.totalSupply().call());
-  setZug(web3.utils.fromWei(await ercContract.methods.balanceOf(wallet3).call()))
+  setZug(web3.utils.fromWei(await ercContract.methods.balanceOf(address).call()))
 
-  const orcProp = await nftContract.methods.orcs(2).call(34)
+  //const orcProp = await nftContract.methods.orcs(2).call(34)
   console.log(await nftContract.methods.activities(2).call());
-  console.log(orcProp)
+  
 
 
 
@@ -146,6 +146,19 @@ function addWalletListener() {
  }
  
 
+ const handleOrcChange = event => {
+  event.preventDefault()
+  const t = parseInt(event.target.value)
+
+  if((t > 0) && (t < tokenSupply)){
+
+    setOrcId(event.target.value);
+  }
+  
+  
+};
+
+
 
  const onMintPressed = async (event) => { //TODO: implement
   setTxProgress(33)
@@ -190,30 +203,10 @@ function addWalletListener() {
    )
  }
 
- function ShowCollection(props) {    
-
-   if(collections.length > 0)
-   return (
-     walletAddress && (<Button variant="success" onClick={()=>setShowCollectionToggle(!showCollectionToggle)}>
-     {showCollectionToggle ? ("Close") : ("Show My Huskies")}
-    </Button> ) 
-       
-   )
-   else
-   return(
-           
-     <Button variant="dark" disabled>
-      You don't have any huskies yet.
-   </Button>
-   )
- }
-
-
-
 
 
   return (
-<div class="container mx-auto">
+<div class="container mx-auto space-y-5">
   <div class="flex justify-left align-items-center">
   <img class="rounded-full" width={100} src={logo} alt="Orcs Logo" />
   <h1 class="text-5xl md:text-6xl xl:text-9xl font-bold">Ether Orcs</h1>
@@ -222,14 +215,57 @@ function addWalletListener() {
 <p class="text-lg font-medium">Front end concept by Husky Studios, creators of Hilarious Huskies</p>
 
 <ConnectWallet />
-Token Supply: {tokenSupply}
+<div class="space-y-2 p-2 border-2">
 
-<br/>
-gasPrice {gasPrice} <br/>
-ethprice {ethprice}  <br/>
-zug {zug} <br/>
+        
+<h2>Contract Stats</h2>
+<div class="flex justify-between">
+<div>
+Token Supply: {tokenSupply}
+</div>
+<div>
+gasPrice {gasPrice}
+</div>
+
+<div>
+ethprice {ethprice}
+</div>
+
+<div>
+zug {zug} 
+</div>
+</div>
+
+</div>
+
+<div class="space-y-2 p-2 border-2">        
+<h2>Mint</h2>
 
 <MintButtonLogic />
+</div>
+
+<Stake nftContract={nftContract} />
+
+
+<div class="space-y-2 p-2 border-2">        
+<h2>Look up Orc</h2>
+<div class="flex flex-wrap justify-evenly">
+  <div>
+    Look up orc, type orc id here
+  </div>
+  <div>
+  <input type="text"
+  min="1" max={tokenSupply}
+  onChange={handleOrcChange}
+  /> 
+
+  </div>
+ 
+
+<Orc nftContract={nftContract} tokenid={orcId} />
+
+</div>
+</div>
 
 
 </div>

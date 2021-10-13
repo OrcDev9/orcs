@@ -229,12 +229,18 @@ rockswithrev && (
       <th class="border border-green-600"> Offhand</th>
       <th class="border border-green-600"> Level</th>
       <th class="border border-green-600"> Total Zug</th>
-      <th class="border border-green-600"> Timestamp</th>
+      <th class="border border-green-600"> Activity Timestamp</th>
 
     </tr>
     </thead>
     <tbody>
   {rockswithrev && (rockswithrev.map((rock)=>{
+
+    let t = new Date(rock.time*1000)
+    t = t.toLocaleString()
+    
+
+
 
   return(<>
      <tr key={rock.tokenid} class="text-center text-sm">
@@ -251,6 +257,7 @@ rockswithrev && (
     <td class="border border-green-600"> {rock.offhand}</td>
     <td class="border border-green-600"> {rock.level}</td>
     <td class="border border-green-600"> {4 + parseInt(rock.zugModifier)}</td>
+    <td class="border border-green-600"> {t}</td>
 
     
     </tr>

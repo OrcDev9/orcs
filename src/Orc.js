@@ -28,8 +28,8 @@ useEffect(async () => {
     let activity = await nftContract.methods.activities(tokenid).call()
     setActivities(activity)
 
-    let levelRaw = parseInt(await nftContract.methods.claimable(tokenid).call())
-    setLevels(levelRaw*3/2)
+  //  let levelRaw = parseInt(await nftContract.methods.claimable(tokenid).call())
+  //  setLevels(levelRaw*3/2)
     let activitymap = null
     switch(parseInt(activity.action)) {
         case 1:

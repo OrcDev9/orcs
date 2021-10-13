@@ -72,7 +72,7 @@ const handleOrdDataChange = async (event) => { //TODO: implement
 
   return (
 <div class="p-2 border-2">
-<h1>Stake</h1>  
+<h2>Stake</h2>  
 
 <div class="mb-3"> 
 <Form>

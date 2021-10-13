@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
-
+import ProgressBar from 'react-bootstrap/ProgressBar'
 
 
 const Activity = ({contract, web3}) => {
 
-const contractAddress= "0x1E4e1208Ab4BA7740FE73D3728DF1f89bE6C649b"
 const [totalPlanets, setTotalPlanets] = useState(0);
 const [rockswithrev, setRockswithrev] = useState();
 const [currentIndex, setCurrentIndex] = useState();
-
-const cfinit = {method: 'GET', headers: { } }
+const [loading, setLoading] = useState();
+const [trainCount, setTrainCount] = useState(0);
+const [farmCount, setFarmCount] = useState(0);
+const [nothingCount, setNothingCount] = useState(0);
+const cons = 25
 
 const requestData = async(i)=>{
 
@@ -28,10 +30,11 @@ const requestData = async(i)=>{
         activitymap = "Farming"
         break;
       case 2:
-        activitymap = "Training"
+        activitymap = "Training"       
         break;
       default:
         activitymap = "Nothing"
+        
     }
 
 
@@ -51,51 +54,116 @@ const mergedObject = {
 
 useEffect(() => {
 
+  const getStats = async () => {
+
+    let f = 0
+    let t = 0
+    let n = 0
+
+    rockswithrev && rockswithrev.map((rock)=>{
+    
+      switch(rock.action) {
+        case "Farming":
+         f++          
+          break;
+        case "Training":
+         t++
+          break;
+        default:
+        n++
+          
+      }
+    })
+
+    setFarmCount(f)
+    setNothingCount(n)
+    setTrainCount(t)
+  }
   const init = async () => {
     // set school contract
-
-
+    setLoading(true)
+    let arr = []
     const totalPlanets = await contract.methods.totalSupply().call();
     setTotalPlanets(totalPlanets)
-    let arr = []
+   
+    const runs = parseInt(totalPlanets/cons)
+    
+   
+    const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
 
-   for(let i =1; i< totalPlanets; i++){
-             
+   
+   for(let i =0; i< runs;){  
+    
+
+    let start = (i*cons) + 1
+    let stop = (start+cons)
+    setCurrentIndex(parseInt(i/runs*100))
+    let owners
       
         try{
 
-          const data = await requestData(i)
-          console.log(data)
-          arr.push(data)
-          setCurrentIndex(i)
+          owners = await Promise.all(
+
+            range(start, stop, 1).map((index) => (
+              requestData(index)
+            )))
+            arr.push(owners)
+          
+          setRockswithrev(owners) 
           i++
 
            }catch(e)
            
            {console.log(e, i)}
 
-           setRockswithrev(arr) 
+           
       }
-
-
+     
+     var merged = [].concat.apply([], arr);
+    setRockswithrev(merged) 
+    getStats()
+    setLoading(false)
+    
   };
 
      
   init()
 
-}, []);
+}, [0]);
 
 
 return (
     <>
 
-
 <h2>What is everybody doing?</h2>
 
+<p>
+  This component will show you what each minted orc is doing plus stats. It needs to cycle though all of them to please be patient.
+</p>
+<table class="w-80">
+  <tbody>
+    <tr class="text-center font-semibold">
+      <td>Farming</td>
+      <td>Training</td>
+      <td>Nothing</td>
+      <td>Staking</td>
+    </tr>
+    <tr class="text-center">
+      <td>{farmCount}</td>
+      <td>{trainCount}</td>
+      <td>{nothingCount}</td>
+      <td>{((totalPlanets - nothingCount)/totalPlanets).toFixed(2)} % </td>
+    </tr>
+  </tbody>
+</table>
+
+{loading? <>
+<div>Looping through {totalPlanets} orcs, a few at a time. Please give it a few minutes. {currentIndex}% complete.</div>
+<ProgressBar now={currentIndex} label={`${currentIndex}%`}/> </>:
 <table class="table-auto border-collapse border border-green-800">
 
   <thead>
-    <tr class="text-center">
+    <tr class="text-center text-xs">
     <th class="border border-green-600"> Token ID</th>
     <th class="border border-green-600"> Owner</th>
     <th class="border border-green-600"> Activity</th>
@@ -113,8 +181,8 @@ return (
     <tbody>
   {rockswithrev && (rockswithrev.map((rock)=>{
 
-    return(<>
-     <tr class="text-center">
+  return(<>
+     <tr class="text-center text-sm">
     <td class="border border-green-600"> 
     <a target="_blank" href={`https://opensea.io/assets/0x7d9d3659dcfbea08a87777c52020BC672deece13/${rock.tokenid}`}>{rock.tokenid}</a>
     </td>
@@ -138,7 +206,7 @@ return (
 
     }))}
 </tbody>
-</table>
+</table>}
 
     </>
   );

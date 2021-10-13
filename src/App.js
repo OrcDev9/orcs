@@ -198,11 +198,11 @@ Credit:
 
               <div class="">
                   <div class="flex flex-wrap content-start">
-                  <img class="shadow-lg rounded-3xl w-32" src={`https://huskies.s3.eu-west-2.amazonaws.com/images/logo.gif`} />
+                  <img class="shadow-lg rounded-full w-16" src={`https://huskies.s3.eu-west-2.amazonaws.com/images/logo.gif`} />
                   </div>
             </div>
             <div class="w-1/2 pl-3">
-            <h1 class="text-5xl md:text-6xl xl:text-9xl font-bold ">Hilarious Huskies</h1>
+            <h1 class="text-2xl md:text-2xl xl:text-4xl font-bold ">Hilarious Huskies</h1>
             </div>
          
             </div> </div>

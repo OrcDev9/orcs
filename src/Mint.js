@@ -107,22 +107,10 @@ const onMintPressed = async (event) => { //TODO: implement
  
 
  const onClaimZugPressed = async (event) => { //TODO: implement
-  setTxProgress(33)
  
-   const { status, txHash, success } = 1 // = await claimZug(zugClaim);
-    await nftContract.methods.claim(zugClaim).call()
+ let sid = await nftContract.methods.claim(zugClaim).call()
    
-   setStatus(status);
-   
-   ///check for successful transaction
-     if(success ===true){
-         setTxProgress(100)
-          
-       }else{
-         setTxProgress(0)
-      
-
-     }
+  
  };
 
  function MintButtonLogic(props) {    

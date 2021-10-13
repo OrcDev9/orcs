@@ -45,7 +45,7 @@ useEffect(async () => {
       setActivString(activitymap)
       setOwner(activity.owner)
       setLoading(false)
-console.log(activity.action)
+
   }
 
   lookupOrc()
@@ -81,15 +81,15 @@ console.log(activity.action)
 
 )}
 
-{orcData && (orcData.attributes.map((a)=>{
+{orcData && (orcData.attributes.map((a, i)=>{
 
-    return(<>
+    return(<div key={orcData.name + i}>
    <div class="flex justify-between">
    <div class="text-lg">{a.trait_type}</div> 
    <div class="font-semibold text-lg">{a.value}</div>
 
    </div>  
-    </>)
+    </div>)
 }))}
 
 

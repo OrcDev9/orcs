@@ -50,7 +50,7 @@ const requestData = async(token)=>{
         break;
       case 2:
         activitymap = "Training"  
-        claimableMethod = parseInt(await contract.methods.claimable(token).call())
+      //  claimableMethod = parseInt(await contract.methods.claimable(token).call())
         break;
       default:
         activitymap = "Nothing"
@@ -223,12 +223,13 @@ rockswithrev && (
     <th class="border border-green-600"> Token ID</th>
     <th class="border border-green-600"> Owner</th>
     <th class="border border-green-600"> Activity</th>
-      <th class="border border-green-600"> Body</th>
+      <th class="border border-green-600"> Body</th>  
       <th class="border border-green-600"> Helm</th>
       <th class="border border-green-600"> Mainhand</th>
       <th class="border border-green-600"> Offhand</th>
       <th class="border border-green-600"> Level</th>
-      <th class="border border-green-600"> ZugBonus</th>
+      <th class="border border-green-600"> Total Zug</th>
+      <th class="border border-green-600"> Timestamp</th>
 
     </tr>
     </thead>
@@ -241,7 +242,7 @@ rockswithrev && (
     <a target="_blank" href={`https://opensea.io/assets/0x7d9d3659dcfbea08a87777c52020BC672deece13/${rock.tokenid}`}>{rock.tokenid}</a>
     </td>
     <td class="border border-green-600">
-    <a target="_blank" href={`https://etherscan.io/address/${rock.owner}/`}>Orc #{rock.tokenid}</a>
+    <a target="_blank" href={`https://etherscan.io/address/${rock.owner}/`}>Orc #{rock.owner}</a>
     </td>
     <td class="border border-green-600"> {rock.action}</td>
     <td class="border border-green-600"> {rock.body}</td>
@@ -249,7 +250,7 @@ rockswithrev && (
     <td class="border border-green-600"> {rock.mainhand}</td>
     <td class="border border-green-600"> {rock.offhand}</td>
     <td class="border border-green-600"> {rock.level}</td>
-    <td class="border border-green-600"> {rock.zugModifier}</td>
+    <td class="border border-green-600"> {4 + parseInt(rock.zugModifier)}</td>
 
     
     </tr>

@@ -78,7 +78,7 @@ useEffect(async () => {
    
    {activities && (<>
     <div class="text-sm">
-    This orc is <strong>{activString} </strong> and on the way to level <strong>{levels}%</strong>
+    This orc is <strong>{activString} </strong> and on the way to level <strong>{levels}</strong>
     </div>
     Owner:
    <div class="break-all text-xs">{owner}</div>

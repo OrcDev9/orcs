@@ -19,6 +19,7 @@ useEffect(async () => {
   const lookupOrc = async ()=>{
 
     setLoading(true)
+    let orcs = await nftContract.methods.orcs(tokenid).call()
 
     let a = await nftContract.methods.tokenURI(tokenid).call()
     var b = a.split(",")
@@ -28,18 +29,26 @@ useEffect(async () => {
     let activity = await nftContract.methods.activities(tokenid).call()
     setActivities(activity)
 
-  //  let levelRaw = parseInt(await nftContract.methods.claimable(tokenid).call())
-  //  setLevels(levelRaw*3/2)
+   let claimable = parseInt(await nftContract.methods.claimable(tokenid).call())
+   let level = (parseInt(orcs.lvlProgress) + (claimable*3/2))/1000
+   let level2 = (orcs.lvlProgress/1000).toFixed(2)
+
+   
+   
+ 
     let activitymap = null
     switch(parseInt(activity.action)) {
         case 1:
           activitymap = "farming"
+          setLevels(level2)
           break;
         case 2:
           activitymap = "training"
+          setLevels(level)
           break;
         default:
           activitymap = "doing nothing"
+          setLevels(level2)
       }
 
       setActivString(activitymap)
@@ -69,7 +78,7 @@ useEffect(async () => {
    
    {activities && (<>
     <div class="text-sm">
-    This orc is <strong>{activString} </strong>
+    This orc is <strong>{activString} </strong> and on the way to level <strong>{levels}%</strong>
     </div>
     Owner:
    <div class="break-all text-xs">{owner}</div>

@@ -13,11 +13,11 @@ const [farmCount, setFarmCount] = useState(0);
 const [nothingCount, setNothingCount] = useState(0);
 const cons = 25
 
+
+
 const requestData = async(i)=>{
 
-  let a = await contract.methods.tokenURI(i).call()
-  var b = a.split(",")
-  var c = JSON.parse(atob(b[1]))
+  let orcs = await contract.methods.orcs(i).call()
 
   let activity = await contract.methods.activities(i).call()
  
@@ -37,11 +37,15 @@ const requestData = async(i)=>{
         
     }
 
+    
+    let claimable = parseInt(await contract.methods.claimable(i).call())
+    let level = (parseInt(orcs.lvlProgress) + (claimable*3/2))/1000
 
-const  orcObj = {owner: owner, time: time, action: activitymap, tokenid: i }
+
+const  orcObj = {owner: owner, time: time, action: activitymap, tokenid: i, level:level }
 
 const mergedObject = {
-  ...c,
+  ...orcs,
   ...orcObj
 };
  
@@ -54,13 +58,13 @@ const mergedObject = {
 
 useEffect(() => {
 
-  const getStats = async () => {
+  const getStats = async (merged) => {
 
     let f = 0
     let t = 0
     let n = 0
 
-    rockswithrev && rockswithrev.map((rock)=>{
+    merged.map((rock)=>{
     
       switch(rock.action) {
         case "Farming":
@@ -86,7 +90,7 @@ useEffect(() => {
     const totalPlanets = await contract.methods.totalSupply().call();
     setTotalPlanets(totalPlanets)
    
-    const runs = parseInt(totalPlanets/cons)
+    const runs = 1///parseInt(totalPlanets/cons)
     
    
     const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
@@ -121,7 +125,7 @@ useEffect(() => {
      
      var merged = [].concat.apply([], arr);
     setRockswithrev(merged) 
-    getStats()
+    getStats(merged)
     setLoading(false)
     
   };
@@ -140,6 +144,8 @@ return (
 <p>
   This component will show you what each minted orc is doing plus stats. It needs to cycle though all of them to please be patient.
 </p>
+
+{loading? <>
 <table class="w-80">
   <tbody>
     <tr class="text-center font-semibold">
@@ -157,10 +163,9 @@ return (
   </tbody>
 </table>
 
-{loading? <>
 <div>Looping through {totalPlanets} orcs, a few at a time. Please give it a few minutes. {currentIndex}% complete.</div>
 <ProgressBar now={currentIndex} label={`${currentIndex}%`}/> </>:
-<table class="table-auto border-collapse border border-green-800">
+<table class="table-auto border-collapse border border-green-800 w-32">
 
   <thead>
     <tr class="text-center text-xs">
@@ -169,11 +174,8 @@ return (
     <th class="border border-green-600"> Activity</th>
       <th class="border border-green-600"> Body</th>
       <th class="border border-green-600"> Helm</th>
-      <th class="border border-green-600"> Number</th>
       <th class="border border-green-600"> Mainhand</th>
-      <th class="border border-green-600"> MainhandTier</th>
       <th class="border border-green-600"> Offhand</th>
-      <th class="border border-green-600"> OffhandTier</th>
       <th class="border border-green-600"> Level</th>
       <th class="border border-green-600"> ZugBonus</th>
     </tr>
@@ -187,19 +189,16 @@ return (
     <a target="_blank" href={`https://opensea.io/assets/0x7d9d3659dcfbea08a87777c52020BC672deece13/${rock.tokenid}`}>{rock.tokenid}</a>
     </td>
     <td class="border border-green-600">
-    <a target="_blank" href={`https://etherscan.io/address/${rock.owner}/`}>{rock.name}</a>
+    <a target="_blank" href={`https://etherscan.io/address/${rock.owner}/`}>Orc #{rock.tokenid}</a>
     </td>
     <td class="border border-green-600"> {rock.action}</td>
-    {rock.attributes && (rock.attributes.map((a)=>{
-
-          return(<>
-          
-          <td class="border border-green-600"> {a.value}</td>
-
-
-          </>)
-          }))}
-
+    <td class="border border-green-600"> {rock.body}</td>
+    <td class="border border-green-600"> {rock.helm}</td>
+    <td class="border border-green-600"> {rock.mainhand}</td>
+    <td class="border border-green-600"> {rock.offhand}</td>
+    <td class="border border-green-600"> {rock.level}</td>
+    <td class="border border-green-600"> {rock.zugModifier}</td>
+    
     
     </tr>
     </>)

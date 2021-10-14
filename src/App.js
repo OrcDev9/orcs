@@ -177,7 +177,8 @@ function addWalletListener() {
   Working on it
   </Tab>
   <Tab eventKey="activty" title="Activity Sheet">
-  <Activity contract={nftContract} web3={web3} />
+    Soeey guys I have to take this feature out - 100% of my Alchemy account credits have been used up. I need funding to get this back up.
+  {/*<Activity contract={nftContract} web3={web3} />*/}
   </Tab>
 
 </Tabs>     

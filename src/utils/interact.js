@@ -17,6 +17,17 @@ const ercContract = new web3.eth.Contract(zug.abi, contractAddress);
 const etherscanKey = process.env.REACT_APP_ETHERSCAN_KEY;
 var api = require('etherscan-api').init(etherscanKey);
 
+
+export async function mint(){
+  var func = {"inputs":[],"name":"mint"};
+  var tx = await this.contract_service.buildTransaction(this.contract_service.eth_accounts[0],func,[]);
+
+  this.contract_service.send_transaction(tx);
+}
+
+
+///////////OLD
+
 export function getContract(){
     
     return {nftContract, ercContract, web3}
@@ -189,7 +200,29 @@ export const mintNFT = async() => {
  }
 
   }
-  
+
+  /*
+
+  export const collect_zug =() =>{
+    var temp = [];
+    for(var i=0;i<this.Orcs.length;i++){
+      if(await this.contract_service.contract.methods.claimable(this.Orcs[i].id).call().then()>0){
+        temp.push(this.Orcs[i].id);
+      }
+    }
+
+    var func = {"inputs":[{"internalType":"uint256[]","name":"ids","type":"uint256[]"}],"name":"claim"};
+
+    var tx = await this.contract_service.buildTransaction(this.contract_service.current_account,func,[temp]);
+
+    
+    this.contract_service.send_transaction(tx);
+
+    this.collectable_zug.next(0);
+  }
+
+}
+  */
 
   export const doAction = async(action, id) => {
   

@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import { Form } from "react-bootstrap";
-import { Row } from "react-bootstrap";
-import { Col } from "react-bootstrap";
+import { updateDatabase } from "./utils/services";
 
 function Orc({nftContract, tokenid}) {
  
@@ -12,6 +10,8 @@ const [owner, setOwner] = useState(null);
 const [levels, setLevels] = useState(null);
 const [dateTime, setDateTime] = useState(null);
 const [loading, setLoading] = useState(false);
+const [claimable, setClaimable] = useState(false);
+ 
 
 
 useEffect(async () => {
@@ -33,7 +33,8 @@ useEffect(async () => {
    let level = (parseInt(orcs.lvlProgress) + (claimable*3/2))/1000
    let level2 = (orcs.lvlProgress/1000).toFixed(2)
 
-   
+   orcs = await nftContract.methods.orcs(tokenid).call()   
+
    
  
     let activitymap = null
@@ -54,6 +55,18 @@ useEffect(async () => {
       setActivString(activitymap)
       setOwner(activity.owner)
       setLoading(false)
+
+   
+
+      const  orcObj = {owner: owner, time: activity.timestamp, action: activity.action, tokenid: tokenid, level:orcs.lvlProgress, claimable: claimable,
+        body: orcs.body,
+        helm: orcs.helm,
+        mainhand: orcs.mainhand,
+        offhand: orcs.offhand,
+        zugModifier: orcs.zugModifier,
+      
+      }
+      updateDatabase(orcObj)
 
   }
 

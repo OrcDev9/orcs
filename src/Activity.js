@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
-import { toComputedKey } from "@babel/types";
+import { updateDatabase } from "./utils/services";
 const Activity = ({contract, web3}) => {
 
 
@@ -50,7 +50,7 @@ const requestData = async(token)=>{
         break;
       case 2:
         activitymap = "Training"  
-      //  claimableMethod = parseInt(await contract.methods.claimable(token).call())
+       try{claimableMethod = parseInt(await contract.methods.claimable(token).call())}  catch(e){console.log(e)}
         break;
       default:
         activitymap = "Nothing"
@@ -63,18 +63,21 @@ const requestData = async(token)=>{
 
     
 
-const  orcObj = {owner: owner, time: time, action: activitymap, tokenid: token, level:level }
+const  orcObj = {owner: owner, time: time, action: activity.action, tokenid: token, level:orcs.lvlProgress, claimable: claimableMethod}
 
 const mergedObject = {
   ...orcs,
   ...orcObj
 };
- 
+
+updateDatabase(mergedObject) 
 
   return mergedObject
 }
 
-const getStats = async (merged) => {
+
+  
+ const getStats = async (merged) => {
 
   let f = 0
   let t = 0

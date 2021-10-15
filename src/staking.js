@@ -29,7 +29,7 @@ const handleOrdDataChange = async (event) => { //TODO: implement
    };
 
 
-  const doActionClick = async (event) => { //TODO: implement
+  const doActionClick = async (actionIndex) => { //TODO: implement
 
     
     let actionInt = null
@@ -44,7 +44,8 @@ const handleOrdDataChange = async (event) => { //TODO: implement
             actionInt = 0
       }
     
-      if(actionInt && orcData){
+      if(orcData){
+        console.log(actionIndex, actionIndex)
         const {success, status} = await doAction(actionInt, orcData)
         setStatus(status);
     }else{
@@ -74,7 +75,17 @@ const handleOrdDataChange = async (event) => { //TODO: implement
 <div class="p-2 border-2">
 <h2>Stake</h2>  
 
-<div class="mb-3"> 
+<div class="mb-3 space-x-6"> 
+
+<Button onClick={()=>doActionClick(2)}>
+  Train
+</Button>
+<Button onClick={()=>doActionClick(1)}>
+  Farm
+</Button>
+<Button onClick={()=>doActionClick(0)}>
+  Unstake
+</Button>
 <Form>
 
   <Row className="mb-3">

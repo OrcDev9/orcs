@@ -23,13 +23,13 @@ export const updateDatabase = async (orc) => {
   
   }
 
-  export const getOrcfromDb = async () => {
+export const getOrcfromDb = async () => {
 
 const OrcDisplayRef = query(ref(db, 'orcs'), limitToLast(100));
 let obj
 
     onValue(OrcDisplayRef, (snapshot) =>{
-        const dataArry = []
+
         obj = snapshot.val();
         
          

@@ -10,7 +10,7 @@ const [owner, setOwner] = useState(null);
 const [levels, setLevels] = useState(null);
 const [dateTime, setDateTime] = useState(null);
 const [loading, setLoading] = useState(false);
-const [claimable, setClaimable] = useState(false);
+const [claimables, setClaimable] = useState(false);
  
 
 
@@ -30,6 +30,7 @@ useEffect(async () => {
     setActivities(activity)
 
    let claimable = parseInt(await nftContract.methods.claimable(tokenid).call())
+   setClaimable(claimable)
    let level = (parseInt(orcs.lvlProgress) + (claimable*3/2))/1000
    let level2 = (orcs.lvlProgress/1000).toFixed(2)
 
@@ -91,7 +92,7 @@ useEffect(async () => {
    
    {activities && (<>
     <div class="text-sm">
-    This orc is <strong>{activString} </strong> and on the way to level <strong>{levels}</strong>
+    This orc is <strong>{activString} </strong> and on the way to level <strong>{levels}</strong> with {claimables} claimable.
     </div>
     Owner:
    <div class="break-all text-xs">{owner}</div>

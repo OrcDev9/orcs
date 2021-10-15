@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
+import { CSVLink } from "react-csv";
 
 import { db } from "./initFirebase";
-import { getDatabase, ref, set, onValue, query, get,child, orderByValue, push, orderByChild, limitToLast} from "firebase/database";
+import { getDatabase, ref, set, onValue, query, get,child, orderByValue, push, orderByChild, limitToFirst, limitToLast, startAt, endAt} from "firebase/database";
 
 const Horde = ({contract, web3}) => {
   
@@ -15,11 +16,27 @@ const [farmCount, setFarmCount] = useState(0);
 const [nothingCount, setNothingCount] = useState(0);
 const [stakingCount, setStakingCount] = useState(0);
 const [tokenSupply, setTokenSupply] = useState();
+const [showData, setShowData] = useState(false);
+const [csvReport, setCsvReport] = useState([1,2,3])
+const [loading, setLoading] = useState();
 
+const headers = [
+  { label: "tokenid", key: "tokenid" },
+  { label: "Last Name", key: "lastName" },
+  { label: "Email", key: "email" },
+  { label: "Age", key: "age" }
+];
 
+/// <CSVLink {...csvReport}>Export to CSV</CSVLink>
 
+const handleClick = (e)=>{
 
+  e.preventDefault()
+  setLoading(true)
+  setShowData(!showData)
+  }
 
+ 
 
 const getStats = async (merged) => {
 
@@ -28,12 +45,12 @@ const getStats = async (merged) => {
   let n = 0
 
   merged.map((rock)=>{
-  
-    switch(rock.action) {
-      case "Farming":
+
+    switch(parseInt(rock.action)) {
+      case 1:
        f++          
         break;
-      case "Training":
+      case 2:
        t++
         break;
       default:
@@ -51,42 +68,46 @@ const getStats = async (merged) => {
 
 
 
+const init = async () => {
 
+  const dbRef = ref(getDatabase());
+  get(child(dbRef, `orcs/`)).then((snapshot) => {
+    if (snapshot.exists()) {
+    
+      setRockswithrev(snapshot.val())
+      getStats(snapshot.val())
+    } else {
+      console.log("No data available");
+    }
+  }).catch((error) => {
+    console.error(error);
+  });
+  
+  
+   
+        let csv = {data: rockswithrev,
+          headers: headers,
+          filename: 'Clue_Mediator_Report.csv'}
+          setCsvReport(csv)
+         
+  setLoading(false)
+};
 
-useEffect(async() => {
+useEffect(async () => {
 
 setTokenSupply(await contract.methods.totalSupply().call());
 
-const init = async () => {
+if(showData){
+   init()
+  }
 
 
-  
-  const OrcDisplayRef = ref(db, 'orcs/')
-  let arr = []
-  onValue(OrcDisplayRef, (snapshot) =>{
-                let obj = snapshot.val();
-          
-                   Object.entries(obj).forEach(([key, rock])=>{
-                 
-                      arr.push(rock)
-                   })
-          
-                   
-         }, {
-          onlyOnce: true
-        })
-         setRockswithrev(arr) 
+}, [showData]);
 
-  getStats(arr)
 
-  
-};
 
-init()
-     
-  
 
-}, [db]);
+
 
 
 return (
@@ -94,9 +115,12 @@ return (
 
 <h2>What is everybody doing?</h2>
 
-
+<Button onClick={handleClick}>{showData ? ("Reload Data") : "Scan Orcs"}</Button>
+<p>It will take a second</p>
 {rockswithrev && (
   <>
+
+
   <table class="w-80">
   <tbody>
     <tr class="text-center font-semibold">

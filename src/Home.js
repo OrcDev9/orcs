@@ -4,7 +4,7 @@ import {
   mintNFT, getTokenSupply, getGasPrice, getEthPrice, isSaleActive, getContractPrice, tokensByOwner, getContract, getErc,
   
 } from "./utils/interact.js";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "react-bootstrap";
 import {app, analytics} from "./initFirebase"
 import logo from "./media/logo.svg"
@@ -36,9 +36,10 @@ const [isMetamask, setIsMetamask] = useState(true);
 const [activeSale, setActiveSale] = useState(true);
 const [gasPrice, setGasPrice] = useState(0);
 const [collections, setCollection] = useState([]);
-const [orcId, setOrcId] = useState(1);
+const [orcId, setOrcId] = useState(69);
 const [showCollectionToggle, setShowCollectionToggle] = useState(false);
 
+const orcLookupRef = useRef(0);
 
 const places = [{ "places": ["TOWN", "DUNGEON", "CRYPT", "CASTLE", "DRAGONS_LAIR", "THE_ETHER", 
   "TAINTED_KINGDOM", "OOZING_DEN", "ANCIENT_CHAMBER", "ORC_GODS"] }]
@@ -106,16 +107,17 @@ function addWalletListener() {
  }
 
 
- const handleOrcChange = event => {
-  event.preventDefault()
-  const t = parseInt(event.target.value)
+ const handleOrcSubmit = () => {
+
+  const value = orcLookupRef.current.value;
+  const t = parseInt(value)
+
 
   if((t > 0) && (t < tokenSupply)){
 
-    setOrcId(event.target.value);
+    setOrcId(value);
   }
-  
-  
+    
 };
 
 
@@ -159,12 +161,13 @@ function addWalletListener() {
 <div class="flex flex-wrap space-x-10">
   
   <div>
-
-  <Form.Group onChange={handleOrcChange}>
-      <Form.Label>Look up orc, type orc id here</Form.Label>
-      <Form.Control />
-    </Form.Group>
  
+  <Form.Group onSubmit={()=>handleOrcSubmit}>
+      <Form.Label>Look up orc, type orc id here</Form.Label>
+     
+      <Form.Control ref={orcLookupRef}/>
+    </Form.Group>
+    <Button onClick={()=>handleOrcSubmit()}>Lookup</Button>
 
   </div> 
 

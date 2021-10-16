@@ -10,7 +10,7 @@ import { getDatabase, ref, set, onValue, query, get,child, orderByValue, push, o
 const Horde = ({contract, web3}) => {
   
 
-const [rockswithrev, setRockswithrev] = useState();
+const [orcObject, setorcObject] = useState();
 const [trainCount, setTrainCount] = useState(0);
 const [farmCount, setFarmCount] = useState(0);
 const [nothingCount, setNothingCount] = useState(0);
@@ -20,14 +20,19 @@ const [showData, setShowData] = useState(false);
 const [csvReport, setCsvReport] = useState([1,2,3])
 const [loading, setLoading] = useState();
 
+///For file export
 const headers = [
   { label: "tokenid", key: "tokenid" },
-  { label: "Last Name", key: "lastName" },
-  { label: "Email", key: "email" },
-  { label: "Age", key: "age" }
+  { label: "owner", key: "owner" },
+  { label: "actions", key: "action" },
+  { label: "level", key: "level" },
+  { label: "claimable", key: "claimable" },
+  { label: "body", key: "helm" },
+  { label: "mainhand", key: "mainhand" },
+  { label: "offhand", key: "offhand" },
+  { label: "time", key: "time" },
+  { label: "totalZug", key: "totalZug" }
 ];
-
-/// <CSVLink {...csvReport}>Export to CSV</CSVLink>
 
 const handleClick = (e)=>{
 
@@ -37,7 +42,6 @@ const handleClick = (e)=>{
   }
 
  
-
 const getStats = async (merged) => {
 
   let f = 0
@@ -74,8 +78,13 @@ const init = async () => {
   get(child(dbRef, `orcs/`)).then((snapshot) => {
     if (snapshot.exists()) {
     
-      setRockswithrev(snapshot.val())
-      getStats(snapshot.val())
+
+      let csv = {data: snapshot.val(),
+        headers: headers,
+        filename: 'OrcActivityReport.csv'}
+        setCsvReport(csv) ///for export
+        setorcObject(snapshot.val())
+        getStats(snapshot.val())
     } else {
       console.log("No data available");
     }
@@ -83,13 +92,7 @@ const init = async () => {
     console.error(error);
   });
   
-  
-   
-        let csv = {data: rockswithrev,
-          headers: headers,
-          filename: 'Clue_Mediator_Report.csv'}
-          setCsvReport(csv)
-         
+        
   setLoading(false)
 };
 
@@ -116,9 +119,13 @@ return (
 <h2>What is everybody doing?</h2>
 
 <Button onClick={handleClick}>{showData ? ("Reload Data") : "Scan Orcs"}</Button>
-<p>It will take a second</p>
-{rockswithrev && (
+<p>It will take a second or two</p>
+{orcObject && (
   <>
+
+
+<CSVLink {...csvReport}>Export to CSV</CSVLink>
+
 
 
   <table class="w-80">
@@ -157,7 +164,7 @@ return (
     </tr>
     </thead>
     <tbody>
-  {( rockswithrev.map((rock, index)=>{
+  {( orcObject.map((rock, index)=>{
 
     let t = new Date(rock.time*1000)
     t = t.toLocaleString()

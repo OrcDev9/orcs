@@ -1,77 +1,36 @@
 import { useState, useEffect } from "react";
 import { updateDatabase } from "./utils/services";
+import { lookupOrc } from "./utils/interact"; 
 
-function Orc({nftContract, tokenid}) {
+function Orc({tokenid}) {
  
 const [orcData, setOrcData] = useState(null);
-const [activities, setActivities] = useState(null);
-const [activString, setActivString] = useState(null);
-const [owner, setOwner] = useState(null);
-const [levels, setLevels] = useState(null);
-const [dateTime, setDateTime] = useState(null);
 const [loading, setLoading] = useState(false);
-const [claimables, setClaimable] = useState(false);
+const [showClaimable, setShowClaimable] = useState(false);
  
 
 
 useEffect(async () => {
 
-  const lookupOrc = async ()=>{
+
+
+  const lookupsOrc = async ()=>{
 
     setLoading(true)
-    let orcs = await nftContract.methods.orcs(tokenid).call()
+    
+    let orcObj = await lookupOrc(tokenid)
+    setOrcData(orcObj)
 
-    let a = await nftContract.methods.tokenURI(tokenid).call()
-    var b = a.split(",")
-    var c = JSON.parse(atob(b[1]))
-
-    setOrcData(c)
-    let activity = await nftContract.methods.activities(tokenid).call()
-    setActivities(activity)
-
-   let claimable = parseInt(await nftContract.methods.claimable(tokenid).call())
-   setClaimable(claimable)
-   let level = (parseInt(orcs.lvlProgress) + (claimable*3/2))/1000
-   let level2 = (orcs.lvlProgress/1000).toFixed(2)
-
-   orcs = await nftContract.methods.orcs(tokenid).call()   
-
+    if(parseInt(orcObj.action) === 2){
+      setShowClaimable(true)
+    }
    
- 
-    let activitymap = null
-    switch(parseInt(activity.action)) {
-        case 1:
-          activitymap = "farming"
-          setLevels(level2)
-          break;
-        case 2:
-          activitymap = "training"
-          setLevels(level)
-          break;
-        default:
-          activitymap = "doing nothing"
-          setLevels(level2)
-      }
-
-      setActivString(activitymap)
-      setOwner(activity.owner)
-      setLoading(false)
-
-   
-
-      const  orcObj = {owner: owner, time: activity.timestamp, action: activity.action, tokenid: tokenid, level:orcs.lvlProgress, claimable: claimable,
-        body: orcs.body,
-        helm: orcs.helm,
-        mainhand: orcs.mainhand,
-        offhand: orcs.offhand,
-        zugModifier: orcs.zugModifier,
-      
-      }
-      updateDatabase(orcObj)
+    updateDatabase(orcObj) //update firestore eachtime someone looksup orc.
 
   }
 
-  lookupOrc()
+  lookupsOrc()
+
 
  },[tokenid])
 
@@ -79,6 +38,8 @@ useEffect(async () => {
 
   return (
     <>
+
+
 <div class="w-96 p-2 border-1 shadow">
 
 {orcData && (
@@ -90,30 +51,34 @@ useEffect(async () => {
        <div class="font-semibold text-xl">{orcData.name}</div>
    </div>
    
-   {activities && (<>
+
     <div class="text-sm">
-    This orc is <strong>{activString} </strong> and on the way to level <strong>{levels}</strong> with {claimables} claimable.
+    This orc is <strong>{orcData.actionString} </strong> and on the way to level <strong>{orcData.calcLevel}</strong>{showClaimable && ` with ${orcData.claimable} claimable.`}
     </div>
-    Owner:
-   <div class="break-all text-xs">{owner}</div>
-   </>)}
    
+   <div class="break-all text-xs">Owner: {orcData.owner}</div>
+
+
+
+   
+      {orcData && (orcData.attributes.map((a, i)=>{
+
+return(<div key={orcData.name + i}>
+<div class="flex justify-between">
+<div class="text-sm">{a.trait_type}</div> 
+<div class="font-semibold text-sm">{a.value}</div>
+
+</div>  
+</div>)
+}))}
+
   
 </div>
 
 
 )}
 
-{orcData && (orcData.attributes.map((a, i)=>{
 
-    return(<div key={orcData.name + i}>
-   <div class="flex justify-between">
-   <div class="text-lg">{a.trait_type}</div> 
-   <div class="font-semibold text-lg">{a.value}</div>
-
-   </div>  
-    </div>)
-}))}
 
 
 

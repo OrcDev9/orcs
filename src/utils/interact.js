@@ -1,12 +1,15 @@
-
-
 require('dotenv').config();
+const Web3 = require("web3")
+
 const alchemyKey = process.env.REACT_APP_ALCHEMY_KEY;
+const infuraKey = process.env.REACT_APP_INFURA_KEY;
 
 ///Alchemy and web3
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
-const web3 = createAlchemyWeb3(alchemyKey); 
+//const web3 = createAlchemyWeb3(alchemyKey); 
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
+
+const web3 = new Web3(new Web3.providers.HttpProvider(infuraKey))
 
 const orcs = require('../orcs-abi.json')
 const zug = require('../zug-abi.json')
@@ -18,11 +21,57 @@ const etherscanKey = process.env.REACT_APP_ETHERSCAN_KEY;
 var api = require('etherscan-api').init(etherscanKey);
 
 
-export async function mint(){
-  var func = {"inputs":[],"name":"mint"};
-  var tx = await this.contract_service.buildTransaction(this.contract_service.eth_accounts[0],func,[]);
+export const lookupOrc = async (tokenid)=>{
 
-  this.contract_service.send_transaction(tx);
+  let orcs = await nftContract.methods.orcs(tokenid).call()
+
+  let a = await nftContract.methods.tokenURI(tokenid).call()
+  var b = a.split(",")
+  var orc = JSON.parse(atob(b[1]))
+
+  let activity = await nftContract.methods.activities(tokenid).call()
+  let claimable = parseInt(await nftContract.methods.claimable(tokenid).call())
+  
+  let level = ((parseInt(orcs.lvlProgress) + (claimable*3/2))/1000).toFixed(1)
+  let level2 = (orcs.lvlProgress/1000).toFixed(1)
+  let calcLevel
+
+let activitymap = null
+  switch(parseInt(activity.action)) {
+      case 1:
+        activitymap = "farming"
+        calcLevel = level2
+        break;
+      case 2:
+        activitymap = "training"
+        calcLevel = level
+        break;
+      default:
+        activitymap = "doing nothing"
+        calcLevel = level2
+    }
+
+const  orcObj = {
+      owner: activity.owner,
+      tokenid: tokenid, 
+      time: activity.timestamp,  
+      action: activity.action,  
+      actionString: activitymap,
+      level:orcs.lvlProgress, 
+      calcLevel: calcLevel,
+      claimable: claimable,
+      image: orc.image,
+      name: orc.name,
+      body: orcs.body,
+      helm: orcs.helm,
+      mainhand: orcs.mainhand,
+      offhand: orcs.offhand,
+      zugModifier: orcs.zugModifier,    
+      attributes: orc.attributes
+    }
+
+    return(orcObj)
+
 }
 
 

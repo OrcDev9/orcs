@@ -3,8 +3,9 @@ import ProgressBar from 'react-bootstrap/ProgressBar'
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { updateDatabase } from "./utils/services";
-const Activity = ({contract, web3}) => {
+import { lookupOrc } from "./utils/interact"; 
 
+const Activity = ({contract, web3}) => {
 
 const [rockswithrev, setRockswithrev] = useState();
 const [currentIndex, setCurrentIndex] = useState();
@@ -30,49 +31,9 @@ setShowData(!showData)
 }
 
 const requestData = async(token)=>{
-  setCurrentToken(token)
-  let orcs
-  let activity
-  
+ 
+lookupOrc(token)
 
-  let time = null
-  let owner = null
-  let level = null
-  let activitymap = null
-  let claimableMethod = 0
-
-  activity = await contract.methods.activities(token).call()
-  time = activity.timestamp
-  owner = activity.owner  
-  switch(parseInt(activity.action)) {
-      case 1:
-        activitymap = "Farming"
-        break;
-      case 2:
-        activitymap = "Training"  
-       try{claimableMethod = parseInt(await contract.methods.claimable(token).call())}  catch(e){console.log(e)}
-        break;
-      default:
-        activitymap = "Nothing"
-        
-    }
-
-    orcs = await contract.methods.orcs(token).call()   
-
-    level = (parseInt(orcs.lvlProgress) + (claimableMethod*3/2))/1000
-
-    
-
-const  orcObj = {owner: owner, time: time, action: activity.action, tokenid: token, level:orcs.lvlProgress, claimable: claimableMethod}
-
-const mergedObject = {
-  ...orcs,
-  ...orcObj
-};
-
-updateDatabase(mergedObject) 
-
-  return mergedObject
 }
 
 

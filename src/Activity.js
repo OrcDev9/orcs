@@ -31,41 +31,9 @@ setShowData(!showData)
 }
 
 const requestData = async(token)=>{
- 
-lookupOrc(token)
-
+let orcData = await lookupOrc(token)
+updateDatabase(orcData) 
 }
-
-
-  
- const getStats = async (merged) => {
-
-  let f = 0
-  let t = 0
-  let n = 0
-
-  merged.map((rock)=>{
-  
-    switch(rock.action) {
-      case "Farming":
-       f++          
-        break;
-      case "Training":
-       t++
-        break;
-      default:
-      n++
-        
-    }
-  })
-
-  let s = ((tokenSupply - n)/tokenSupply).toFixed(2)
-  setFarmCount(f)
-  setNothingCount(n)
-  setTrainCount(t)
-  setStakingCount(s)
-}
-
 
 const init = async () => {
   // set school contract
@@ -75,7 +43,6 @@ const init = async () => {
   let supply = await contract.methods.totalSupply().call()
   setTokenSupply(supply);
  
-  
   const runs = parseInt(supply/cons)
  
   const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
@@ -96,10 +63,7 @@ const init = async () => {
           range(start, stop, 1).map((index) => (
             requestData(index)
           )))
-          arr.push(owners)
-        
-        setRockswithrev(owners) 
-        i++
+         i++
 
          }catch(e)
          
@@ -108,9 +72,6 @@ const init = async () => {
          
     }
    
-   var merged = [].concat.apply([], arr);
-  setRockswithrev(merged) 
-  getStats(merged)
   setLoading(false)
   
 };
@@ -128,112 +89,17 @@ useEffect(() => {
 return (
     <>
 
-<h2>What is everybody doing?</h2>
-
-<p>
-  This component will show you what each minted orc is doing plus other stats in a table. It needs to cycle though all of them, so please be patient. If it gets stuck or fails,
-  reduce the number of Orcs to scan at once. Under the hood, the app is calling the claimable, orcs and activities methods at the same time. 
-</p>
-
-<div class="flex flex-wrap items-baseline space-x-3">
-  <div>
-  <Form.Label>Orcs to scan at once</Form.Label>
-  </div>
-  <div>
-    
-  <Form.Control  value={cons} onChange={handleInput}/>
-  </div>
-  <div>
-
-  <Button onClick={handleClick}>{showData ? ("Restart") : "Scan Orcs"}</Button>
-  </div>
-
-
-
-</div>
-
-
-{loading? <>
-
+  <Button disabled onClick={handleClick}>{showData ? ("Restart") : "Update Orc Metadata"}</Button>
+<br/>
 
 <p>Looping through {tokenSupply} orcs, {cons} at a time. Please give it a few minutes. {currentIndex}% complete.
 Currently scanning Orc # {currentToken}
 </p>
 
-<ProgressBar now={currentIndex} label={`${currentIndex}%`}/> </>:
-rockswithrev && (
-  <>
-  <table class="w-80">
-  <tbody>
-    <tr class="text-center font-semibold">
-      <td>Farming</td>
-      <td>Training</td>
-      <td>Nothing</td>
-      <td>Staking</td>
-    </tr>
-    <tr class="text-center">
-      <td>{farmCount}</td>
-      <td>{trainCount}</td>
-      <td>{nothingCount}</td>
-      <td>{stakingCount} % </td>
-    </tr>
-  </tbody>
-</table>
-<br/>
-<table class="table-auto border-collapse border border-green-800">
-
-  <thead>
-    <tr class="text-center text-xs">
-    <th class="border border-green-600"> Token ID</th>
-    <th class="border border-green-600"> Owner</th>
-    <th class="border border-green-600"> Activity</th>
-      <th class="border border-green-600"> Body</th>  
-      <th class="border border-green-600"> Helm</th>
-      <th class="border border-green-600"> Mainhand</th>
-      <th class="border border-green-600"> Offhand</th>
-      <th class="border border-green-600"> Level</th>
-      <th class="border border-green-600"> Total Zug</th>
-      <th class="border border-green-600"> Activity Timestamp</th>
-
-    </tr>
-    </thead>
-    <tbody>
-  {rockswithrev && (rockswithrev.map((rock)=>{
-
-    let t = new Date(rock.time*1000)
-    t = t.toLocaleString()
-    
+<ProgressBar now={currentIndex} label={`${currentIndex}%`}/> </>
 
 
 
-  return(<>
-     <tr key={rock.tokenid} class="text-center text-sm">
-    <td class="border border-green-600"> 
-    <a target="_blank" href={`https://opensea.io/assets/0x7d9d3659dcfbea08a87777c52020BC672deece13/${rock.tokenid}`}>{rock.tokenid}</a>
-    </td>
-    <td class="border border-green-600">
-    <a target="_blank" href={`https://etherscan.io/address/${rock.owner}/`}>Orc #{rock.owner}</a>
-    </td>
-    <td class="border border-green-600"> {rock.action}</td>
-    <td class="border border-green-600"> {rock.body}</td>
-    <td class="border border-green-600"> {rock.helm}</td>
-    <td class="border border-green-600"> {rock.mainhand}</td>
-    <td class="border border-green-600"> {rock.offhand}</td>
-    <td class="border border-green-600"> {rock.level}</td>
-    <td class="border border-green-600"> {4 + parseInt(rock.zugModifier)}</td>
-    <td class="border border-green-600"> {t}</td>
-
-    
-    </tr>
-    </>)
-
-    }))}
-</tbody>
-</table>
-</>
-)}
-
-    </>
   );
 };
 

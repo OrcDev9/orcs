@@ -13,7 +13,7 @@ import {
   
 } from "./utils/interact.js";
 const history = createBrowserHistory();
-
+//bg-light-image
 function App() {
 
   const {nftContract, ercContract, web3} = getContract()
@@ -27,8 +27,7 @@ function App() {
       <meta content="HilariousHuskies Marketplace: Mint and explore digital assets" property="og:title" />
       </Helmet>*/}
 
-<div class="container mx-auto space-y-5">
-
+<div class="container mx-auto space-y-5 ">
   
 
   <Router history={history}>

@@ -1,4 +1,5 @@
 @import url("https://use.typekit.net/tnn4uat.css");
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
 @tailwind base;
 @layer base {
     h1 {

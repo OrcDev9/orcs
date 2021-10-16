@@ -5,7 +5,8 @@ import { Form } from "react-bootstrap";
 import { CSVLink } from "react-csv";
 
 import { db } from "./initFirebase";
-import { getDatabase, ref, set, onValue, query, get,child, orderByValue, push, orderByChild, limitToFirst, limitToLast, startAt, endAt} from "firebase/database";
+import { getDatabase, ref, set, onValue, equalTo, query, get,child, orderByValue, push, orderByChild, limitToFirst, limitToLast, startAt, endAt} from "firebase/database";
+import Activity from "./Activity";
 
 const Horde = ({contract, web3}) => {
   
@@ -25,7 +26,9 @@ const headers = [
   { label: "tokenid", key: "tokenid" },
   { label: "owner", key: "owner" },
   { label: "actions", key: "action" },
+  { label: "actionString", key: "actionString" },
   { label: "level", key: "level" },
+  { label: "calcLevel", key: "calcLevel" },
   { label: "claimable", key: "claimable" },
   { label: "body", key: "helm" },
   { label: "mainhand", key: "mainhand" },
@@ -48,9 +51,9 @@ const getStats = async (merged) => {
   let t = 0
   let n = 0
 
-  merged.map((rock)=>{
+  merged.map((orc)=>{
 
-    switch(parseInt(rock.action)) {
+    switch(parseInt(orc.action)) {
       case 1:
        f++          
         break;
@@ -75,6 +78,8 @@ const getStats = async (merged) => {
 const init = async () => {
 
   const dbRef = ref(getDatabase());
+ 
+
   get(child(dbRef, `orcs/`)).then((snapshot) => {
     if (snapshot.exists()) {
     
@@ -102,6 +107,7 @@ setTokenSupply(await contract.methods.totalSupply().call());
 
 if(showData){
    init()
+
   }
 
 
@@ -118,8 +124,10 @@ return (
 
 <h2>What is everybody doing?</h2>
 
-<Button onClick={handleClick}>{showData ? ("Reload Data") : "Scan Orcs"}</Button>
+<Button onClick={handleClick}>{showData ? ("Reload Data") : "Fetch Orc Data from Dbase"}</Button>
 <p>It will take a second or two</p>
+<Activity contract={contract}/>
+
 {orcObject && (
   <>
 
@@ -164,27 +172,27 @@ return (
     </tr>
     </thead>
     <tbody>
-  {( orcObject.map((rock, index)=>{
+  {( orcObject.map((orc, index)=>{
 
-    let t = new Date(rock.time*1000)
+    let t = new Date(orc.time*1000)
     t = t.toLocaleString()
 
   return(<>
-     <tr key={rock.tokenid} class="text-center text-sm">
+     <tr key={orc.tokenid} class="text-center text-sm">
     <td class="border border-green-600"> 
-    <a target="_blank" href={`https://opensea.io/assets/0x7d9d3659dcfbea08a87777c52020BC672deece13/${rock.tokenid}`}>{rock.tokenid}</a>
+    <a target="_blank" href={`https://opensea.io/assets/0x7d9d3659dcfbea08a87777c52020BC672deece13/${orc.tokenid}`}>{orc.tokenid}</a>
     </td>
     <td class="border border-green-600">
-    <a target="_blank" href={`https://etherscan.io/address/${rock.owner}/`}>{rock.owner}</a>
+    <a target="_blank" href={`https://etherscan.io/address/${orc.owner}/`}>{orc.owner}</a>
     </td>
-    <td class="border border-green-600"> {rock.action}</td>
-    <td class="border border-green-600"> {rock.body}</td>
-    <td class="border border-green-600"> {rock.helm}</td>
-    <td class="border border-green-600"> {rock.mainhand}</td>
-    <td class="border border-green-600"> {rock.offhand}</td>
-    <td class="border border-green-600"> {rock.level}</td>
-    <td class="border border-green-600"> {rock.claimable}</td>
-    <td class="border border-green-600"> {4 + parseInt(rock.totalZug)}</td>
+    <td class="border border-green-600"> {orc.action}</td>
+    <td class="border border-green-600"> {orc.body}</td>
+    <td class="border border-green-600"> {orc.helm}</td>
+    <td class="border border-green-600"> {orc.mainhand}</td>
+    <td class="border border-green-600"> {orc.offhand}</td>
+    <td class="border border-green-600"> {orc.level}</td>
+    <td class="border border-green-600"> {orc.claimable}</td>
+    <td class="border border-green-600"> {4 + parseInt(orc.totalZug)}</td>
     <td class="border border-green-600"> {t}</td>
 
     

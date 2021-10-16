@@ -9,15 +9,18 @@ export const updateDatabase = async (orc) => {
       await set(orcDataref, {
         owner: orc.owner,
         action: orc.action,
-        tokenid: orc.tokenid,
+        actionString: orc.actionString,
+        tokenid: parseInt(orc.tokenid),
         claimable: orc.claimable,
         level: orc.level,
+        calcLevel: orc.calcLevel,
         time: orc.time,
         body: orc.body,
         helm: orc.helm,
         mainhand: orc.mainhand,
         offhand: orc.offhand,
-        totalZug: (4 + parseInt(orc.zugModifier))
+        totalZug: (4 + parseInt(orc.zugModifier)),
+        attributes: orc.attributes
   
       });   
   

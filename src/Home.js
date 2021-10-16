@@ -4,6 +4,8 @@ import {
   mintNFT, getTokenSupply, getGasPrice, getEthPrice, isSaleActive, getContractPrice, tokensByOwner, getContract, getErc,
   
 } from "./utils/interact.js";
+import { db } from "./initFirebase";
+import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue, push, orderByChild, limitToFirst, limitToLast, startAt, endAt} from "firebase/database";
 import { useState, useEffect, useRef } from "react";
 import { Button } from "react-bootstrap";
 import {app, analytics} from "./initFirebase"
@@ -17,6 +19,7 @@ import { Tabs } from "react-bootstrap";
 import Mint from "./Mint";
 import Activity from "./Activity";
 import Horde from "./Horde";
+import MyOrcs from "./myOrc";
 
 function App() {
 
@@ -38,6 +41,7 @@ const [gasPrice, setGasPrice] = useState(0);
 const [collections, setCollection] = useState([]);
 const [orcId, setOrcId] = useState(69);
 const [showCollectionToggle, setShowCollectionToggle] = useState(false);
+const [myOrcs, setMyOrcs] = useState();
 
 const orcLookupRef = useRef(0);
 
@@ -45,19 +49,46 @@ const places = [{ "places": ["TOWN", "DUNGEON", "CRYPT", "CASTLE", "DRAGONS_LAIR
   "TAINTED_KINGDOM", "OOZING_DEN", "ANCIENT_CHAMBER", "ORC_GODS"] }]
 
 ///Test
-const wallet1 = "0x3edc863789a36f508340ea3f2aa40674139cf5b6"
-const wallet2 = "0x80e09203480a49f3cf30a4714246f7af622ba470"
-const wallet3 = "0xb3fab8bdf13d493f64e63c2849b0da224994fa76"
-
                 
 
  useEffect(async () => {
 
 
    const {address, status} = await getCurrentWalletConnected();
+
    setWallet(address)
    setStatus(status);
    addWalletListener(); 
+
+
+   
+   if (address.length > 0) {
+   
+const myOrcQuery = query(ref(db, 'orcs'), orderByChild('owner'), equalTo(`0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8`)) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
+
+let dataArry = []
+    onValue(myOrcQuery, (snapshot) =>{
+      console.log(snapshot.val(), address)
+
+      if (snapshot.exists()) {
+        Object.entries(snapshot.val()).forEach(([key, value])=>{
+          
+            dataArry.push({tokenId:value.tokenid, 
+                                  
+                          })
+                         
+          });
+  
+      
+      setMyOrcs(dataArry)
+
+        }
+  
+    })
+
+  }
+
+
 
 
    
@@ -179,6 +210,18 @@ function addWalletListener() {
 
   <Tab eventKey="pilage" title="Pillage">
   Working on it
+ 
+
+  <h2>My Orcs</h2>
+<div class="flex flex-wrap space-x-6">
+
+
+{myOrcs && myOrcs.map((orc, index)=>{
+    return(<Orc key={index} tokenid={parseInt(orc.tokenId)} />)
+})}
+</div>
+
+
   </Tab>
   <Tab eventKey="activty" title="Activity Sheet">
    <Horde contract={nftContract} />

@@ -159,7 +159,7 @@ function addWalletListener() {
 <div class="container mx-auto space-y-5">
   <div class="flex justify-left align-items-center">
   <img class="rounded-full" width={100} src={logo} alt="Orcs Logo" />
-  <h1 class="text-5xl md:text-6xl xl:text-9xl font-bold">Ether Orcs</h1>
+  <h1 class="text-5xl md:text-6xl xl:text-9xl font-bold font-sans">Ether Orcs</h1>
 
   </div>
 <p class="font-medium">Front end concept by Husky Studios, creators of <a target="_blank" href="https://hilarioushuskies.life">Hilarious Huskies </a>, minting on Friday October 15th.</p>

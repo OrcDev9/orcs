@@ -1,7 +1,8 @@
 import ConnectWallet from "./ConnectWallet";
 import {
   getCurrentWalletConnected, //import here
-  mintNFT, getTokenSupply, getGasPrice, getEthPrice, isSaleActive, getContractPrice, tokensByOwner, getContract, getErc,
+  mintNFT, getTokenSupply, getGasPrice, getEthPrice, isSaleActive, getContractPrice, tokensByOwner, getContract, getErc, collectZug
+
   
 } from "./utils/interact.js";
 import { useState, useEffect } from "react";
@@ -108,7 +109,7 @@ const onMintPressed = async (event) => { //TODO: implement
 
  const onClaimZugPressed = async (event) => { //TODO: implement
  
-await nftContract.methods.claim([1]).call()
+await collectZug([1,2,3])
    
   
  };

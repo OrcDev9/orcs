@@ -140,9 +140,9 @@ function addWalletListener() {
 <div class="flex justify-between">
           
           <div class="flex justify-left align-items-baseline">
-              <h1 class="text-5xl md:text-6xl xl:text-7xl font-bold font-sans pr-2">Ether</h1>
+              <h1 class="text-5xl md:text-6xl xl:text-7xl font-bold font-serif pr-2 ">Ether</h1>
               <img class="rounded-full" width={70} src={logo} alt="Orcs Logo" />
-              <h1 class="text-5xl md:text-6xl xl:text-7xl font-bold font-sans">rcs</h1>
+              <h1 class="text-5xl md:text-6xl xl:text-7xl font-bold font-serif ">rcs</h1>
           </div> 
           <div class="align-self-center">
           <ConnectWallet />
@@ -218,21 +218,7 @@ function addWalletListener() {
 
 Credit:
 <p class="font-medium">Front end concept by Husky Studios, creators of <a target="_blank" href="https://hilarioushuskies.life">Hilarious Huskies </a>.</p>
-<a target="_blank" href="https://hilarioushuskies.life" class="no-underline text-current">
-<div class="sm:w-full lg:w-1/2 p-2">
-          <div class="flex flex-wrap items-center">
 
-              <div class="">
-                  <div class="flex flex-wrap content-start">
-                  <img class="shadow-lg rounded-full w-16" src={`https://huskies.s3.eu-west-2.amazonaws.com/images/logo.gif`} />
-                  </div>
-            </div>
-            <div class="w-1/2 pl-3">
-            <h1 class="text-2xl md:text-2xl xl:text-4xl font-bold font-serif">Hilarious Huskies</h1>
-            </div>
-         
-            </div> </div>
-</a>
 </div>
 
 

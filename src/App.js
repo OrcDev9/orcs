@@ -25,7 +25,11 @@ function App() {
       <meta name="Hilarious Huskies is an NFT collection inspired a beautiful pup named Hazel." content="Hilarious Huskies is an NFT collection inspired a beautiful pup named Hazel." />
       <meta content="summary_large_image" property="twitter:card" />
       <meta content="HilariousHuskies Marketplace: Mint and explore digital assets" property="og:title" />
-      </Helmet>*/}
+      </Helmet>
+      //class="bg-light-image">
+      */ }
+<div> 
+
 
 <div class="container mx-auto space-y-5 ">
   
@@ -53,7 +57,7 @@ function App() {
 
 </div>
 
-
+</div>
 
 </>
 

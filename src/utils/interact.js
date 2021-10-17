@@ -166,6 +166,115 @@ try {
 
 
 
+  
+export const mintNFT = async() => {
+  
+  const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
+ 
+  //the transaction
+  const tx = {
+    'from': window.ethereum.selectedAddress,
+    'to': contractAddress,
+    'nonce': nonce.toString(),
+    'data': nftContract.methods.mint().encodeABI()
+  };
+
+ 
+  //sign the transaction via Metamask
+try {
+  const txHash = await window.ethereum
+      .request({
+          method: 'eth_sendTransaction',
+          params: [tx],
+      })
+      
+  
+      
+  return {
+      success: true,
+      status: (<>✅ Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+      txHash: txHash
+      
+
+  }
+} catch (error) {
+  return {
+      success: false,
+      status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+  }
+
+}
+
+}
+
+/*
+
+export const collect_zug =() =>{
+  var temp = [];
+  for(var i=0;i<this.Orcs.length;i++){
+    if(await this.contract_service.contract.methods.claimable(this.Orcs[i].id).call().then()>0){
+      temp.push(this.Orcs[i].id);
+    }
+  }
+
+  var func = {"inputs":[{"internalType":"uint256[]","name":"ids","type":"uint256[]"}],"name":"claim"};
+
+  var tx = await this.contract_service.buildTransaction(this.contract_service.current_account,func,[temp]);
+
+  
+  this.contract_service.send_transaction(tx);
+
+  this.collectable_zug.next(0);
+}
+
+}
+*/
+
+
+
+  
+export const collectZug = async(Orcs) => {
+  
+ console.log(Orcs)
+ const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
+  //the transaction
+  const tx = {
+    'from': window.ethereum.selectedAddress,
+    'to': contractAddress,
+    'nonce': nonce.toString(),
+    'data': nftContract.methods.claim(Orcs).encodeABI()
+  };
+
+ 
+  //sign the transaction via Metamask
+try {
+  const txHash = await window.ethereum
+      .request({
+          method: 'eth_sendTransaction',
+          params: [tx],
+      })
+      
+  
+      
+  return {
+      success: true,
+      status: (<>✅ Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+      txHash: txHash
+      
+
+  }
+} catch (error) {
+  return {
+      success: false,
+      status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+  }
+
+}
+
+}
+
+
+
 
 ///////////OLD
 
@@ -300,67 +409,3 @@ export const connectWallet = async () => {
       };
     }
   };
-
-  
-export const mintNFT = async() => {
-  
-    const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
-   
-    //the transaction
-    const tx = {
-      'from': window.ethereum.selectedAddress,
-      'to': contractAddress,
-      'nonce': nonce.toString(),
-      'data': nftContract.methods.mint().encodeABI()
-    };
-  
-   
-    //sign the transaction via Metamask
- try {
-    const txHash = await window.ethereum
-        .request({
-            method: 'eth_sendTransaction',
-            params: [tx],
-        })
-        
-    
-        
-    return {
-        success: true,
-        status: (<>✅ Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
-        txHash: txHash
-        
-
-    }
- } catch (error) {
-    return {
-        success: false,
-        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
-    }
-
- }
-
-  }
-
-  /*
-
-  export const collect_zug =() =>{
-    var temp = [];
-    for(var i=0;i<this.Orcs.length;i++){
-      if(await this.contract_service.contract.methods.claimable(this.Orcs[i].id).call().then()>0){
-        temp.push(this.Orcs[i].id);
-      }
-    }
-
-    var func = {"inputs":[{"internalType":"uint256[]","name":"ids","type":"uint256[]"}],"name":"claim"};
-
-    var tx = await this.contract_service.buildTransaction(this.contract_service.current_account,func,[temp]);
-
-    
-    this.contract_service.send_transaction(tx);
-
-    this.collectable_zug.next(0);
-  }
-
-}
-  */

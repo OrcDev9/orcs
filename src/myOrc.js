@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {getMyOrcsObject} from "./utils/services"
 import Orc from "./Orc";
 import { Button } from "react-bootstrap";
-import {doAction } from "./utils/interact.js";
+import {doAction, collectZug} from "./utils/interact.js";
 import Pillage from "./Pillage";
 
 const MyOrcs = ({address}) => {
@@ -80,12 +80,26 @@ const doActionClick = async (actionIndex) => { //TODO: implement
 console.log(clicked)
 console.log(showPillage)
 
-
+const onClaimZugPressed = async (event) => { //TODO: implement
+   
+    let claimArr = []
+    myOrcs.map((orc)=>{
+        if(orc.claimable > 0){
+            console.log("test", orc)
+            claimArr.push(orc.tokenId)
+        }
+    })
+    const { status, txHash, success } = await collectZug(claimArr)  
+    console.log("how",status, txHash, success)
+     };
+    
 
 
 useEffect(async () => {
 
-setMyOrcs(await getMyOrcsObject(address))
+    let orcObj = await getMyOrcsObject(address)
+    setMyOrcs(orcObj)
+  
 
 }, [address]);
 
@@ -95,6 +109,9 @@ return (
 <h2>EtherOrcs Tavern</h2>
 <h3 class="bold">TRAIN, FARM AND PILLAGE</h3>
 <p>Click to toggle select orcs.</p>
+<div class="py-3">
+<Button onClick={onClaimZugPressed}>Claim Zug</Button>
+    </div>
 <div class="flex flex-wrap justify-between">
 {showPillage ? (
     <Pillage tokenid={clicked[0]} />

@@ -153,19 +153,19 @@ function LootPoolModal(props) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Sending Orc #{tokenid} in to loot and pillage. Select your item slots!
+            Sending Orc #{tokenid} in to loot and pillage!
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
          
-         <div class="flex flex-wrap justify-center"> 
+         <div class="flex flex-wrap justify-center animate-pulse"> 
             
-       <Orc allData={true} tokenid={tokenid} />
+       <Orc allData={false} tokenid={tokenid} />
         </div>
         
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={onMintPressed}>Pillage</Button>
+          <Button variant="dark" onClick={onMintPressed}>Pillage</Button>
         </Modal.Footer>
       </Modal>
     );

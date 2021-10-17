@@ -39,7 +39,7 @@ export const getMyOrcsObject = async (address) => {
 
         Object.entries(snapshot.val()).forEach(([key, value])=>{
         
-          dataArry.push({tokenId:value.tokenid})
+          dataArry.push({tokenId:value.tokenid, claimable:value.claimable, action:value.action})
                    
         })
         console.log("Got My Orcs. Orc of them", address, dataArry)   

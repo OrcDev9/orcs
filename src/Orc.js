@@ -45,7 +45,7 @@ useEffect(async () => {
 {orcData && (
 <div class="space-y-2 pb-3">
 <div class="flex justify-center">
-       <div class="font-semibold text-xl">{orcData.name}</div>
+       <div class="font-semibold text-xl ">{orcData.name}</div>
    </div>
   <div class="flex justify-center">
     <img  width={150} src={orcData.image} alt={orcData.name} />

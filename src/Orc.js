@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { updateDatabase } from "./utils/services";
 import { lookupOrc } from "./utils/interact"; 
 
-function Orc({tokenid}) {
+function Orc({tokenid, allData}) {
  
 const [orcData, setOrcData] = useState(null);
 const [loading, setLoading] = useState(false);
@@ -26,7 +26,7 @@ useEffect(async () => {
     }
    
     updateDatabase(orcObj) //update firestore eachtime someone looksup orc.
-
+    console.log(orcObj)
   }
 
   lookupsOrc()
@@ -40,32 +40,41 @@ useEffect(async () => {
     <>
 
 
-<div class="w-96 p-2 border-1 shadow">
+<div class="p-2">
 
 {orcData && (
 <div class="space-y-2 pb-3">
-  <div class="flex justify-center">
-    <img  width={250} src={orcData.image} alt={orcData.name} />
-   </div>
-   <div class="flex justify-center">
+<div class="flex justify-center">
        <div class="font-semibold text-xl">{orcData.name}</div>
    </div>
-   
+  <div class="flex justify-center">
+    <img  width={150} src={orcData.image} alt={orcData.name} />
+   </div>
 
+   <div class="flex justify-center">
+       <div class="font-semibold text-xl">Lvl: {orcData.calcLevel}</div>
+   </div>
+   <div class="flex justify-center">
+       <div class="font-semibold text-xl">{orcData.actionString}</div>
+   </div>
+
+   
+   
+   {allData && (
+     <>
     <div class="text-sm">
     This orc is <strong>{orcData.actionString} </strong> and on the way to level <strong>{orcData.calcLevel}</strong>{showClaimable && ` with ${orcData.claimable} claimable.`}
     </div>
    
    <div class="break-all text-xs">Owner: {orcData.owner}</div>
-
-
-
+   </>
+   )}
    
-      {orcData && (orcData.attributes.map((a, i)=>{
+      {allData && orcData && (orcData.attributes.map((a, i)=>{
 
 return(<div key={orcData.name + i}>
 <div class="flex justify-between">
-<div class="text-sm">{a.trait_type}</div> 
+<div class="text-sm">{a['trait_type'] /*//fix this laer */}</div> 
 <div class="font-semibold text-sm">{a.value}</div>
 
 </div>  

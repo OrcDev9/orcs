@@ -46,7 +46,8 @@ const handleOrdDataChange = async (event) => { //TODO: implement
     
       if(orcData){
         console.log(actionIndex, actionIndex)
-        const {success, status} = await doAction(actionInt, orcData)
+        let temp = [1,18,23]
+        const {success, status} = await doAction(actionInt, temp)
         setStatus(status);
     }else{
         setStatus("empty fields somewhere")

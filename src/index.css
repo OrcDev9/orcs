@@ -3,10 +3,10 @@
 @tailwind base;
 @layer base {
     h1 {
-      @apply text-3xl;
+      @apply text-3xl font-bold font-sans;
     }
     h2 {
-      @apply text-2xl xl:text-4xl font-bold pb-2;
+      @apply text-2xl xl:text-4xl pb-2 font-bold font-sans;
     }
     h3 {
       @apply text-lg;

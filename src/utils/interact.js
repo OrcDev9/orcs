@@ -6,10 +6,10 @@ const infuraKey = process.env.REACT_APP_INFURA_KEY;
 
 ///Alchemy and web3
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
-//const web3 = createAlchemyWeb3(alchemyKey); 
+const web3 = createAlchemyWeb3(alchemyKey); 
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 
-const web3 = new Web3(new Web3.providers.HttpProvider(infuraKey))
+///const web3 = new Web3(new Web3.providers.HttpProvider(infuraKey))
 
 const orcs = require('../orcs-abi.json')
 const zug = require('../zug-abi.json')
@@ -39,15 +39,15 @@ export const lookupOrc = async (tokenid)=>{
 let activitymap = null
   switch(parseInt(activity.action)) {
       case 1:
-        activitymap = "farming"
+        activitymap = "Farming"
         calcLevel = level2
         break;
       case 2:
-        activitymap = "training"
+        activitymap = "Training"
         calcLevel = level
         break;
       default:
-        activitymap = "doing nothing"
+        activitymap = "Idle"
         calcLevel = level2
     }
 
@@ -73,6 +73,98 @@ const  orcObj = {
     return(orcObj)
 
 }
+
+
+export const pillage = async({tokenid, place, tryHelm, tryMainhand, tryOffhand}) => {
+  
+  const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
+ 
+  //the transaction
+  const tx = {
+    'from': window.ethereum.selectedAddress,
+    'to': contractAddress,
+    'nonce': nonce.toString(),
+    'data': nftContract.methods.pillage(tokenid, place, tryHelm, tryMainhand, tryOffhand).encodeABI()
+  };
+
+ 
+  //sign the transaction via Metamask
+try {
+  const txHash = await window.ethereum
+      .request({
+          method: 'eth_sendTransaction',
+          params: [tx],
+      })
+      
+  
+      
+  return {
+      success: true,
+      status: (<>✅ Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+      txHash: txHash
+      
+
+  }
+} catch (error) {
+  return {
+      success: false,
+      status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+  }
+
+}
+
+}
+
+
+
+
+export const doAction = async(action, id) => {
+  
+  const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
+  let txData = nftContract.methods.doAction(id, action).encodeABI()
+  if(id.length > 1){   
+    txData = nftContract.methods.doActionWithManyOrcs(id, action).encodeABI()
+    console.log("yes array")
+  }
+console.log(id, action, txData)
+  
+  //the transaction
+  const tx = {
+    'from': window.ethereum.selectedAddress,
+    'to': contractAddress,
+    'nonce': nonce.toString(),
+    'data': txData
+  };
+
+ 
+  //sign the transaction via Metamask
+try {
+  const txHash = await window.ethereum
+      .request({
+          method: 'eth_sendTransaction',
+          params: [tx],
+      })
+      
+  
+      
+  return {
+      success: true,
+      status: (<>✅ Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
+      txHash: txHash
+      
+
+  }
+} catch (error) {
+  return {
+      success: false,
+      status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
+  }
+
+}
+
+}
+
+
 
 
 ///////////OLD
@@ -272,44 +364,3 @@ export const mintNFT = async() => {
 
 }
   */
-
-  export const doAction = async(action, id) => {
-  
-    const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
-   
-    //the transaction
-    const tx = {
-      'from': window.ethereum.selectedAddress,
-      'to': contractAddress,
-      'nonce': nonce.toString(),
-      'data': nftContract.methods.doAction(id, action).encodeABI()
-    };
-  
-   
-    //sign the transaction via Metamask
- try {
-    const txHash = await window.ethereum
-        .request({
-            method: 'eth_sendTransaction',
-            params: [tx],
-        })
-        
-    
-        
-    return {
-        success: true,
-        status: (<>✅ Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
-        txHash: txHash
-        
-
-    }
- } catch (error) {
-    return {
-        success: false,
-        status: "😥 Something went wrong: " + error.message + " Try reloading the page..."
-    }
-
- }
-
-  }
-  

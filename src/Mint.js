@@ -108,7 +108,7 @@ const onMintPressed = async (event) => { //TODO: implement
 
  const onClaimZugPressed = async (event) => { //TODO: implement
  
- let sid = await nftContract.methods.claim(zugClaim).call()
+ let sid = await nftContract.methods.claim([1]).call()
    
   
  };

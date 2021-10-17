@@ -1,6 +1,6 @@
 
 import { db } from "../initFirebase";
-import { getDatabase, ref, set, onValue, query, get,child, orderByValue, push, orderByChild, limitToLast} from "firebase/database";
+import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue, push, orderByChild, limitToLast} from "firebase/database";
 
 export const updateDatabase = async (orc) => {
       
@@ -23,8 +23,34 @@ export const updateDatabase = async (orc) => {
         attributes: orc.attributes
   
       });   
+
+      console.log(`Updated Orc #${orc.tokenid} metadats`)
   
   }
+
+export const getMyOrcsObject = async (address) => {
+
+  const myOrcQuery = query(ref(db, 'orcs'), orderByChild('owner'), equalTo(address)) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
+    
+    let dataArry = []
+
+    onValue(myOrcQuery, (snapshot) =>{
+    
+            Object.entries(snapshot.val()).forEach(([key, value])=>{
+        
+                dataArry.push({tokenId:value.tokenid})
+                             
+              })},{
+            onlyOnce: true
+                  }
+            )
+    
+          console.log("Got My Orcs. Orc of them", dataArry)
+      
+           return(dataArry) 
+    
+    };
+    
 
 export const getOrcfromDb = async () => {
 

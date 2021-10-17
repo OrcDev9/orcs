@@ -20,6 +20,7 @@ import Mint from "./Mint";
 import Activity from "./Activity";
 import Horde from "./Horde";
 import MyOrcs from "./myOrc";
+import Pillage from "./Pillage";
 
 function App() {
 
@@ -45,6 +46,9 @@ const [myOrcs, setMyOrcs] = useState();
 
 const orcLookupRef = useRef(0);
 
+const wallet4 = "0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"
+const tempAddress = "0x3FE61420C33b0E41DDd763adaAeB0b638E78b768"
+
 const places = [{ "places": ["TOWN", "DUNGEON", "CRYPT", "CASTLE", "DRAGONS_LAIR", "THE_ETHER", 
   "TAINTED_KINGDOM", "OOZING_DEN", "ANCIENT_CHAMBER", "ORC_GODS"] }]
 
@@ -62,33 +66,6 @@ const places = [{ "places": ["TOWN", "DUNGEON", "CRYPT", "CASTLE", "DRAGONS_LAIR
 
 
    
-   if (address.length > 0) {
-   
-const myOrcQuery = query(ref(db, 'orcs'), orderByChild('owner'), equalTo(`0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8`)) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
-
-let dataArry = []
-    onValue(myOrcQuery, (snapshot) =>{
-      console.log(snapshot.val(), address)
-
-      if (snapshot.exists()) {
-        Object.entries(snapshot.val()).forEach(([key, value])=>{
-          
-            dataArry.push({tokenId:value.tokenid, 
-                                  
-                          })
-                         
-          });
-  
-      
-      setMyOrcs(dataArry)
-
-        }
-  
-    })
-
-  }
-
-
 
 
    
@@ -157,14 +134,29 @@ function addWalletListener() {
 
   return (
 <div class="container mx-auto space-y-5">
-  <div class="flex justify-left align-items-center">
-  <img class="rounded-full" width={100} src={logo} alt="Orcs Logo" />
-  <h1 class="text-5xl md:text-6xl xl:text-9xl font-bold font-sans">Ether Orcs</h1>
+          
+       
 
-  </div>
-<p class="font-medium">Front end concept by Husky Studios, creators of <a target="_blank" href="https://hilarioushuskies.life">Hilarious Huskies </a>, minting on Friday October 15th.</p>
+<div class="flex justify-between">
+          
+          <div class="flex justify-left align-items-baseline">
+              <h1 class="text-5xl md:text-6xl xl:text-7xl font-bold font-sans pr-2">Ether</h1>
+              <img class="rounded-full" width={70} src={logo} alt="Orcs Logo" />
+              <h1 class="text-5xl md:text-6xl xl:text-7xl font-bold font-sans">rcs</h1>
+          </div> 
+          <div class="align-self-center">
+          <ConnectWallet />
+          </div>
 
-<ConnectWallet />
+</div>
+
+<div>
+<MyOrcs address={tempAddress} />
+
+</div>
+
+
+
 
 <div>
 <h2>Contract Stats</h2>
@@ -202,24 +194,19 @@ function addWalletListener() {
 
   </div> 
 
-<Orc nftContract={nftContract} tokenid={orcId} />
+<Orc allData={true} tokenid={orcId} />
 
 </div>
 </div>
   </Tab>
 
   <Tab eventKey="pilage" title="Pillage">
-  Working on it
- 
-
-  <h2>My Orcs</h2>
-<div class="flex flex-wrap space-x-6">
+    <div class="flex justify-evenly">
+    <Pillage />
+    </div>
 
 
-{myOrcs && myOrcs.map((orc, index)=>{
-    return(<Orc key={index} tokenid={parseInt(orc.tokenId)} />)
-})}
-</div>
+
 
 
   </Tab>
@@ -239,6 +226,7 @@ function addWalletListener() {
 
 
 Credit:
+<p class="font-medium">Front end concept by Husky Studios, creators of <a target="_blank" href="https://hilarioushuskies.life">Hilarious Huskies </a>.</p>
 <a target="_blank" href="https://hilarioushuskies.life" class="no-underline text-current">
 <div class="sm:w-full lg:w-1/2 p-2">
           <div class="flex flex-wrap items-center">
@@ -249,7 +237,7 @@ Credit:
                   </div>
             </div>
             <div class="w-1/2 pl-3">
-            <h1 class="text-2xl md:text-2xl xl:text-4xl font-bold ">Hilarious Huskies</h1>
+            <h1 class="text-2xl md:text-2xl xl:text-4xl font-bold font-serif">Hilarious Huskies</h1>
             </div>
          
             </div> </div>

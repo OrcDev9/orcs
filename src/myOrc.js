@@ -91,9 +91,10 @@ setMyOrcs(await getMyOrcsObject(address))
 
 return (
     <div class="border-2 p-3">
-
+{status}
 <h2>EtherOrcs Tavern</h2>
-<div class="bold">TRAIN, FARM AND PILLAGE</div>
+<h3 class="bold">TRAIN, FARM AND PILLAGE</h3>
+<p>Click to toggle select orcs.</p>
 <div class="flex flex-wrap justify-between">
 {showPillage ? (
     <Pillage tokenid={clicked[0]} />
@@ -102,10 +103,10 @@ return (
     </Button>)}
 
 <Button variant="dark" onClick={()=>doActionClick(2)}>
-  Train
+  Train selected Orcs & Level Up!
 </Button>
 <Button variant="dark" onClick={()=>doActionClick(1)}>
-  Farm
+  Farm with selected Orcs & Earn Zug!
 </Button>
 <Button variant="dark" onClick={()=>doActionClick(0)}>
   Unstake
@@ -117,12 +118,12 @@ return (
 <div class="flex flex-wrap">
 
 {myOrcs && myOrcs.map((orc, index)=>{
-    let classes = "bg-white border-white border-2"
+    let classes = "border-white border-2 hover:bg-gray-100"
     if(clicked.includes(parseInt(orc.tokenId))){
         classes="border-2 bg-grey bg-gray-300"
     }
     return(
-    <div key={orc.name} class={`w-1/2 md:w-1/4 ${classes}`} onClick={()=> toggle(parseInt(orc.tokenId))}>
+    <div key={orc.name} class={`w-1/2 md:w-1/4 pointer-events-auto ${classes}`} onClick={()=> toggle(parseInt(orc.tokenId))}>
     <Orc allData={false} key={orc.name} tokenid={parseInt(orc.tokenId)} />
     </div>
     )

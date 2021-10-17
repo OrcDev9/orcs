@@ -151,7 +151,8 @@ function addWalletListener() {
 </div>
 
 <div>
-<MyOrcs address={tempAddress} />
+  {walletAddress && (<MyOrcs address={tempAddress} />)}
+
 
 </div>
 
@@ -175,9 +176,8 @@ function addWalletListener() {
   <Tab eventKey="mint" title="Mint">
    <Mint />
   </Tab>
-  <Tab eventKey="stake" title="Stake">
-  <Stake nftContract={nftContract} />
-  </Tab>
+
+
   <Tab eventKey="lookup" title="Lookup Orcs">
   <div class="space-y-2 p-2 border-2">        
 <h2>Look up Orc</h2>
@@ -200,16 +200,7 @@ function addWalletListener() {
 </div>
   </Tab>
 
-  <Tab eventKey="pilage" title="Pillage">
-    <div class="flex justify-evenly">
-    <Pillage />
-    </div>
 
-
-
-
-
-  </Tab>
   <Tab eventKey="activty" title="Activity Sheet">
    <Horde contract={nftContract} />
   </Tab>

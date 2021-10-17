@@ -35,17 +35,26 @@ export const getMyOrcsObject = async (address) => {
     let dataArry = []
 
     onValue(myOrcQuery, (snapshot) =>{
-    
-            Object.entries(snapshot.val()).forEach(([key, value])=>{
+      if(snapshot.exists()){
+
+        Object.entries(snapshot.val()).forEach(([key, value])=>{
         
-                dataArry.push({tokenId:value.tokenid})
-                             
-              })},{
+          dataArry.push({tokenId:value.tokenid})
+                   
+        })
+        console.log("Got My Orcs. Orc of them", address, dataArry)   
+      }else{
+        console.log("Got No Orcs. NOrc of them", address) 
+      }
+      
+            
+            },{
             onlyOnce: true
                   }
             )
+            
     
-          console.log("Got My Orcs. Orc of them", dataArry)
+        
       
            return(dataArry) 
     

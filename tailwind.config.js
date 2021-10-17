@@ -4,8 +4,8 @@ module.exports = {
   theme: {
     extend: {
         fontFamily: {
-            serif: ['Iskara', 'sans-serif'],
-            sans: ['MedievalSharp', 'cursive'],
+            sans: ['Iskara', 'sans-serif'],
+            serif: ['MedievalSharp', 'cursive'],
         },
         backgroundImage: {
           'light-image': "url('https://i.imgur.com/Nu7emt2.png')",

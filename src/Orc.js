@@ -55,7 +55,7 @@ useEffect(async () => {
        <div class="font-semibold text-xl">Lvl: {orcData.calcLevel}</div>
    </div>
    <div class="flex justify-center">
-       <div class="font-semibold text-xl">{orcData.actionString}</div>
+       <div class="font-semibold text-xs">{orcData.actionString} {showClaimable && `| ${orcData.claimable} Zug claimable`}</div>
    </div>
 
    

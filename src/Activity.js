@@ -32,6 +32,7 @@ setShowData(!showData)
 
 const requestData = async(token)=>{
 let orcData = await lookupOrc(token)
+console.log(orcData)
 updateDatabase(orcData) 
 }
 
@@ -40,22 +41,24 @@ const init = async () => {
   setLoading(true)
   let arr = []
 
-  let supply = await contract.methods.totalSupply().call()
-  setTokenSupply(supply);
+
  
-  const runs = parseInt(supply/cons)
+  const runs = parseInt(tokenSupply/cons)
  
   const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
 
  
- for(let i =0; i< runs;){  
+ for(let i =1; i< tokenSupply; i++){  
   
 
   let start = (i*cons) + 1
   let stop = (start+cons)
-  setCurrentIndex(parseInt(i/runs*100))
+  setCurrentIndex(parseInt(i/tokenSupply*100))
   let owners
-    
+ 
+  requestData(i)
+
+  /*
       try{
 
         owners = await Promise.all(
@@ -68,16 +71,21 @@ const init = async () => {
          }catch(e)
          
          {console.log(e, i)}
-
+*/
          
     }
    
+
   setLoading(false)
   
 };
 
 
-useEffect(() => {
+useEffect(async() => {
+
+  let supply = await contract.methods.totalSupply().call()
+  setTokenSupply(supply);
+
      if(showData){
       init()
      }
@@ -89,7 +97,7 @@ useEffect(() => {
 return (
     <>
 
-  <Button disabled onClick={handleClick}>{showData ? ("Restart") : "Update Orc Metadata"}</Button>
+  <Button onClick={handleClick}>{showData ? ("Restart") : "Update Orc Metadata"}</Button>
 <br/>
 
 <p>Looping through {tokenSupply} orcs, {cons} at a time. Please give it a few minutes. {currentIndex}% complete.

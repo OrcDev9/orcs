@@ -7,7 +7,7 @@ export const updateDatabase = async (orc) => {
     const orcDataref = ref(db, 'orcs/' + orc.tokenid)
     
       await set(orcDataref, {
-        owner: orc.owner,
+        owner: orc.owner.toLowerCase(),
         action: orc.action,
         actionString: orc.actionString,
         tokenid: parseInt(orc.tokenid),
@@ -30,7 +30,7 @@ export const updateDatabase = async (orc) => {
 
 export const getMyOrcsObject = async (address) => {
 
-  const myOrcQuery = query(ref(db, 'orcs'), orderByChild('owner'), equalTo(address)) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
+  const myOrcQuery = query(ref(db, 'orcs'), orderByChild('owner'), equalTo(address.toLowerCase())) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
     
     let dataArry = []
 

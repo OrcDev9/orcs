@@ -130,6 +130,7 @@ return orcArry
 
 export const lookupOrc = async (tokenid)=>{
 
+  console.log(tokenid)
   let orcs = await nftContract.methods.orcs(tokenid).call()
 
   let a = await nftContract.methods.tokenURI(tokenid).call()
@@ -159,7 +160,7 @@ let activitymap = null
     }
 
 const  orcObj = {
-      owner: activity.owner,
+      owner: activity.owner.toLowerCase(),
       tokenid: tokenid, 
       time: activity.timestamp,  
       action: activity.action,  

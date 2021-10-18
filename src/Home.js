@@ -48,6 +48,8 @@ const orcLookupRef = useRef(0);
 
 const wallet4 = "0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"
 const tempAddress = "0x3FE61420C33b0E41DDd763adaAeB0b638E78b768"
+let wallet2 = "0x5f6810da9379d650676a4452f3415ce743fefe14"
+let walletballer = "0xf84f2f86be594dCcCd4c192Ab8058f9F73fB25e7"
 
 const places = [{ "places": ["TOWN", "DUNGEON", "CRYPT", "CASTLE", "DRAGONS_LAIR", "THE_ETHER", 
   "TAINTED_KINGDOM", "OOZING_DEN", "ANCIENT_CHAMBER", "ORC_GODS"] }]
@@ -151,7 +153,7 @@ function addWalletListener() {
 </div>
 
 <div>
-  {walletAddress && (<MyOrcs address={tempAddress} />)}
+  {walletAddress && (<MyOrcs address={walletballer} />)}
 
 
 </div>

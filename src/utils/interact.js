@@ -1,15 +1,23 @@
 require('dotenv').config();
 const Web3 = require("web3")
 
+const {
+  Multicall,
+  ContractCallResults,
+  ContractCallContext,
+} = require("ethereum-multicall");
+
+
+
 const alchemyKey = process.env.REACT_APP_ALCHEMY_KEY;
 const infuraKey = process.env.REACT_APP_INFURA_KEY;
 
 ///Alchemy and web3
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
-const web3 = createAlchemyWeb3(alchemyKey); 
-const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
+//const web3 = createAlchemyWeb3(alchemyKey); 
+const contractAddress = "0x3abedba3052845ce3f57818032bfa747cded3fca"
 
-///const web3 = new Web3(new Web3.providers.HttpProvider(infuraKey))
+const web3 = new Web3(new Web3.providers.HttpProvider(infuraKey))
 
 const orcs = require('../orcs-abi.json')
 const zug = require('../zug-abi.json')
@@ -20,6 +28,105 @@ const ercContract = new web3.eth.Contract(zug.abi, contractAddress);
 const etherscanKey = process.env.REACT_APP_ETHERSCAN_KEY;
 var api = require('etherscan-api').init(etherscanKey);
 
+const multiCallOrcs = async (multicallArray)=>{
+  
+  const multicall = new Multicall({ web3Instance: web3, tryAggregate: true });
+  const contractCallContext: ContractCallContext[] = multicallArray
+  const results: ContractCallResults = await multicall.call(contractCallContext);
+
+  return results
+}
+
+export const getActivityString = async (action)=>{
+
+
+}
+
+export const lookupAllOrcs = async ({start, stop})=>{
+  let loopStart = start
+  let loopEnd = stop
+
+
+  let tempArr = []
+
+  for(var i=loopStart;i<loopEnd;i++){
+    var tx = {
+     reference: 'EtherOrcs'+i.toString(),
+     contractAddress: contractAddress,
+     abi: orcs.abi,
+     calls: [{ reference: 'orcsCall'+i.toString(), methodName: 'orcs', methodParameters: [i]},
+     { reference: 'claimableCall'+i.toString(), methodName: 'claimable', methodParameters: [i]},
+     { reference: 'activitiesCall'+i.toString(), methodName: 'activities', methodParameters: [i]},
+    ]
+   };
+   tempArr.push(tx);
+ }
+
+let results = await multiCallOrcs(tempArr)
+
+/////
+
+
+
+///0 is orcs
+///1 claimable
+///2 activities
+let orcObj 
+let orcArry = []
+
+for(let i=loopStart; i<loopEnd; i++){
+  
+  let orcData = results.results[`EtherOrcs${i}`].callsReturnContext[0].returnValues
+  console.log(orcData)
+  let activity = results.results[`EtherOrcs${i}`].callsReturnContext[2].returnValues[2]
+  let claimable = parseInt(results.results[`EtherOrcs${i}`].callsReturnContext[1].returnValues[0].hex, 16)
+  let levelRaw = orcData[6]
+  let level = ((parseInt(levelRaw) + (claimable))/1000).toFixed(1)
+  let level2 = (levelRaw/1000).toFixed(1)
+  let calcLevel
+
+let activitymap = null
+  switch(parseInt(activity)) {
+      case 1:
+        activitymap = "Farming"
+        calcLevel = level2
+        break;
+      case 2:
+        activitymap = "Training"
+        calcLevel = level
+        break;
+      default:
+        activitymap = "Idle"
+        calcLevel = level2
+    }
+
+orcObj = {
+    owner: results.results[`EtherOrcs${i}`].callsReturnContext[2].returnValues[0],
+    tokenid: i,
+    time: parseInt(results.results[`EtherOrcs${i}`].callsReturnContext[2].returnValues[1].hex,16),  
+    action: results.results[`EtherOrcs${i}`].callsReturnContext[2].returnValues[2].toString(),  
+    actionString: activitymap,
+    level:orcData[4], 
+    calcLevel: calcLevel,
+    claimable: claimable,
+    image: null,
+    name: `Orc #${i}`,
+    body: orcData[0],
+    helm: orcData[1],
+    mainhand: orcData[2],
+    offhand: orcData[3],
+    zugModifier: orcData[5], 
+    attributes: null
+  }
+
+  orcArry.push(orcObj)
+}
+
+
+
+return orcArry
+
+}
 
 export const lookupOrc = async (tokenid)=>{
 
@@ -32,7 +139,7 @@ export const lookupOrc = async (tokenid)=>{
   let activity = await nftContract.methods.activities(tokenid).call()
   let claimable = parseInt(await nftContract.methods.claimable(tokenid).call())
   
-  let level = ((parseInt(orcs.lvlProgress) + (claimable*3/2))/1000).toFixed(1)
+  let level = ((parseInt(orcs.lvlProgress) + (claimable))/1000).toFixed(1)
   let level2 = (orcs.lvlProgress/1000).toFixed(1)
   let calcLevel
 

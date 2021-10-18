@@ -99,7 +99,7 @@ function PlaceModal(props) {
         {places.map((obj, i)=>{
 
             return(
-                <div class="w-1/3 pt-4 flex justify-center border-white border-2 hover:bg-gray-100" onClick={()=>openSecondModal(obj.index)}>
+                <div class="w-1/3 py-4 flex justify-center border-white border-2 hover:bg-gray-100" onClick={()=>openSecondModal(obj.index)}>
                   <div>
                     <div class="font-bold">{obj.place}</div>
                     <div class="w-32">Orc must be Level {obj.level}+ to Pillage</div>

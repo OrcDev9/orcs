@@ -3,9 +3,17 @@ import ProgressBar from 'react-bootstrap/ProgressBar'
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { updateDatabase } from "./utils/services";
-import { lookupOrc } from "./utils/interact"; 
+import { lookupOrc , getContract, lookupAllOrcs } from "./utils/interact"; 
+import {
+  Multicall,
+  ContractCallResults,
+  ContractCallContext,
+} from 'ethereum-multicall';
 
-const Activity = ({contract, web3}) => {
+
+
+
+const Activity = ({contract}) => {
 
 const [rockswithrev, setRockswithrev] = useState();
 const [currentIndex, setCurrentIndex] = useState();
@@ -18,6 +26,7 @@ const [stakingCount, setStakingCount] = useState(0);
 const [tokenSupply, setTokenSupply] = useState();
 const [showData, setShowData] = useState(false);
 const [cons, setCons] = useState(10);
+const [web3, setWeb3] = useState(10);
 
 
 const handleInput = (e)=>{
@@ -30,53 +39,22 @@ e.preventDefault()
 setShowData(!showData)
 }
 
-const requestData = async(token)=>{
-let orcData = await lookupOrc(token)
-console.log(orcData)
-updateDatabase(orcData) 
-}
 
 const init = async () => {
   // set school contract
+
   setLoading(true)
-  let arr = []
+  let start = 1
+  let stop = tokenSupply
+  let results = await lookupAllOrcs({start, stop})
 
+  results.map((orc)=>{
+    updateDatabase(orc) 
+  })
 
- 
-  const runs = parseInt(tokenSupply/cons)
- 
-  const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
-
- 
- for(let i =1; i< tokenSupply; i++){  
+  console.log("Results", results)
   
-
-  let start = (i*cons) + 1
-  let stop = (start+cons)
-  setCurrentIndex(parseInt(i/tokenSupply*100))
-  let owners
- 
-  requestData(i)
-
-  /*
-      try{
-
-        owners = await Promise.all(
-
-          range(start, stop, 1).map((index) => (
-            requestData(index)
-          )))
-         i++
-
-         }catch(e)
-         
-         {console.log(e, i)}
-*/
-         
-    }
-   
-
-  setLoading(false)
+ setLoading(false)
   
 };
 
@@ -97,7 +75,14 @@ useEffect(async() => {
 return (
     <>
 
-  <Button onClick={handleClick}>{showData ? ("Restart") : "Update Orc Metadata"}</Button>
+  
+
+ 
+
+  {!loading ? ( 
+    <Button onClick={handleClick}>Update Meta Data</Button>
+  ) : ( <Button disabled><div class="animate-ping">Loading...</div></Button>)}
+
 <br/>
 
 <p>Looping through {tokenSupply} orcs, {cons} at a time. Please give it a few minutes. {currentIndex}% complete.

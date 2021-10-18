@@ -1,29 +1,30 @@
 import { useState, useEffect } from "react";
 import { updateDatabase } from "./utils/services";
-import { lookupOrc } from "./utils/interact"; 
+import { lookupOrc, getContract } from "./utils/interact"; 
 
 function Orc({tokenid, allData}) {
  
 const [orcData, setOrcData] = useState(null);
 const [loading, setLoading] = useState(false);
 const [showClaimable, setShowClaimable] = useState(false);
+const [claimable, setClaimable] = useState(false);
  
 
 
 useEffect(async () => {
 
 
-
-  const lookupsOrc = async ()=>{
+const lookupsOrc = async ()=>{
 
     setLoading(true)
     
     let orcObj = await lookupOrc(tokenid)
     setOrcData(orcObj)
 
-    if(parseInt(orcObj.action) === 2){
-      setShowClaimable(true)
-    }
+    setClaimable(((parseInt(orcObj.claimable))/Math.pow(10, 18)).toFixed(2))
+    setShowClaimable(true)
+    
+
    
     updateDatabase(orcObj) //update firestore eachtime someone looksup orc.
     console.log(orcObj)
@@ -55,7 +56,7 @@ useEffect(async () => {
        <div class="font-semibold text-xl">Lvl: {orcData.calcLevel}</div>
    </div>
    <div class="flex justify-center">
-       <div class="font-semibold text-xs">{orcData.actionString} {showClaimable && `| ${orcData.claimable} Zug claimable`}</div>
+       <div class="font-semibold text-xs">{orcData.actionString} {showClaimable && `| ${claimable} Zug claimable`}</div>
    </div>
    <div class="flex justify-center">
        <div class="font-semibold text-xs">{`$Zug Bonus ${orcData.zugModifier}+`}</div>
@@ -66,7 +67,7 @@ useEffect(async () => {
    {allData && (
      <>
     <div class="text-sm">
-    This orc is <strong>{orcData.actionString} </strong> and on the way to level <strong>{orcData.calcLevel}</strong>{showClaimable && ` with ${orcData.claimable} claimable.`}
+    This orc is <strong>{orcData.actionString} </strong> and on the way to level <strong>{orcData.calcLevel}</strong>{showClaimable && ` with ${claimable} claimable.`}
     </div>
    
    <div class="break-all text-xs">Owner: {orcData.owner}</div>

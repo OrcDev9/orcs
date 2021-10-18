@@ -153,7 +153,17 @@ function LootPoolModal(props) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Sending Orc #{tokenid} in to loot and pillage!
+              {places.map((obj)=>{
+                let place
+                if(lootPool === obj.index){
+                    place = obj.place
+                    return(`Send Orc #${tokenid} to Pillage the ${place} for Weapons and Gear`)
+                }
+                
+              })
+              
+              }
+         
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>

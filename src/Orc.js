@@ -57,6 +57,9 @@ useEffect(async () => {
    <div class="flex justify-center">
        <div class="font-semibold text-xs">{orcData.actionString} {showClaimable && `| ${orcData.claimable} Zug claimable`}</div>
    </div>
+   <div class="flex justify-center">
+       <div class="font-semibold text-xs">{`$Zug Bonus ${orcData.zugModifier}+`}</div>
+   </div>
 
    
    

@@ -80,7 +80,7 @@ return (
  
 
   {!loading ? ( 
-    <Button onClick={handleClick}>Update Orc Metadata</Button>
+    <Button disabled onClick={handleClick}>Update Orc Metadata</Button>
   ) : ( <Button disabled><div class="animate-bounce">Loading...</div></Button>)}
 
  </>

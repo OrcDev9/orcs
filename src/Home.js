@@ -170,10 +170,7 @@ function addWalletListener() {
 </div>
 <div class="space-y-2 p-2 border-2">
 
-<Tabs defaultActiveKey="mint" id="uncontrolled-tab-example" className="mb-3">
-  <Tab eventKey="mint" title="Mint">
-   <Mint />
-  </Tab>
+<Tabs defaultActiveKey="lookup" id="uncontrolled-tab-example" className="mb-3">
 
 
   <Tab eventKey="lookup" title="Lookup Orcs">
@@ -209,13 +206,7 @@ function addWalletListener() {
 </div>
    
 
-
-
-
-
-
-Credit:
-<p class="font-medium">Front end concept by Husky Studios, creators of <a target="_blank" href="https://hilarioushuskies.life">Hilarious Huskies </a>.</p>
+<p class="font-medium">Credits: Frontend concept by Husky Studios, creators of <a target="_blank" href="https://hilarioushuskies.life">Hilarious Huskies </a>.</p>
 
 </div>
 

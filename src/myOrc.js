@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {getMyOrcsObject} from "./utils/services"
 import Orc from "./Orc";
 import { Button } from "react-bootstrap";
-import {doAction, collectZug, getCurrentWalletConnected} from "./utils/interact.js";
+import {doAction, collectZug, getCurrentWalletConnected, mintNFT} from "./utils/interact.js";
 import Pillage from "./Pillage";
 import ConnectWallet from "./ConnectWallet";
 
@@ -131,6 +131,14 @@ const doActionClick = async (actionIndex) => { //TODO: implement
 };
 
 
+const onMintPressed = async (event) => { //TODO: implement
+ 
+     const { status, txHash, success } = await mintNFT();
+     setStatus(status);
+     
+ 
+   };
+
 console.log(clicked)
 console.log(showPillage)
 
@@ -152,18 +160,26 @@ const onClaimZugPressed = async (event) => { //TODO: implement
 
 return (
     <div class="border-2 p-3">
-{status}
 
+
+<div class="flex flex-wrap justify-between">
+
+                <div>
+                <h2>EtherOrcs Tavern</h2>
+                <h3 class="bold">TRAIN, FARM AND PILLAGE</h3>
+                <p>Click to toggle select orcs.</p>
+                <div class="py-3 flex flex-wrap space-x-4">
+                <Button onClick={onClaimZugPressed}>Claim $Zug!</Button>
+                <Button onClick={onMintPressed}>Mint!</Button>
+                </div>
+
+
+
+</div>
 <div class="align-self-center">
-          <ConnectWallet />
-          </div>
+                        <ConnectWallet />
+                </div>
 
-
-<h2>EtherOrcs Tavern</h2>
-<h3 class="bold">TRAIN, FARM AND PILLAGE</h3>
-<p>Click to toggle select orcs.</p>
-<div class="py-3">
-<Button onClick={onClaimZugPressed}>Claim Zug</Button>
     </div>
 <div class="flex flex-wrap justify-between">
 {showPillage ? (
@@ -182,7 +198,9 @@ return (
   Unstake
 </Button>
 
-
+<div>
+{status}
+</div>
 </div>
 
 <div class="flex flex-wrap">

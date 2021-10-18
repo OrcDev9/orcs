@@ -153,7 +153,7 @@ function addWalletListener() {
 </div>
 
 <div>
-  {walletAddress && (<MyOrcs address={walletballer} />)}
+  {walletAddress && (<MyOrcs address={walletAddress} />)}
 
 
 </div>

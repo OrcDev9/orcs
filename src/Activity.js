@@ -81,15 +81,9 @@ return (
 
   {!loading ? ( 
     <Button onClick={handleClick}>Update Orc Metadata</Button>
-  ) : ( <Button disabled><div class="animate-ping">Loading...</div></Button>)}
+  ) : ( <Button disabled><div class="animate-bounce">Loading...</div></Button>)}
 
-<br/>
-
-<p>Looping through {tokenSupply} orcs, {cons} at a time. Please give it a few minutes. {currentIndex}% complete.
-Currently scanning Orc # {currentToken}
-</p>
-
-<ProgressBar now={currentIndex} label={`${currentIndex}%`}/> </>
+ </>
 
 
 

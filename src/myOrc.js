@@ -21,13 +21,14 @@ let wallet2 = "0x5f6810da9379d650676a4452f3415ce743fefe14"
 let walletballer = "0xf84f2f86be594dCcCd4c192Ab8058f9F73fB25e7"
 let bet = "0xf623A49eBE67CeFea751f0Fc63c8AE863e251052"
 let sid = "0xCcB6D1e4ACec2373077Cb4A6151b1506F873a1a5"
+let wrangler = "0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"
 
 
 useEffect(async () => {
 
 
     const {address, status} = await getCurrentWalletConnected();
-    setMyOrcs(await getMyOrcsObject(address))
+    setMyOrcs(await getMyOrcsObject(address.toLowerCase()))
     setWallet(address)
     setStatus(status);
     addWalletListener(); 

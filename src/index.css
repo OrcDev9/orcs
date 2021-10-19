@@ -18,8 +18,13 @@
         @apply lg:text-base xl:text-lg pb-2 ;
       }
     button {
-       @apply border-2 p-2 bg-yellow-700 hover:shadow-lg text-white font-bold;
+       @apply border-2 p-1 bg-yellow-700 hover:shadow-lg text-white font-bold;
       }
+      input {
+        @apply border-2 p-1 bg-yellow-700 hover:shadow-lg text-white font-bold;
+       }
+
+      
   }
 @tailwind components;
 @tailwind utilities;

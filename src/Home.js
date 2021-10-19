@@ -53,8 +53,8 @@ getGasPrice().then(function(gasPriceData){
 
 }, []);
 
-const handleOrcSubmit = () => {
-
+const handleOrcSubmit = (e) => {
+  e.preventDefault()
   const value = orcLookupRef.current.value;
   const t = parseInt(value)
 
@@ -84,15 +84,13 @@ setShowOrc(true)
           <div class="flex flex-wrap justify-between">
 
                   <div class="w-1/3 border-2 shadow-lg p-2">
-                  <div class="text-lg font-bold font-serif">LOOK UP ORC</div>  
-                  <InputGroup>
-                   <Form.Group onSubmit={()=>handleOrcSubmit()}>
-                 
-                  <Form.Control placeholder={"Type Orc Id here"} ref={orcLookupRef}/>     
-                           
-                  </Form.Group>
-                  <Button onClick={()=>handleOrcSubmit()}>Lookup</Button>  
-                  </InputGroup>            
+                  <div class="text-lg font-bold font-serif flex flex-wrap justify-center">LOOK UP ORC</div>  
+                  <div class="flex flex-wrap justify-center">
+                       <form onSubmit={handleOrcSubmit}>
+                    <input  placeholder={"Type Orc Id here"} ref={orcLookupRef} />
+                    <button class="hidden" type="submit">Unleash the Orc</button> 
+                    </form>    
+                  </div>  
               {showOrc && <Orc allData={true} tokenid={orcId} />}
               </div>
               

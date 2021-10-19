@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {getMyOrcsObject} from "./utils/services"
 import Orc from "./Orc";
-import {doAction, collectZug, getCurrentWalletConnected, mintNFT, lookupAllOrcs} from "./utils/interact.js";
+import {doAction, collectZug, getCurrentWalletConnected, mintNFT, lookupAllOrcs, getContract} from "./utils/interact.js";
 import Pillage from "./Pillage";
 import ConnectWallet from "./ConnectWallet";
 import logo from "./media/logo.svg"
@@ -18,7 +18,7 @@ const [claimableZug, setClaimableZug] = useState();
 const [claimtoggle, setClaimtoggle] = useState(true);
 const [displayOrcs, setDisplayOrcs] = useState(false);
 
-
+const {web3} = getContract()
 
 
 const [walletAddress, setWallet] = useState("");
@@ -41,12 +41,13 @@ const ethWallet = "0x7d9d3659dcfbea08a87777c52020bc672deece13"
 
 const summonOrcs = async (address) => { //TODO: implement
     
-  const myOrcQuery = query(ref(db, 'orcs'), orderByChild('owner'), equalTo(address.toLowerCase())) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
+  const myOrcQuery = query(ref(db, 'orcs'), orderByChild('owner'), equalTo(claimwallet.toLowerCase())) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
   console.log("2.", address, "3.", myOrcQuery)    
   let dataArry = []
   let tokenArr = []
 
-onValue(myOrcQuery, (snapshot) =>{
+onValue(myOrcQuery, (snapshot)=>{
+  console.log("4.", snapshot.val())
       if(snapshot.exists()){        
 
         Object.entries(snapshot.val()).forEach(([key, value])=>{
@@ -64,8 +65,7 @@ onValue(myOrcQuery, (snapshot) =>{
   console.log("Got No Orcs. NOrc of them", address) 
 }
       
-      }, {onlyOnce: true}
-      )
+      },{onlyOnce: true})
 
 /*const myOrcsData = await getMyOrcsObject(claimwallet.toLowerCase())
 setMyOrcs(myOrcsData)
@@ -127,6 +127,8 @@ const toggle = index => {
 const doActionClick = async (actionIndex) => { //TODO: implement
   setStatus("") 
 
+  console.log(clicked)
+
     if(clicked.length > 1){
       setStatus(`Orcs are about to farm or train`);
         const {success, status} = await doAction(actionIndex, clicked)
@@ -179,7 +181,7 @@ const onClaimZugPressed = async (event) => { //TODO: implement
             }
         })
 
-        setStatus(`Claimable $Zug is ${claim.toFixed(2)}`)
+        setStatus(`Claimable $ZUG is ${claim.toFixed(2)}`)
 
     }else{
       myOrcs.orcs.map((orc)=>{
@@ -188,10 +190,10 @@ const onClaimZugPressed = async (event) => { //TODO: implement
             claimArr.push(orc.tokenId)
         }
     })
-      setStatus(`Zug being claimed for Orcs`)
+      setStatus(`$ZUG being claimed for Orcs`)
         const { status, txHash, success } = await collectZug(claimArr) 
         setStatus(status)
-        console.log("Zug being claimed for:", claimArr) 
+        console.log("$ZUG being claimed for:", claimArr) 
         
         setClaimtoggle(!claimtoggle)
     }
@@ -216,12 +218,12 @@ return (
 
                     <div>
                     <h3 class="bold font-serif">TRAIN, FARM AND PILLAGE</h3>
-                    <p>If its the first time you are using this app, click on <strong><ConnectWallet /></strong>!</p>
+                    <p>If its the first time you are using this app, click on <strong><ConnectWallet /></strong></p>
                     <p>Click on <strong><button onClick={onDisplayOrcsPressed}>Summon the Orcs!</button> first!</strong> Click to toggle select orcs, then make them do something. If nothing happens, refresh the page or reconnect your wallet.</p>
                       <p>If orcs are missing from your Tavern, try looking them up in, "Look up Orc"</p>
 
-                     <p> Check your claimable Zug <button onClick={onClaimZugPressed}>
-                        {claimtoggle ? ("Calaculate $Zug owed!") : "Claim $Zug!"}</button> and <button onClick={onMintPressed}>Mint!</button> your Orcs!
+                     <p> Check your claimable $ZUG <button onClick={onClaimZugPressed}>
+                        {claimtoggle ? ("Calculate $ZUG owed!") : "Claim $ZUG!"}</button> and <button onClick={onMintPressed}>Mint!</button> your Orcs!
                      </p>
                    
                     </div>
@@ -249,7 +251,7 @@ return (
               Train selected Orcs & Level Up!
             </button>
             <button variant="dark" onClick={()=>doActionClick(1)}>
-              Farm with selected Orcs & Earn Zug!
+              Farm with selected Orcs & Earn $ZUG!
             </button>
             <button variant="dark" onClick={()=>doActionClick(0)}>
               Unstake

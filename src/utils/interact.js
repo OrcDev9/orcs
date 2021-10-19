@@ -236,10 +236,13 @@ try {
 export const doAction = async(action, id) => {
   
   const nonce = await web3.eth.getTransactionCount(window.ethereum.selectedAddress, 'latest'); //get latest nonce
-  let txData = nftContract.methods.doAction(id, action).encodeABI()
-  if(id.length > 1){   
+ 
+  var txData;
+  if(id.length > 1){
     txData = nftContract.methods.doActionWithManyOrcs(id, action).encodeABI()
     console.log("yes array")
+  }else{
+    txData = nftContract.methods.doAction(id, action).encodeABI()
   }
 console.log(id, action, txData)
   

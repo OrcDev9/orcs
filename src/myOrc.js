@@ -13,10 +13,12 @@ const MyOrcs = () => {
 const [myOrcs, setMyOrcs] = useState();
 const [showPillage, setShowPillage] = useState(false);
 const [clicked, setClicked] = useState([]);
-const [status, setStatus] = useState(null);
+const [status, setStatus] = useState();
 const [claimableZug, setClaimableZug] = useState();
 const [claimtoggle, setClaimtoggle] = useState(true);
+const [displayOrcs, setDisplayOrcs] = useState(false);
 const [orcTokens, setOrcTokens] = useState([]);
+
 const [walletAddress, setWallet] = useState("");
 
 const [isMetamask, setIsMetamask] = useState(true);
@@ -38,20 +40,24 @@ const ethWallet = "0x7d9d3659dcfbea08a87777c52020bc672deece13"
 
 useEffect(async () => {
 
-    const {address, status} = await getCurrentWalletConnected();
-    setWallet(address)
-    setStatus(status);
-    addWalletListener(); 
-    
+    const summonOrcs = async (event) => { //TODO: implement
+      const {address, status} = await getCurrentWalletConnected();
+      setWallet(address)
+      setStatus(status);
+      
+
     const myOrcsData = await getMyOrcsObject(address.toLowerCase())
     setMyOrcs(myOrcsData)
-    console.log("address being fed to orc finder", address.toLowerCase())
+    console.log("1. address being fed to orc finder", address.toLowerCase())
+    setStatus(myOrcsData.status[0]) 
     const array = myOrcsData.tokens
     let allOrcs = lookupAllOrcs({array})
     console.log("who let dogs out:,", allOrcs)
-   
+    
+  };
+  summonOrcs();
+  addWalletListener(); 
 },[])
-
 
 
 function addWalletListener() {
@@ -116,18 +122,19 @@ const toggle = index => {
 
 
 const doActionClick = async (actionIndex) => { //TODO: implement
+  setStatus("") 
 
     if(clicked.length > 1){
-
+      setStatus(`Orcs are about to farm or train`);
         const {success, status} = await doAction(actionIndex, clicked)
         setStatus(status);
     }else if(clicked.length === 1){
-      
+      setStatus(`One Orc are about to farm or train`);
         let temp = clicked[0]
         const {success, status} = await doAction(actionIndex, temp)
         setStatus(status);
     }else{
-        setStatus("empty fields somewhere")
+        setStatus("No Orcs selected")
     }
 
   
@@ -152,26 +159,21 @@ const doActionClick = async (actionIndex) => { //TODO: implement
 const onMintPressed = async (event) => { //TODO: implement
  
      const { status, txHash, success } = await mintNFT();
-     setStatus(status);
-     
+     setStatus(status);    
  
    };
 
-
-   const summonOrcs = async (event) => { //TODO: implement
+   const onDisplayOrcsPressed = async (event) => { //TODO: implement
  
-    const myOrcsData = await getMyOrcsObject(walletAddress.toLowerCase())
-    setMyOrcs(myOrcsData)
-    console.log("address being fed to orc finder", walletAddress.toLowerCase())
-    setStatus("Orcs Summoned!")
-
-    const array = myOrcsData.tokens
-    let allOrcs = lookupAllOrcs({array})
-    console.log("who let dogs out:,", allOrcs)
-        
+    setDisplayOrcs(!displayOrcs)
+    setStatus(myOrcs.status[0]) 
 
   };
 
+   
+
+  
+///console.log(myOrcs)
 //console.log(clicked)
 //console.log(showPillage)
 
@@ -192,6 +194,8 @@ const onClaimZugPressed = async (event) => { //TODO: implement
             }
         })
 
+        setStatus(`Claimable $Zug is ${claim.toFixed(2)}`)
+
     }else{
       myOrcs.orcs.map((orc)=>{
         if(orc.claimable > 0){
@@ -199,8 +203,11 @@ const onClaimZugPressed = async (event) => { //TODO: implement
             claimArr.push(orc.tokenId)
         }
     })
+      setStatus(`Zug being claimed for Orcs`)
         const { status, txHash, success } = await collectZug(claimArr) 
-        console.log("zug being claimed for:", claimArr) 
+        setStatus(status)
+        console.log("Zug being claimed for:", claimArr) 
+        
         setClaimtoggle(!claimtoggle)
     }
    
@@ -214,21 +221,31 @@ const onClaimZugPressed = async (event) => { //TODO: implement
 return (
     <div class="border-2 p-3">
 
-
-<div class="flex flex-wrap justify-between">
-
-                <div>
                         <div class="flex justify-left align-items-baseline">
-                    <h1 class="text-5xl md:text-6xl xl:text-7xl font-bold font-serif pr-2 ">Ether</h1>
-                    <img class="rounded-full" width={70} src={logo} alt="Orcs Logo" />
-                    <h1 class="text-5xl md:text-6xl xl:text-7xl font-bold font-serif ">rcs Tavern</h1>
-                </div> 
- 
-                <h3 class="bold">TRAIN, FARM AND PILLAGE</h3>
-                <p>Click on Summon the Orcs first! Click to toggle select orcs, then make them do something. If nothing happens, refresh the page.</p>
-                <div class="font-medium text-xl">Claimable $Zug: {claimableZug}</div>
+                        <h1 class="text-5xl md:text-6xl xl:text-7xl font-bold font-serif pr-2 ">Ether</h1>
+                        <img class="rounded-full" width={70} src={logo} alt="Orcs Logo" />
+                        <h1 class="text-5xl md:text-6xl xl:text-7xl font-bold font-serif ">rcs Tavern</h1>
+                        </div> 
+
+              <div class="flex flex-wrap justify-between">
+
+                    <div class="w-2/3">
+                    <h3 class="bold">TRAIN, FARM AND PILLAGE</h3>
+                    <p>Click on Summon the Orcs first! Click to toggle select orcs, then make them do something. If nothing happens, refresh the page.</p>
+                    <div class="font-bold text-sm">CLAIMABLE $ZUG: {claimableZug}</div>
+                    </div>
+
+                    <div class="space-y-2">
+                    <ConnectWallet />    
+                    <Button onClick={onDisplayOrcsPressed}>Summon the Orcs!</Button>
+                    </div>
+                </div>
+                   
+              
+                
                 <div class="py-3 flex flex-wrap space-x-4">
-                <Button onClick={summonOrcs}>Summon the Orcs!</Button>
+               
+               
 
                 <Button onClick={onClaimZugPressed}>
                         {claimtoggle ? ("Calaculate $Zug owed!") : "Claim $Zug!"}
@@ -239,37 +256,33 @@ return (
 
 
 
-</div>
-<div class="align-self-center">
-                        <ConnectWallet />
-                </div>
 
-    </div>
-<div class="flex flex-wrap justify-between">
-{showPillage ? (
-    <Pillage tokenid={clicked[0]} />
- ) : (  <Button variant="dark" disabled>
-       Pillage with selected Orc!
-    </Button>)}
 
-<Button variant="dark" onClick={()=>doActionClick(2)}>
-  Train selected Orcs & Level Up!
-</Button>
-<Button variant="dark" onClick={()=>doActionClick(1)}>
-  Farm with selected Orcs & Earn Zug!
-</Button>
-<Button variant="dark" onClick={()=>doActionClick(0)}>
-  Unstake
-</Button>
 
-<div>
-{status}
-</div>
-</div>
+            <div class="flex flex-wrap justify-between">
+            {showPillage ? (
+                <Pillage tokenid={clicked[0]} />
+            ) : (  <Button variant="dark" disabled>
+                  Pillage with selected Orc!
+                </Button>)}
+
+            <Button variant="dark" onClick={()=>doActionClick(2)}>
+              Train selected Orcs & Level Up!
+            </Button>
+            <Button variant="dark" onClick={()=>doActionClick(1)}>
+              Farm with selected Orcs & Earn Zug!
+            </Button>
+            <Button variant="dark" onClick={()=>doActionClick(0)}>
+              Unstake
+            </Button>
+
+            </div>
+
+            <div class="border-2 p-2 mt-3"><strong>OrcBot says: {" "}</strong>{status}</div>
 
 <div class="flex flex-wrap">
 
-{myOrcs && myOrcs.orcs.map((orc, index)=>{
+{displayOrcs && myOrcs.orcs.map((orc, index)=>{
     let classes = "border-white border-2 hover:bg-gray-100"
     if(clicked.includes(parseInt(orc.tokenId))){
         classes="border-2 bg-grey bg-gray-300"

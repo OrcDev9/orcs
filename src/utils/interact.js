@@ -69,7 +69,7 @@ export const lookupAllOrcs = async ({start, stop, array})=>{
   let loopEnd = stop
   let tempArr = []
 
-  console.log("1.", array)
+  console.log("3.", array)
 
   if(array){
   array.map((i, index)=>{

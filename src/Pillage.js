@@ -1,6 +1,5 @@
 import {pillage} from "./utils/interact.js";
 import { useState, useEffect, useRef } from "react";
-import { Button } from "react-bootstrap";
 import town from "./media/images/Town.png"
 import dungeon from "./media/images/Dungeon.png"
 import crypt from "./media/images/Crypt.png"
@@ -65,7 +64,7 @@ function PlaceModal(props) {
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
-        <Modal.Header closeButton>
+        <Modal.Header closebutton>
           <Modal.Title id="contained-modal-title-vcenter">
            Pick Your Loot Pool (Click to proceed)
           </Modal.Title>
@@ -112,7 +111,7 @@ function PlaceModal(props) {
         </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={props.onHide}>Close</Button>
+          <button onClick={props.onHide}>Close</button>
         </Modal.Footer>
       </Modal>
     );
@@ -126,7 +125,7 @@ function LootPoolModal(props) {
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
-        <Modal.Header closeButton>
+        <Modal.Header closebutton>
           <Modal.Title id="contained-modal-title-vcenter">
               {places.map((obj)=>{
                 let place
@@ -150,11 +149,11 @@ function LootPoolModal(props) {
 
         <div class="flex flex-wrap justify-between">
                 <div>
-                {status && (<>{status} <Button variant="dark" onClick={props.onHide}>Close</Button> </>)}
+                {status && (<>{status} <button variant="dark" onClick={props.onHide}>Close</button> </>)}
                
                 </div>
                 <div>
-                <Button variant="dark" onClick={onMintPressed}>Pillage!</Button>
+                <button variant="dark" onClick={onMintPressed}>Pillage!</button>
                 </div>
             </div>
         
@@ -192,7 +191,7 @@ const onMintPressed = async (event) => { //TODO: implement
             
          }else{
  
-            setStatus("Something went wrong");
+            setStatus("Something went");
   
        }
    };
@@ -204,9 +203,9 @@ const onMintPressed = async (event) => { //TODO: implement
   return (
 <>
          
-    <Button variant="dark" onClick={() => setModalShow(true)}>
+    <button variant="dark" onClick={() => setModalShow(true)}>
     Pillage with selected Orc!
-        </Button>
+        </button>
   
         <PlaceModal
           show={modalShow}

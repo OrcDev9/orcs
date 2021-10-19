@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import {getMyOrcsObject} from "./utils/services"
 import Orc from "./Orc";
-import { Button } from "react-bootstrap";
 import {doAction, collectZug, getCurrentWalletConnected, mintNFT, lookupAllOrcs} from "./utils/interact.js";
 import Pillage from "./Pillage";
 import ConnectWallet from "./ConnectWallet";
 import logo from "./media/logo.svg"
 import { db } from "./initFirebase";
+import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue, push, orderByChild, limitToLast} from "firebase/database";
 
 const MyOrcs = () => {
 
@@ -17,7 +17,9 @@ const [status, setStatus] = useState();
 const [claimableZug, setClaimableZug] = useState();
 const [claimtoggle, setClaimtoggle] = useState(true);
 const [displayOrcs, setDisplayOrcs] = useState(false);
-const [orcTokens, setOrcTokens] = useState([]);
+
+
+
 
 const [walletAddress, setWallet] = useState("");
 
@@ -37,55 +39,54 @@ let a = "0x430d192e0EA959c7BB6B26eD6534B55B187b487A"
 let claimwallet = "0xfcdbada91ca1aaa80efbe3b62102863d32a2fed4"
 const ethWallet = "0x7d9d3659dcfbea08a87777c52020bc672deece13"
 
+const summonOrcs = async (address) => { //TODO: implement
+    
+  const myOrcQuery = query(ref(db, 'orcs'), orderByChild('owner'), equalTo(address.toLowerCase())) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
+  console.log("2.", address, "3.", myOrcQuery)    
+  let dataArry = []
+  let tokenArr = []
+
+onValue(myOrcQuery, (snapshot) =>{
+      if(snapshot.exists()){        
+
+        Object.entries(snapshot.val()).forEach(([key, value])=>{
+  
+        dataArry.push({tokenId:value.tokenid, claimable:value.claimable, action:value.action})         
+        tokenArr.push(value.tokenid)      
+        })
+
+  setStatus(`Found ${tokenArr.length} Orc(s) for ${address}... Loading!`);
+  setMyOrcs({orcs: dataArry, tokens:tokenArr})
+  console.log("Found Orcs. Orc of them", address, dataArry, "Orcs held:", tokenArr)   
+
+}else{
+  setStatus(`Found no Orcs try looking them up to force a metadata refresh.`);
+  console.log("Got No Orcs. NOrc of them", address) 
+}
+      
+      }, {onlyOnce: true}
+      )
+
+/*const myOrcsData = await getMyOrcsObject(claimwallet.toLowerCase())
+setMyOrcs(myOrcsData)
+console.log("1. address being fed to orc finder", address.toLowerCase())
+setStatus(myOrcsData.status[0]) 
+
+const array = myOrcsData.tokens
+let allOrcs = lookupAllOrcs({array})
+console.log("who let dogs out:,", allOrcs)
+*/
+}
 
 useEffect(async () => {
 
-    const summonOrcs = async (event) => { //TODO: implement
-      const {address, status} = await getCurrentWalletConnected();
-      setWallet(address)
-      setStatus(status);
-      
-
-    const myOrcsData = await getMyOrcsObject(address.toLowerCase())
-    setMyOrcs(myOrcsData)
-    console.log("1. address being fed to orc finder", address.toLowerCase())
-    setStatus(myOrcsData.status[0]) 
-    const array = myOrcsData.tokens
-    let allOrcs = lookupAllOrcs({array})
-    console.log("who let dogs out:,", allOrcs)
-    
-  };
-  summonOrcs();
-  addWalletListener(); 
-},[])
-
-
-function addWalletListener() {
-    if (window.ethereum) {      
-      window.ethereum.on("accountsChanged", (accounts) => {
-        if (accounts.length > 0) {
-          setWallet(accounts[0]);  
-          setIsMetamask(true)        
-          setStatus("👆🏽 Select quantity to mint.");
-        } else {
-          setWallet("");
-          setStatus("🦊 Connect to Metamask using the top right button.");
-        }
-      });
-    } else {
-      setStatus(
-        <p>
-          {" "}
-          🦊{" "}
-          <a target="_blank" href={`https://metamask.io/download.html`}>
-            You must install Metamask, a virtual Ethereum wallet, in your
-            browser.
-          </a>
-        </p>
-      );
-    }
-  }
-
+  const {address, status} = await getCurrentWalletConnected();
+  setWallet(address)
+  setStatus(status);
+  
+  if(displayOrcs){summonOrcs(address)}
+ 
+},[displayOrcs])
 
 const toggle = index => {
           
@@ -110,12 +111,14 @@ const toggle = index => {
               setClicked(newArr)
               if(newArr.length > 1 ){
                   setShowPillage(false)
+                  setStatus("Select just one Orc")
               }
               if(newArr.length === 1 ){
                 setShowPillage(true)
             }
             if(newArr.length === 0 ){
                 setShowPillage(false)
+                setStatus("Select just one Orc")
             }
 
 }
@@ -137,22 +140,6 @@ const doActionClick = async (actionIndex) => { //TODO: implement
         setStatus("No Orcs selected")
     }
 
-  
-    /*
-    setTxProgress(33)
-     const { status, txHash, success } = await mintNFT(qty);
-     setStatus(status);
-     
-     ///check for successful transaction
-       if(success ===true){
-           setTxProgress(100)
-            
-         }else{
-           setTxProgress(0)
-        
-  
-       }*/
-
 };
 
 
@@ -164,9 +151,7 @@ const onMintPressed = async (event) => { //TODO: implement
    };
 
    const onDisplayOrcsPressed = async (event) => { //TODO: implement
- 
     setDisplayOrcs(!displayOrcs)
-    setStatus(myOrcs.status[0]) 
 
   };
 
@@ -229,60 +214,56 @@ return (
 
               <div class="flex flex-wrap justify-between">
 
-                    <div class="w-2/3">
-                    <h3 class="bold">TRAIN, FARM AND PILLAGE</h3>
-                    <p>Click on Summon the Orcs first! Click to toggle select orcs, then make them do something. If nothing happens, refresh the page.</p>
-                    <div class="font-bold text-sm">CLAIMABLE $ZUG: {claimableZug}</div>
+                    <div>
+                    <h3 class="bold font-serif">TRAIN, FARM AND PILLAGE</h3>
+                    <p>If its the first time you are using this app, click on <strong><ConnectWallet /></strong>!</p>
+                    <p>Click on <strong><button onClick={onDisplayOrcsPressed}>Summon the Orcs!</button> first!</strong> Click to toggle select orcs, then make them do something. If nothing happens, refresh the page or reconnect your wallet.</p>
+                      <p>If orcs are missing from your Tavern, try looking them up in, "Look up Orc"</p>
+
+                     <p> Check your claimable Zug <button onClick={onClaimZugPressed}>
+                        {claimtoggle ? ("Calaculate $Zug owed!") : "Claim $Zug!"}</button> and <button onClick={onMintPressed}>Mint!</button> your Orcs!
+                     </p>
+                   
                     </div>
 
-                    <div class="space-y-2">
-                    <ConnectWallet />    
-                    <Button onClick={onDisplayOrcsPressed}>Summon the Orcs!</Button>
-                    </div>
-                </div>
+                  </div>
                    
               
-                
+                {(
+                  <>
                 <div class="py-3 flex flex-wrap space-x-4">
                
                
 
-                <Button onClick={onClaimZugPressed}>
-                        {claimtoggle ? ("Calaculate $Zug owed!") : "Claim $Zug!"}
-
-                </Button>
-                <Button onClick={onMintPressed}>Mint!</Button>
+                
                 </div>
-
-
-
-
-
 
             <div class="flex flex-wrap justify-between">
             {showPillage ? (
                 <Pillage tokenid={clicked[0]} />
-            ) : (  <Button variant="dark" disabled>
+            ) : (  <button variant="dark" disabled>
                   Pillage with selected Orc!
-                </Button>)}
+                </button>)}
 
-            <Button variant="dark" onClick={()=>doActionClick(2)}>
+            <button variant="dark" onClick={()=>doActionClick(2)}>
               Train selected Orcs & Level Up!
-            </Button>
-            <Button variant="dark" onClick={()=>doActionClick(1)}>
+            </button>
+            <button variant="dark" onClick={()=>doActionClick(1)}>
               Farm with selected Orcs & Earn Zug!
-            </Button>
-            <Button variant="dark" onClick={()=>doActionClick(0)}>
+            </button>
+            <button variant="dark" onClick={()=>doActionClick(0)}>
               Unstake
-            </Button>
+            </button>
 
             </div>
+            </>
+            )}
 
-            <div class="border-2 p-2 mt-3"><strong>OrcBot says: {" "}</strong>{status}</div>
+            <div class="border-2 p-2 mt-3"><strong class="font-serif">OrcBot says: {" "}</strong>{status}</div>
 
 <div class="flex flex-wrap">
 
-{displayOrcs && myOrcs.orcs.map((orc, index)=>{
+{myOrcs && myOrcs.orcs.map((orc, index)=>{
     let classes = "border-white border-2 hover:bg-gray-100"
     if(clicked.includes(parseInt(orc.tokenId))){
         classes="border-2 bg-grey bg-gray-300"

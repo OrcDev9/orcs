@@ -6,10 +6,9 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import Activity from "./Activity";
+import Horde from "./Horde";
 import {
-  getCurrentWalletConnected, //import here
-  mintNFT, getTokenSupply, getGasPrice, getEthPrice, isSaleActive, getContractPrice, tokensByOwner, getContract, getErc,
+getContract
   
 } from "./utils/interact.js";
 const history = createBrowserHistory();
@@ -40,7 +39,8 @@ function App() {
          
               <Switch>
                 
-                <Route path="/gui">   
+                <Route path="/admin">   
+                <Horde contract={nftContract} />
                 {/*<Activity contract={nftContract} web3={web3} />*/}
                 </Route>
                 <Route path="/">   

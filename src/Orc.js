@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { updateDatabase } from "./utils/services";
-import { lookupOrc, getContract } from "./utils/interact"; 
+import { lookupOrc } from "./utils/interact"; 
 
 function Orc({tokenid, allData}) {
  
@@ -25,7 +25,7 @@ const lookupsOrc = async ()=>{
     setShowClaimable(true)
        
     updateDatabase(orcObj) //update firestore eachtime someone looksup orc.
-    console.log(orcObj)
+   
   }
 
   lookupsOrc()
@@ -75,7 +75,7 @@ const lookupsOrc = async ()=>{
       {allData && orcData && (orcData.attributes.map((a, i)=>{
 
 return(<div key={orcData.name + i}>
-<div class="flex justify-between">
+<div class="flex justify-between border-b-2">
 <div class="text-sm">{a['trait_type'] /*//fix this laer */}</div> 
 <div class="font-semibold text-sm">{a.value}</div>
 

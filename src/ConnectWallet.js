@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import {
   getCurrentWalletConnected, //import here
-  connectWallet, getContract
+  connectWallet, 
 } from "./utils/interact.js";
 
 import Button from 'react-bootstrap/Button'
@@ -65,7 +65,7 @@ const isMetaMaskInstalled = async () => {
 
   return (
    
-    <div>
+    <>
     {isMetamask ? (
 
 <Button variant="dark" onClick={connectWalletPressed}>
@@ -94,7 +94,7 @@ const isMetaMaskInstalled = async () => {
 
 
 
-</div>  
+</>  
 
   );
 };

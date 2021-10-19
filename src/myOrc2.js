@@ -15,7 +15,6 @@ const [clicked, setClicked] = useState([]);
 const [status, setStatus] = useState(null);
 const [claimableZug, setClaimableZug] = useState();
 const [claimtoggle, setClaimtoggle] = useState(true);
-const [orcTokens, setOrcTokens] = useState([]);
 const [walletAddress, setWallet] = useState("");
 
 const [isMetamask, setIsMetamask] = useState(true);
@@ -38,22 +37,11 @@ const ethWallet = "0x7d9d3659dcfbea08a87777c52020bc672deece13"
 useEffect(async () => {
 
     const {address, status} = await getCurrentWalletConnected();
-    const myOrcsData = await getMyOrcsObject(address.toLowerCase())
-    setMyOrcs(myOrcsData)
-    console.log("address being fed to orc finder", address.toLowerCase())
+    loadOrcs()
     setWallet(address)
     setStatus(status);
     addWalletListener(); 
-
-    await getMyOrcsObject(claimwallet.toLowerCase()).then((a)=>{
-        const array = a.tokens
-        let sid = lookupAllOrcs({array})
-        console.log("who let dogs out:,", sid)
-    })
-    
-
-    
-    
+   
 },[])
 
 
@@ -116,6 +104,20 @@ const toggle = index => {
                 setShowPillage(false)
             }
 
+}
+
+const loadOrcs = async () => { 
+
+    const myOrcsData = await getMyOrcsObject(walletAddress.toLowerCase())
+    setMyOrcs(myOrcsData)
+    console.log("address being fed to orc finder", walletAddress, myOrcsData)
+
+    const array = myOrcsData.tokens
+    let multipleOrcs = await lookupAllOrcs({array})
+    console.log("who let dogs out:,", multipleOrcs)
+
+
+      
 }
 
 
@@ -182,14 +184,7 @@ const onClaimZugPressed = async (event) => { //TODO: implement
         })
 
     }else{
-      myOrcs.orcs.map((orc)=>{
-        if(orc.claimable > 0){
-         
-            claimArr.push(orc.tokenId)
-        }
-    })
-        const { status, txHash, success } = await collectZug(claimArr) 
-        console.log(claimArr) 
+        const { status, txHash, success } = await collectZug(claimArr)  
         setClaimtoggle(!claimtoggle)
     }
    
@@ -223,6 +218,7 @@ return (
 
                 </Button>
                 <Button onClick={onMintPressed}>Mint!</Button>
+                <Button onClick={loadOrcs}>Load Orcs!</Button>
                 </div>
 
 

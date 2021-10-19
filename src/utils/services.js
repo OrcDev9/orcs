@@ -29,10 +29,11 @@ export const updateDatabase = async (orc) => {
   }
 
 export const getMyOrcsObject = async (address) => {
-
+console.log("2.", address)
   const myOrcQuery = query(ref(db, 'orcs'), orderByChild('owner'), equalTo(address.toLowerCase())) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
-    
+  console.log("3.", myOrcQuery)    
     let dataArry = []
+    let tokenArr = []
   
     onValue(myOrcQuery, (snapshot) =>{
       if(snapshot.exists()){
@@ -41,11 +42,11 @@ export const getMyOrcsObject = async (address) => {
         Object.entries(snapshot.val()).forEach(([key, value])=>{
         
           dataArry.push({tokenId:value.tokenid, claimable:value.claimable, action:value.action})         
-                   
+          tokenArr.push(value.tokenid)      
         })
      
        
-        console.log("Got My Orcs. Orc of them", address, dataArry, "with claim:")   
+        console.log("Got My Orcs. Orc of them", address, dataArry, "tokens held:", tokenArr)   
       
       }else{
         console.log("Got No Orcs. NOrc of them", address) 
@@ -57,8 +58,9 @@ export const getMyOrcsObject = async (address) => {
                   }
             )
            
+           
             
-           return({orcs: dataArry} ) 
+           return({orcs: dataArry, tokens:tokenArr} ) 
     
     };
     

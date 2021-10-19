@@ -64,12 +64,29 @@ let activitymap = null
 
 }
 
-export const lookupAllOrcs = async ({start, stop})=>{
+export const lookupAllOrcs = async ({start, stop, array})=>{
   let loopStart = start
   let loopEnd = stop
-
-
   let tempArr = []
+
+  console.log("1.", array)
+
+  if(array){
+  array.map((i, index)=>{
+    console.log(i)
+    var tx = {
+      reference: 'EtherOrcs'+i.toString(),
+      contractAddress: contractAddress,
+      abi: orcs.abi,
+      calls: [{ reference: 'orcsCall'+i.toString(), methodName: 'orcs', methodParameters: [i]},
+      { reference: 'claimableCall'+i.toString(), methodName: 'claimable', methodParameters: [i]},
+      { reference: 'activitiesCall'+i.toString(), methodName: 'activities', methodParameters: [i]},
+     ]
+    };
+    tempArr.push(tx);
+  })
+}else
+{
 
   for(var i=loopStart;i<loopEnd;i++){
     var tx = {
@@ -83,9 +100,10 @@ export const lookupAllOrcs = async ({start, stop})=>{
    };
    tempArr.push(tx);
  }
+}
 
 let results = await multiCallOrcs(tempArr)
-
+console.log(results)
 ///0 is orcs
 ///1 claimable
 ///2 activities
@@ -125,8 +143,6 @@ orcObj = {
 
   orcArry.push(orcObj)
 }
-
-
 
 return orcArry
 

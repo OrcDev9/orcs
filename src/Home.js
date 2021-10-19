@@ -1,8 +1,6 @@
 import ConnectWallet from "./ConnectWallet";
 import {
-  getCurrentWalletConnected, //import here
-  mintNFT, getTokenSupply, getGasPrice, getEthPrice, isSaleActive, getContractPrice, tokensByOwner, getContract, getErc,
-  
+  getCurrentWalletConnected, getGasPrice, getEthPrice, getContract  
 } from "./utils/interact.js";
 import { db } from "./initFirebase";
 import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue, push, orderByChild, limitToFirst, limitToLast, startAt, endAt} from "firebase/database";
@@ -11,15 +9,11 @@ import { Button } from "react-bootstrap";
 import {app, analytics} from "./initFirebase"
 import logo from "./media/logo.svg"
 import Orc from "./Orc"
-import Stake from "./staking";
 import { Form } from "react-bootstrap";
 import { Tab } from "react-bootstrap";
 import { Tabs } from "react-bootstrap";
-import Mint from "./Mint";
-import Activity from "./Activity";
 import Horde from "./Horde";
 import MyOrcs from "./myOrc";
-import Pillage from "./Pillage";
 import Chat from "./orcChat"
 function App() {
 

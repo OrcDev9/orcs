@@ -23,9 +23,7 @@ const lookupsOrc = async ()=>{
 
     setClaimable(((parseInt(orcObj.claimable))/Math.pow(10, 18)).toFixed(2))
     setShowClaimable(true)
-    
-
-   
+       
     updateDatabase(orcObj) //update firestore eachtime someone looksup orc.
     console.log(orcObj)
   }

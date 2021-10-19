@@ -1,11 +1,4 @@
-import ConnectWallet from "./ConnectWallet";
-import {
-  getCurrentWalletConnected, //import here
-  mintNFT, getTokenSupply, getGasPrice, getEthPrice, isSaleActive, getContractPrice, tokensByOwner, getContract, getErc, pillage
-  
-} from "./utils/interact.js";
-import { db } from "./initFirebase";
-import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue, push, orderByChild, limitToFirst, limitToLast, startAt, endAt} from "firebase/database";
+import {pillage} from "./utils/interact.js";
 import { useState, useEffect, useRef } from "react";
 import { Button } from "react-bootstrap";
 import town from "./media/images/Town.png"
@@ -16,7 +9,6 @@ import dragon from "./media/images/Dragon.png"
 import ether from "./media/images/Ether.png"
 import Modal from 'react-bootstrap/Modal'
 import Orc from "./Orc";
-import { Form } from "react-bootstrap";
 
 const places = [
     {place: "TOWN", level:1, image:town, index:0},
@@ -34,7 +26,6 @@ function Pillage({tokenid}) {
 
 const [lootPool, setLootPool] = useState(0);
 const [status, setStatus] = useState();
-const [txProgress, setTxProgress] = useState(0);
 const [modalShow, setModalShow] = useState(false);
 const [secondModalShow, setSecondModalShow] = useState(false);
 
@@ -125,9 +116,7 @@ function PlaceModal(props) {
         </Modal.Footer>
       </Modal>
     );
-  }
-  
-  
+  }  
 
 function LootPoolModal(props) {
     return (
@@ -202,8 +191,8 @@ const onMintPressed = async (event) => { //TODO: implement
         
             
          }else{
-           setTxProgress(0)
-        
+ 
+            setStatus("Something went wrong");
   
        }
    };
@@ -224,7 +213,7 @@ const onMintPressed = async (event) => { //TODO: implement
           onHide={() => setModalShow(false)}
         />
 
-<LootPoolModal
+        <LootPoolModal
           show={secondModalShow}
           onHide={() => setSecondModalShow(false)}
         />

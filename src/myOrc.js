@@ -6,6 +6,7 @@ import {doAction, collectZug, getCurrentWalletConnected, mintNFT, lookupAllOrcs}
 import Pillage from "./Pillage";
 import ConnectWallet from "./ConnectWallet";
 import logo from "./media/logo.svg"
+import { db } from "./initFirebase";
 
 const MyOrcs = () => {
 
@@ -38,22 +39,17 @@ const ethWallet = "0x7d9d3659dcfbea08a87777c52020bc672deece13"
 useEffect(async () => {
 
     const {address, status} = await getCurrentWalletConnected();
-    const myOrcsData = await getMyOrcsObject(address.toLowerCase())
-    setMyOrcs(myOrcsData)
-    console.log("address being fed to orc finder", address.toLowerCase())
     setWallet(address)
     setStatus(status);
     addWalletListener(); 
-
-    await getMyOrcsObject(claimwallet.toLowerCase()).then((a)=>{
-        const array = a.tokens
-        let sid = lookupAllOrcs({array})
-        console.log("who let dogs out:,", sid)
-    })
     
-
-    
-    
+    const myOrcsData = await getMyOrcsObject(address.toLowerCase())
+    setMyOrcs(myOrcsData)
+    console.log("address being fed to orc finder", address.toLowerCase())
+    const array = myOrcsData.tokens
+    let allOrcs = lookupAllOrcs({array})
+    console.log("who let dogs out:,", allOrcs)
+   
 },[])
 
 
@@ -161,6 +157,21 @@ const onMintPressed = async (event) => { //TODO: implement
  
    };
 
+
+   const summonOrcs = async (event) => { //TODO: implement
+ 
+    const myOrcsData = await getMyOrcsObject(walletAddress.toLowerCase())
+    setMyOrcs(myOrcsData)
+    console.log("address being fed to orc finder", walletAddress.toLowerCase())
+    setStatus("Orcs Summoned!")
+
+    const array = myOrcsData.tokens
+    let allOrcs = lookupAllOrcs({array})
+    console.log("who let dogs out:,", allOrcs)
+        
+
+  };
+
 //console.log(clicked)
 //console.log(showPillage)
 
@@ -189,7 +200,7 @@ const onClaimZugPressed = async (event) => { //TODO: implement
         }
     })
         const { status, txHash, success } = await collectZug(claimArr) 
-        console.log(claimArr) 
+        console.log("zug being claimed for:", claimArr) 
         setClaimtoggle(!claimtoggle)
     }
    
@@ -214,10 +225,11 @@ return (
                 </div> 
  
                 <h3 class="bold">TRAIN, FARM AND PILLAGE</h3>
-                <p>Click to toggle select orcs. If nothing happens, refresh the page.</p>
+                <p>Click on Summon the Orcs first! Click to toggle select orcs, then make them do something. If nothing happens, refresh the page.</p>
                 <div class="font-medium text-xl">Claimable $Zug: {claimableZug}</div>
                 <div class="py-3 flex flex-wrap space-x-4">
-                    
+                <Button onClick={summonOrcs}>Summon the Orcs!</Button>
+
                 <Button onClick={onClaimZugPressed}>
                         {claimtoggle ? ("Calaculate $Zug owed!") : "Claim $Zug!"}
 

@@ -29,10 +29,11 @@ export const updateDatabase = async (orc) => {
   }
 
 export const getMyOrcsObject = async (address) => {
-console.log("2.", address)
+
   const myOrcQuery = query(ref(db, 'orcs'), orderByChild('owner'), equalTo(address.toLowerCase())) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
-  console.log("3.", myOrcQuery)    
-    let dataArry = []
+  console.log("2.", address, "3.", myOrcQuery)    
+
+  let dataArry = []
     let tokenArr = []
   
     onValue(myOrcQuery, (snapshot) =>{
@@ -53,9 +54,7 @@ console.log("2.", address)
       }
       
             
-            },{
-            onlyOnce: true
-                  }
+            }, {onlyOnce: true}
             )
            
            

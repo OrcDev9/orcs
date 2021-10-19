@@ -19,6 +19,8 @@ const [walletAddress, setWallet] = useState("");
 
 const [isMetamask, setIsMetamask] = useState(true);
 
+
+///test Wallets
 const wallet4 = "0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"
 const tempAddress = "0x3FE61420C33b0E41DDd763adaAeB0b638E78b768"
 let wallet2 = "0x5f6810da9379d650676a4452f3415ce743fefe14"
@@ -29,13 +31,15 @@ let wrangler = "0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"
 let another = "0xd23c8be03abb97f6885016b3e96de48c600d06e3"
 let a = "0x430d192e0EA959c7BB6B26eD6534B55B187b487A"
 let claimwallet = "0xfcdbada91ca1aaa80efbe3b62102863d32a2fed4"
+const ethWallet = "0x7d9d3659dcfbea08a87777c52020bc672deece13"
+
 
 useEffect(async () => {
 
     const {address, status} = await getCurrentWalletConnected();
     let myOrcsData = await getMyOrcsObject(address.toLowerCase())
     setMyOrcs(myOrcsData)
-    console.log("address being fed to orc finder", address.toLowerCase(), "claimable", myOrcsData.zug)
+    console.log("address being fed to orc finder", address.toLowerCase())
     setWallet(address)
     setStatus(status);
     addWalletListener(); 
@@ -147,8 +151,8 @@ const onMintPressed = async (event) => { //TODO: implement
  
    };
 
-console.log(clicked)
-console.log(showPillage)
+//console.log(clicked)
+//console.log(showPillage)
 
 const onClaimZugPressed = async (event) => { //TODO: implement
     setClaimtoggle(!claimtoggle)
@@ -161,7 +165,7 @@ const onClaimZugPressed = async (event) => { //TODO: implement
             if(orc.claimable > 0){
                 let number = parseFloat(orc.claimable)/Math.pow(10, 18)
                 claim = claim + number
-                console.log(claim, "cleam")
+             //   console.log(claim, "cleam")
                 setClaimableZug(claim.toFixed(2))
                 claimArr.push(orc.tokenId)
             }
@@ -198,7 +202,7 @@ return (
                 <div class="py-3 flex flex-wrap space-x-4">
                     
                 <Button onClick={onClaimZugPressed}>
-            {claimtoggle ? ("Calaculate $Zug owed!") : "Claim $Zug!"}
+                        {claimtoggle ? ("Calaculate $Zug owed!") : "Claim $Zug!"}
 
                 </Button>
                 <Button onClick={onMintPressed}>Mint!</Button>

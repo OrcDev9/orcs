@@ -9,19 +9,19 @@ const {
 
 
 
-const alchemyKey = process.env.REACT_APP_ALCHEMY_KEY;
+
 const infuraKey = process.env.REACT_APP_INFURA_KEY;
 
 ///Alchemy and web3
-const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
+///const alchemyKey = process.env.REACT_APP_ALCHEMY_KEY;
+///const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 //const web3 = createAlchemyWeb3(alchemyKey); 
+
 const contractAddress = "0x3abedba3052845ce3f57818032bfa747cded3fca"
 
 const web3 = new Web3(new Web3.providers.HttpProvider(infuraKey))
-
 const orcs = require('../orcs-abi.json')
 const zug = require('../zug-abi.json')
-const ethWallet = "0x7d9d3659dcfbea08a87777c52020bc672deece13"
 const nftContract = new web3.eth.Contract(orcs.abi, contractAddress);
 const ercContract = new web3.eth.Contract(zug.abi, contractAddress);
 
@@ -37,9 +37,10 @@ const multiCallOrcs = async (multicallArray)=>{
   return results
 }
 
-export const calcuclateLevel = async ({action, claimable, level, lvlProgress})=>{
+export const calcuclateLevel = ({action, claimable, level, lvlProgress})=>{
+///straight math... claimable/1000+levelprogress/1000
 
-  let level2 = (parseInt(lvlProgress) + ((claimable)/667)).toFixed(1)
+  let level2 = ((parseInt(lvlProgress) + (parseInt(claimable)))/1000).toFixed(1)
   let level01 = (level)
 
   let calcLevel
@@ -59,7 +60,7 @@ let activitymap = null
         calcLevel = level01
     }
 
-    return(calcLevel)
+    return({calcLevel, activitymap})
 
 }
 
@@ -85,10 +86,6 @@ export const lookupAllOrcs = async ({start, stop})=>{
 
 let results = await multiCallOrcs(tempArr)
 
-/////
-
-
-
 ///0 is orcs
 ///1 claimable
 ///2 activities
@@ -100,30 +97,12 @@ for(let i=loopStart; i<loopEnd; i++){
   let orcData = results.results[`EtherOrcs${i}`].callsReturnContext[0].returnValues
   let activity = results.results[`EtherOrcs${i}`].callsReturnContext[2].returnValues[2]
   let claimable = parseInt(results.results[`EtherOrcs${i}`].callsReturnContext[1].returnValues[0].hex, 16)
-  let levelRaw = orcData[4]
-  let level = (parseInt(levelRaw) + ((claimable)/667)).toFixed(1)
-  let level2 = (levelRaw).toFixed(1)
 
-  ///calcuclateLevel
-
+  let level =  orcData[4]
+  let lvlProgress =  orcData[6]
+  let action = activity
   
-
-  let calcLevel
-
-let activitymap = null
-  switch(parseInt(activity)) {
-      case 1:
-        activitymap = "Farming"
-        calcLevel = level2
-        break;
-      case 2:
-        activitymap = "Training"
-        calcLevel = level
-        break;
-      default:
-        activitymap = "Idle"
-        calcLevel = level2
-    }
+const {calcLevel, activitymap} = calcuclateLevel({action, claimable, level, lvlProgress})
 
 orcObj = {
     owner: results.results[`EtherOrcs${i}`].callsReturnContext[2].returnValues[0],
@@ -164,26 +143,12 @@ export const lookupOrc = async (tokenid)=>{
   let activity = await nftContract.methods.activities(tokenid).call()
   let claimable = parseInt(await nftContract.methods.claimable(tokenid).call())
   
-  let level = ((parseInt(orcs.lvlProgress) + (claimable))/1000).toFixed(1)
-  let level2 = orcs.level
-
+ 
+  let level = orcs.level
+  let lvlProgress = orcs.lvlProgress
+  let action = activity.action
   
-  let calcLevel
-
-let activitymap = null
-  switch(parseInt(activity.action)) {
-      case 1:
-        activitymap = "Farming"
-        calcLevel = level2
-        break;
-      case 2:
-        activitymap = "Training"
-        calcLevel = level
-        break;
-      default:
-        activitymap = "Idle"
-        calcLevel = level2
-    }
+const {calcLevel, activitymap} = calcuclateLevel({action, claimable, level, lvlProgress})
 
 const  orcObj = {
       owner: activity.owner.toLowerCase(),

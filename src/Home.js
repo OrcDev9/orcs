@@ -12,7 +12,6 @@ import {app, analytics} from "./initFirebase"
 import logo from "./media/logo.svg"
 import Orc from "./Orc"
 import Stake from "./staking";
-import Levels from "./levels";
 import { Form } from "react-bootstrap";
 import { Tab } from "react-bootstrap";
 import { Tabs } from "react-bootstrap";
@@ -21,7 +20,7 @@ import Activity from "./Activity";
 import Horde from "./Horde";
 import MyOrcs from "./myOrc";
 import Pillage from "./Pillage";
-
+import Chat from "./orcChat"
 function App() {
 
 const {nftContract, ercContract, web3} = getContract()
@@ -44,6 +43,7 @@ const [collections, setCollection] = useState([]);
 const [orcId, setOrcId] = useState(69);
 const [showCollectionToggle, setShowCollectionToggle] = useState(false);
 const [myOrcs, setMyOrcs] = useState();
+
 
 const orcLookupRef = useRef(0);
 
@@ -70,7 +70,7 @@ const places = [{ "places": ["TOWN", "DUNGEON", "CRYPT", "CASTLE", "DRAGONS_LAIR
 
    
   setTokenSupply(await nftContract.methods.totalSupply().call());
-  setZug(web3.utils.fromWei(await ercContract.methods.balanceOf(address).call()))
+  setZug((await ercContract.methods.balanceOf(address).call()))
 
 
 getEthPrice().then((ethprice)=>{
@@ -149,25 +149,10 @@ function addWalletListener() {
 </div>
 
 <div>
-  <MyOrcs />
-
-
+<MyOrcs />
 </div>
 
 
-
-
-<div>
-<h2>Contract Stats</h2>
-        
-        <div class="flex justify-between">
-            
-            <div>Token Supply: {tokenSupply}</div>
-            <div>gasPrice {gasPrice}</div>
-            <div>ethprice {ethprice}</div>
-            <div>zug {zug} </div>
-        </div>
-</div>
 <div class="space-y-2 p-2 border-2">
 
 <Tabs defaultActiveKey="lookup" id="uncontrolled-tab-example" className="mb-3">
@@ -200,6 +185,10 @@ function addWalletListener() {
    <Horde contract={nftContract} />
   </Tab>
 
+ {/*<Tab eventKey="activty" title="Activity Sheet">
+   <Chat user={"Sid"} pfp={1} wallet={walletAddress} />
+  </Tab>
+  */}
 </Tabs>     
 
 

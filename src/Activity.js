@@ -1,38 +1,17 @@
 import React, { useState, useEffect } from "react";
-import ProgressBar from 'react-bootstrap/ProgressBar'
 import { Button } from "react-bootstrap";
-import { Form } from "react-bootstrap";
 import { updateDatabase } from "./utils/services";
-import { lookupOrc , getContract, lookupAllOrcs } from "./utils/interact"; 
-import {
-  Multicall,
-  ContractCallResults,
-  ContractCallContext,
-} from 'ethereum-multicall';
+import { lookupAllOrcs } from "./utils/interact"; 
+
 
 
 
 
 const Activity = ({contract}) => {
 
-const [rockswithrev, setRockswithrev] = useState();
-const [currentIndex, setCurrentIndex] = useState();
-const [currentToken, setCurrentToken] = useState();
 const [loading, setLoading] = useState();
-const [trainCount, setTrainCount] = useState(0);
-const [farmCount, setFarmCount] = useState(0);
-const [nothingCount, setNothingCount] = useState(0);
-const [stakingCount, setStakingCount] = useState(0);
 const [tokenSupply, setTokenSupply] = useState();
 const [showData, setShowData] = useState(false);
-const [cons, setCons] = useState(10);
-const [web3, setWeb3] = useState(10);
-
-
-const handleInput = (e)=>{
-  e.preventDefault()
- setCons(e.target.value)
-  }
 
 const handleClick = (e)=>{
 e.preventDefault()
@@ -52,9 +31,7 @@ const init = async () => {
     updateDatabase(orc) 
   })
 
-  console.log("Results", results)
-  
- setLoading(false)
+setLoading(false)
   
 };
 
@@ -80,7 +57,7 @@ return (
  
 
   {!loading ? ( 
-    <Button disabled onClick={handleClick}>Update Orc Metadata</Button>
+    <Button onClick={handleClick}>Update Orc Metadata</Button>
   ) : ( <Button disabled><div class="animate-bounce">Loading...</div></Button>)}
 
  </>

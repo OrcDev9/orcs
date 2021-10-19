@@ -32,23 +32,9 @@ const places = [
 
 function Pillage({tokenid}) {
 
-const {nftContract, ercContract, web3} = getContract()
-const [qty, setQty] = useState(0);
 const [lootPool, setLootPool] = useState(0);
-const [zugClaim, setZugClaim] = useState("");
-const [cost, setCost] = useState(0);
 const [status, setStatus] = useState();
-const [ethprice, setEthPrice] = useState(0);
 const [txProgress, setTxProgress] = useState(0);
-const [txIntervalId, setTxIntervalId] = useState();
-const [tokenSupply, setTokenSupply] = useState();
-const [isMetamask, setIsMetamask] = useState(true);
-const [activeSale, setActiveSale] = useState(true);
-const [gasPrice, setGasPrice] = useState(0);
-const [collections, setCollection] = useState([]);
-const [orcId, setOrcId] = useState(69);
-const [showCollectionToggle, setShowCollectionToggle] = useState(false);
-const [myOrcs, setMyOrcs] = useState();
 const [modalShow, setModalShow] = useState(false);
 const [secondModalShow, setSecondModalShow] = useState(false);
 
@@ -172,10 +158,22 @@ function LootPoolModal(props) {
             
        <Orc allData={false} tokenid={tokenid} />
         </div>
+
+        <div class="flex flex-wrap justify-between">
+                <div>
+                {status && (<>{status} <Button variant="dark" onClick={props.onHide}>Close</Button> </>)}
+               
+                </div>
+                <div>
+                <Button variant="dark" onClick={onMintPressed}>Pillage!</Button>
+                </div>
+            </div>
         
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="dark" onClick={onMintPressed}>Pillage</Button>
+            
+          
+          
         </Modal.Footer>
       </Modal>
     );
@@ -201,7 +199,7 @@ const onMintPressed = async (event) => { //TODO: implement
      
      ///check for successful transaction
        if(success ===true){
-           setTxProgress(100)
+        
             
          }else{
            setTxProgress(0)

@@ -9,9 +9,10 @@ import ConnectWallet from "./ConnectWallet";
 const MyOrcs = () => {
 
 const [myOrcs, setMyOrcs] = useState();
-const [showPillage, setShowPillage] = useState(true);
+const [showPillage, setShowPillage] = useState(false);
 const [clicked, setClicked] = useState([]);
 const [status, setStatus] = useState(null);
+const [claimableZug, setClaimableZug] = useState(null);
 const [walletAddress, setWallet] = useState("");
 const [isMetamask, setIsMetamask] = useState(true);
 
@@ -29,7 +30,21 @@ useEffect(async () => {
 
 
     const {address, status} = await getCurrentWalletConnected();
-    setMyOrcs(await getMyOrcsObject(address.toLowerCase()))
+    let myOrcsData = await getMyOrcsObject(address.toLowerCase())
+    setMyOrcs(myOrcsData)
+
+    let zug = 0
+    myOrcsData.map((orc)=>{
+        if(parseInt(orc.claimable) > 0){
+           
+            zug = zug + parseInt(orc.claimable)
+           
+        }
+    })
+
+    zug = (zug/Math.pow(10, 18)).toFixed(2)
+    setClaimableZug(zug)
+
     console.log("address being fed to orc finder", address.toLowerCase())
     setWallet(address)
     setStatus(status);
@@ -93,6 +108,9 @@ const toggle = index => {
               if(newArr.length === 1 ){
                 setShowPillage(true)
             }
+            if(newArr.length === 0 ){
+                setShowPillage(false)
+            }
 
 }
 
@@ -147,12 +165,12 @@ const onClaimZugPressed = async (event) => { //TODO: implement
     let claimArr = []
     myOrcs.map((orc)=>{
         if(orc.claimable > 0){
-            console.log("test", orc)
+           
             claimArr.push(orc.tokenId)
         }
     })
     const { status, txHash, success } = await collectZug(claimArr)  
-    console.log("how",status, txHash, success)
+    
      };
     
 
@@ -167,8 +185,10 @@ return (
                 <div>
                 <h2>EtherOrcs Tavern</h2>
                 <h3 class="bold">TRAIN, FARM AND PILLAGE</h3>
-                <p>Click to toggle select orcs.</p>
+                <p>Click to toggle select orcs. If nothing happens, refresh the page.</p>
+                <div class="font-medium text-xl">Claimable $Zug: {claimableZug}</div>
                 <div class="py-3 flex flex-wrap space-x-4">
+                    
                 <Button onClick={onClaimZugPressed}>Claim $Zug!</Button>
                 <Button onClick={onMintPressed}>Mint!</Button>
                 </div>

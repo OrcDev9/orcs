@@ -80,9 +80,11 @@ for(let i=loopStart; i<loopEnd; i++){
   console.log(orcData)
   let activity = results.results[`EtherOrcs${i}`].callsReturnContext[2].returnValues[2]
   let claimable = parseInt(results.results[`EtherOrcs${i}`].callsReturnContext[1].returnValues[0].hex, 16)
-  let levelRaw = orcData[6]
-  let level = ((parseInt(levelRaw) + (claimable))/1000).toFixed(1)
-  let level2 = (levelRaw/1000).toFixed(1)
+  let levelRaw = orcData[4]
+  let level = (parseInt(levelRaw) + ((claimable)/667)).toFixed(1)
+  let level2 = (levelRaw).toFixed(1)
+
+
   let calcLevel
 
 let activitymap = null
@@ -130,7 +132,6 @@ return orcArry
 
 export const lookupOrc = async (tokenid)=>{
 
-  console.log(tokenid)
   let orcs = await nftContract.methods.orcs(tokenid).call()
 
   let a = await nftContract.methods.tokenURI(tokenid).call()
@@ -141,7 +142,9 @@ export const lookupOrc = async (tokenid)=>{
   let claimable = parseInt(await nftContract.methods.claimable(tokenid).call())
   
   let level = ((parseInt(orcs.lvlProgress) + (claimable))/1000).toFixed(1)
-  let level2 = (orcs.lvlProgress/1000).toFixed(1)
+  let level2 = orcs.level
+
+  
   let calcLevel
 
 let activitymap = null
@@ -165,7 +168,7 @@ const  orcObj = {
       time: activity.timestamp,  
       action: activity.action,  
       actionString: activitymap,
-      level:orcs.lvlProgress, 
+      level:orcs.level, 
       calcLevel: calcLevel,
       claimable: claimable,
       image: orc.image,

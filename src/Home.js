@@ -139,11 +139,7 @@ function addWalletListener() {
 
 <div class="flex justify-between">
           
-          <div class="flex justify-left align-items-baseline">
-              <h1 class="text-5xl md:text-6xl xl:text-7xl font-bold font-serif pr-2 ">Ether</h1>
-              <img class="rounded-full" width={70} src={logo} alt="Orcs Logo" />
-              <h1 class="text-5xl md:text-6xl xl:text-7xl font-bold font-serif ">rcs</h1>
-          </div> 
+        
          
 
 </div>

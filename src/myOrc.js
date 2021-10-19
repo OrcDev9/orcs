@@ -5,6 +5,7 @@ import { Button } from "react-bootstrap";
 import {doAction, collectZug, getCurrentWalletConnected, mintNFT} from "./utils/interact.js";
 import Pillage from "./Pillage";
 import ConnectWallet from "./ConnectWallet";
+import logo from "./media/logo.svg"
 
 const MyOrcs = () => {
 
@@ -12,8 +13,10 @@ const [myOrcs, setMyOrcs] = useState();
 const [showPillage, setShowPillage] = useState(false);
 const [clicked, setClicked] = useState([]);
 const [status, setStatus] = useState(null);
-const [claimableZug, setClaimableZug] = useState(null);
+const [claimableZug, setClaimableZug] = useState();
+const [claimtoggle, setClaimtoggle] = useState(true);
 const [walletAddress, setWallet] = useState("");
+
 const [isMetamask, setIsMetamask] = useState(true);
 
 const wallet4 = "0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"
@@ -25,33 +28,20 @@ let sid = "0xCcB6D1e4ACec2373077Cb4A6151b1506F873a1a5"
 let wrangler = "0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"
 let another = "0xd23c8be03abb97f6885016b3e96de48c600d06e3"
 let a = "0x430d192e0EA959c7BB6B26eD6534B55B187b487A"
+let claimwallet = "0xfcdbada91ca1aaa80efbe3b62102863d32a2fed4"
 
 useEffect(async () => {
-
 
     const {address, status} = await getCurrentWalletConnected();
     let myOrcsData = await getMyOrcsObject(address.toLowerCase())
     setMyOrcs(myOrcsData)
-
-    let zug = 0
-    myOrcsData.map((orc)=>{
-        if(parseInt(orc.claimable) > 0){
-           
-            zug = zug + parseInt(orc.claimable)
-           
-        }
-    })
-
-    zug = (zug/Math.pow(10, 18)).toFixed(2)
-    setClaimableZug(zug)
-
-    console.log("address being fed to orc finder", address.toLowerCase())
+    console.log("address being fed to orc finder", address.toLowerCase(), "claimable", myOrcsData.zug)
     setWallet(address)
     setStatus(status);
     addWalletListener(); 
-
     
 },[])
+
 
 
 function addWalletListener() {
@@ -161,15 +151,28 @@ console.log(clicked)
 console.log(showPillage)
 
 const onClaimZugPressed = async (event) => { //TODO: implement
-   
+    setClaimtoggle(!claimtoggle)
+    let claim = 0   
     let claimArr = []
-    myOrcs.map((orc)=>{
-        if(orc.claimable > 0){
-           
-            claimArr.push(orc.tokenId)
-        }
-    })
-    const { status, txHash, success } = await collectZug(claimArr)  
+    if(claimtoggle){
+
+       
+        myOrcs.orcs.map((orc)=>{
+            if(orc.claimable > 0){
+                let number = parseFloat(orc.claimable)/Math.pow(10, 18)
+                claim = claim + number
+                console.log(claim, "cleam")
+                setClaimableZug(claim.toFixed(2))
+                claimArr.push(orc.tokenId)
+            }
+        })
+
+    }else{
+        const { status, txHash, success } = await collectZug(claimArr)  
+        setClaimtoggle(!claimtoggle)
+    }
+   
+    
     
      };
     
@@ -183,13 +186,21 @@ return (
 <div class="flex flex-wrap justify-between">
 
                 <div>
-                <h2>EtherOrcs Tavern</h2>
+                        <div class="flex justify-left align-items-baseline">
+                    <h1 class="text-5xl md:text-6xl xl:text-7xl font-bold font-serif pr-2 ">Ether</h1>
+                    <img class="rounded-full" width={70} src={logo} alt="Orcs Logo" />
+                    <h1 class="text-5xl md:text-6xl xl:text-7xl font-bold font-serif ">rcs Tavern</h1>
+                </div> 
+ 
                 <h3 class="bold">TRAIN, FARM AND PILLAGE</h3>
                 <p>Click to toggle select orcs. If nothing happens, refresh the page.</p>
                 <div class="font-medium text-xl">Claimable $Zug: {claimableZug}</div>
                 <div class="py-3 flex flex-wrap space-x-4">
                     
-                <Button onClick={onClaimZugPressed}>Claim $Zug!</Button>
+                <Button onClick={onClaimZugPressed}>
+            {claimtoggle ? ("Calaculate $Zug owed!") : "Claim $Zug!"}
+
+                </Button>
                 <Button onClick={onMintPressed}>Mint!</Button>
                 </div>
 
@@ -225,7 +236,7 @@ return (
 
 <div class="flex flex-wrap">
 
-{myOrcs && myOrcs.map((orc, index)=>{
+{myOrcs && myOrcs.orcs.map((orc, index)=>{
     let classes = "border-white border-2 hover:bg-gray-100"
     if(clicked.includes(parseInt(orc.tokenId))){
         classes="border-2 bg-grey bg-gray-300"

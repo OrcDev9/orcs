@@ -37,8 +37,29 @@ const multiCallOrcs = async (multicallArray)=>{
   return results
 }
 
-export const getActivityString = async (action)=>{
+export const calcuclateLevel = async ({action, claimable, level, lvlProgress})=>{
 
+  let level2 = (parseInt(lvlProgress) + ((claimable)/667)).toFixed(1)
+  let level01 = (level)
+
+  let calcLevel
+
+let activitymap = null
+  switch(parseInt(action)) {
+      case 1:
+        activitymap = "Farming"
+        calcLevel = level01
+        break;
+      case 2:
+        activitymap = "Training"
+        calcLevel = level2
+        break;
+      default:
+        activitymap = "Idle"
+        calcLevel = level01
+    }
+
+    return(calcLevel)
 
 }
 
@@ -77,13 +98,15 @@ let orcArry = []
 for(let i=loopStart; i<loopEnd; i++){
   
   let orcData = results.results[`EtherOrcs${i}`].callsReturnContext[0].returnValues
-  console.log(orcData)
   let activity = results.results[`EtherOrcs${i}`].callsReturnContext[2].returnValues[2]
   let claimable = parseInt(results.results[`EtherOrcs${i}`].callsReturnContext[1].returnValues[0].hex, 16)
   let levelRaw = orcData[4]
   let level = (parseInt(levelRaw) + ((claimable)/667)).toFixed(1)
   let level2 = (levelRaw).toFixed(1)
 
+  ///calcuclateLevel
+
+  
 
   let calcLevel
 

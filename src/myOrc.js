@@ -41,7 +41,7 @@ const ethWallet = "0x7d9d3659dcfbea08a87777c52020bc672deece13"
 
 const summonOrcs = async (address) => { //TODO: implement
     
-  const myOrcQuery = query(ref(db, 'orcs'), orderByChild('owner'), equalTo(claimwallet.toLowerCase())) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
+  const myOrcQuery = query(ref(db, 'orcs'), orderByChild('owner'), equalTo(address.toLowerCase())) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
   console.log("2.", address, "3.", myOrcQuery)    
   let dataArry = []
   let tokenArr = []

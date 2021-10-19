@@ -3,14 +3,15 @@ import ProgressBar from 'react-bootstrap/ProgressBar'
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { CSVLink } from "react-csv";
-
+import { getContract } from "./utils/interact";
 import { db } from "./initFirebase";
 import { getDatabase, ref, set, onValue, equalTo, query, get,child, orderByValue, push, orderByChild, limitToFirst, limitToLast, startAt, endAt} from "firebase/database";
 import Activity from "./Activity";
 
-const Horde = ({contract, web3}) => {
+const Horde = () => {
   
-
+const {nftContract, web3} = getContract()
+const contract = nftContract
 const [orcObject, setorcObject] = useState();
 const [trainCount, setTrainCount] = useState(0);
 const [farmCount, setFarmCount] = useState(0);

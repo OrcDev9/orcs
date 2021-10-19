@@ -83,7 +83,7 @@ setShowOrc(true)
          
           <div class="flex flex-wrap justify-between">
 
-                  <div class="w-1/3 border-2 shadow-lg p-2">
+                  <div class="md:w-1/3 border-2 shadow-lg p-2">
                   <div class="text-lg font-bold font-serif flex flex-wrap justify-center">LOOK UP ORC</div>  
                   <div class="flex flex-wrap justify-center">
                        <form onSubmit={handleOrcSubmit}>

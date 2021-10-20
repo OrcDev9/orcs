@@ -25,12 +25,14 @@ function Pillage({tokenid}) {
 
 const [lootPool, setLootPool] = useState(0);
 const [status, setStatus] = useState();
+const [prompt, setPrompt] = useState();
 const [modalShow, setModalShow] = useState(false);
 const [secondModalShow, setSecondModalShow] = useState(false);
 
 const [checkedHelm, setCheckedHelm] = useState(false);
 const [checkedMainhand, setCheckedMainhand] = useState(false);
 const [checkedOffhand, setCheckedOffhand] = useState(false);
+const [checkedAll, setCheckedAll] = useState(false);
 
 const handleChangeHelm = () => {
   setCheckedHelm(!checkedHelm);
@@ -44,6 +46,12 @@ const handleChangeOffhand = () => {
     setCheckedOffhand(!checkedOffhand);
   };
 
+  const handleChangeAll = () => {
+    setCheckedOffhand(!checkedOffhand);
+    setCheckedMainhand(!checkedMainhand);
+    setCheckedHelm(!checkedHelm);
+  };
+
 
 const Checkbox = ({ label, value, onChange }) => {
     return (
@@ -55,39 +63,10 @@ const Checkbox = ({ label, value, onChange }) => {
     );
   };
 
+  function LootItems() {
 
-function PlaceModal(props) {
-    return (
-      <Modal
-        {...props}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closebutton>
-          <Modal.Title id="contained-modal-title-vcenter">
-           Pick Your Loot Pool (Click to proceed)
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-         
-         <div class="flex flex-wrap"> 
-        {places.map((obj, i)=>{
-
-            return(
-                <div class="w-1/3 py-4 flex justify-center border-white border-2 hover:bg-gray-100" onClick={()=>openSecondModal(obj.index)}>
-                  <div>
-                    <div class="font-bold">{obj.place}</div>
-                    <div class="w-32">Orc must be Level {obj.level}+ to Pillage</div>
-                    <div><img src={obj.image} /></div>
-                    
-                  </div>
-                </div>
-            )
-
-            })}
-        </div>
-    <div class="border-4 p-3 mt-3">  
+    return(<>
+        <div class="border-4 p-3 mt-3">  
         <div>
             <p>Select item slots to pillage for.</p>
         </div>
@@ -107,11 +86,56 @@ function PlaceModal(props) {
                         value={checkedOffhand}
                         onChange={handleChangeOffhand}
                     />
+                       <Checkbox
+                        label="Select All"
+                        value={checkedAll}
+                        onChange={handleChangeAll}
+                    />
              </div>
         </div>
+    </>)
+  }
+
+
+function PlaceModal(props) {
+    return (
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closebutton>
+          <Modal.Title id="contained-modal-title-vcenter">
+          <div class="font-serif"> Pick Your Loot Pool (Click to proceed)</div>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <LootItems />
+         <div class="flex flex-wrap"> 
+        {places.map((obj, i)=>{
+
+            return(
+                <div class="w-1/3 py-4 flex justify-center border-white border-2 hover:bg-gray-100" onClick={()=>openSecondModal(obj.index)}>
+                  <div>
+                    <div class="font-bold">{obj.place}</div>
+                    <div class="w-32">Orc must be Level {obj.level}+ to Pillage</div>
+                    <div><img src={obj.image} /></div>
+                    
+                  </div>
+                </div>
+            )
+
+            })}
+        </div>
+
+        <div class="flex flex-wrap font-serif font-bold justify-center text-xl border-2 border-red-200">
+        {prompt}
+        </div>
+
         </Modal.Body>
         <Modal.Footer>
-          <button onClick={props.onHide}>Close</button>
+         <button onClick={props.onHide}>Close</button>
         </Modal.Footer>
       </Modal>
     );
@@ -169,9 +193,18 @@ function LootPoolModal(props) {
   
 
 const openSecondModal = async (lootpoolIndex) => { //TODO: implement)
-            setLootPool(lootpoolIndex)
+
+  if(!checkedHelm && !checkedMainhand && !checkedOffhand){
+    setPrompt("You have to pick something to loot for!")
+  }else{
+    setLootPool(lootpoolIndex)
             setSecondModalShow(true)
             setModalShow(false)
+  }
+
+
+
+            
 }
 
 const onMintPressed = async (event) => { //TODO: implement

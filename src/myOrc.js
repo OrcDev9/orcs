@@ -244,7 +244,7 @@ return (
             <div class="flex flex-wrap justify-between">
             {showPillage ? (
                 <Pillage tokenid={clicked[0]} />
-            ) : ( null )}
+            ) : ( <button>Select only one Orc</button> )}
 
             <button variant="dark" onClick={()=>doActionClick(2)}>
               Train selected Orcs & Level Up!

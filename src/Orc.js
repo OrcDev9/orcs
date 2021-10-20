@@ -103,7 +103,7 @@ return (
 
 return(<div key={orcData.name + i}>
 <div class="flex justify-between border-b-2">
-<div class="text-sm">{a['trait_type'] /*//fix this laer */}</div> 
+<div class="text-sm capitalize">{a['trait_type'] /*//fix this laer */}</div> 
 <div class="font-semibold text-sm">{a.value}</div>
 
 </div>  

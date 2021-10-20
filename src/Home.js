@@ -95,9 +95,12 @@ setShowOrc(true)
               {showOrc && <Orc allData={true} tokenid={orcId} />}
               </div>
 
-              <div class="md:w-2/3 border-2 shadow-lg p-2">
+              {/**
+               * 
+               * <div class="md:w-2/3 border-2 shadow-lg p-2">
                <Leaderboard />
               </div>
+               */}
 
 
               

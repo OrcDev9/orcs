@@ -69,7 +69,22 @@ setShowOrc(true)
     
 };
 
+const rndInt = Math.floor(Math.random() * 5050) + 1
 
+
+const myOrcs = [{tokenId: 69},
+  {tokenId: 420},
+  {tokenId: 138},
+  {tokenId: 1337},
+  {tokenId: 42},
+  {tokenId: 3781},
+  {tokenId: 4000},
+  {tokenId: 1000},
+  {tokenId: 2000},
+  {tokenId: 428},
+  {tokenId: 4050},
+  {tokenId: 19},
+]
 
 
 
@@ -95,13 +110,23 @@ setShowOrc(true)
               {showOrc && <Orc allData={true} tokenid={orcId} />}
               </div>
 
-              {/**
-               * 
-               * <div class="md:w-2/3 border-2 shadow-lg p-2">
-               <Leaderboard />
-              </div>
-               */}
+              {/* <Leaderboard /> */}<div class="md:w-2/3 border-2 shadow-lg p-2">
+              <div class="text-lg font-bold font-serif flex flex-wrap justify-center">SOME RANDOM ORCS</div>  
 
+            
+              <div class="flex flex-wrap">
+
+                {myOrcs && myOrcs.map((orc, index)=>{
+                    let classes = "hover:bg-gray-100"
+                
+                    return(
+                    <div key={orc.tokenId} class={`w-1/2 md:w-1/4 pointer-events-auto ${classes}`} onClick={()=> setOrcId(orc.tokenId)}>
+                    <Orc allData={false} key={orc.tokenId} tokenid={parseInt(orc.tokenId)} />
+                    </div>
+                    )
+                })}
+                </div>                    </div>
+           
 
               
               </div> 
@@ -125,5 +150,6 @@ setShowOrc(true)
 }
 
 export default App;
+
 
 

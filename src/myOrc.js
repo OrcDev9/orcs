@@ -209,21 +209,25 @@ const onClaimZugPressed = async (event) => { //TODO: implement
 return (
     <div class="border-2 p-3">
 
-                        <div class="flex justify-left align-items-baseline">
+                        <div class="flex xs:justify-between md:justify-left md:align-items-baseline">
+                        
                         <h1 class="text-5xl md:text-6xl xl:text-7xl font-bold font-serif pr-2 ">Ether</h1>
-                        <img class="rounded-full" width={70} src={logo} alt="Orcs Logo" />
-                        <h1 class="text-5xl md:text-6xl xl:text-7xl font-bold font-serif ">rcs Tavern</h1>
+                        
+                        <h1 class="text-xl md:text-6xl xl:text-7xl font-bold font-serif ">Orcs Tavern</h1>
+                        <img class="rounded-full xs:w-1/3 md:w-1/8" width={80} src={logo} alt="Orcs Logo" />
                         </div> 
 
               <div class="flex flex-wrap justify-between">
 
                     <div>
                     <h3 class="bold font-serif">TRAIN, FARM AND PILLAGE</h3>
+                    <p>Battle your Orcs in the very first 100% on-chain NFT RPG. Pillage loot pools to upgrade your equipment and meta-data, another industry first. For the Horde!
+</p>
                     <p>If its the first time you are using this app, click on <strong><ConnectWallet /></strong></p>
-                    <p>Click on <strong><button onClick={onDisplayOrcsPressed}>Summon the Orcs!</button> first!</strong> Click to toggle select orcs, then make them do something. If nothing happens, refresh the page or reconnect your wallet.</p>
-                      <p>If orcs are missing from your Tavern, try looking them up in, "Look up Orc"</p>
+                    <p>Click on <strong><button onClick={onDisplayOrcsPressed}>Summon the Orcs!</button></strong> Click to toggle select orcs, then make them do something. If nothing happens, refresh the page or reconnect your wallet.</p>
+                      <p>If Orcs are missing from your Tavern, try looking them up in, <strong>"LOOK UP ORC"</strong></p>
 
-                     <p> Check your claimable $ZUG <button onClick={onClaimZugPressed}>
+                     <p><button onClick={onClaimZugPressed}>
                         {claimtoggle ? ("Calculate $ZUG owed!") : "Claim $ZUG!"}</button> and <button onClick={onMintPressed}>Mint!</button> your Orcs!
                      </p>
                    

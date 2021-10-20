@@ -19,7 +19,7 @@ const {nftContract, ercContract, web3} = getContract()
 //setZug((await ercContract.methods.balanceOf(address).call()))
 const [qty, setQty] = useState(0);
 
-const [status, setStatus] = useState("");
+const [myOrcs, setMyorcs] = useState();
 const [zug, setZug] = useState("");
 const [zugClaim, setZugClaim] = useState("");
 const [cost, setCost] = useState(0);
@@ -34,7 +34,21 @@ const [orcId, setOrcId] = useState(1);
 
 const orcLookupRef = useRef(1);
 
+useEffect(async () => {
+const rndInt = Math.floor(Math.random() * 5050) + 1
 
+let arry = []
+let objarry = []
+
+arry = Array.from({length: 12}, () => Math.floor(Math.random() * 5050));
+
+arry.map((a)=>{
+  objarry.push({tokenId: a})
+})
+
+setMyorcs(objarry)
+
+},[0])
 useEffect(async () => {
 
 setTokenSupply(await nftContract.methods.totalSupply().call());
@@ -69,22 +83,6 @@ setShowOrc(true)
     
 };
 
-const rndInt = Math.floor(Math.random() * 5050) + 1
-
-
-const myOrcs = [{tokenId: 69},
-  {tokenId: 420},
-  {tokenId: 138},
-  {tokenId: 1337},
-  {tokenId: 42},
-  {tokenId: 3781},
-  {tokenId: 4000},
-  {tokenId: 1000},
-  {tokenId: 2000},
-  {tokenId: 428},
-  {tokenId: 4050},
-  {tokenId: 19},
-]
 
 
 

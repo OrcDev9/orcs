@@ -11,6 +11,7 @@ import {
 getContract
   
 } from "./utils/interact.js";
+import Leaderboard from "./Leaderboard";
 const history = createBrowserHistory();
 //bg-light-image
 function App() {
@@ -41,6 +42,7 @@ function App() {
                 
                 <Route path="/admin">   
                 <Horde contract={nftContract} />
+                <Leaderboard />
                 {/*<Activity contract={nftContract} web3={web3} />*/}
                 </Route>
                 <Route path="/">   

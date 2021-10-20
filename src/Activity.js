@@ -62,7 +62,7 @@ const init = async () => {
   })
   setProgress(90)
   start = start + 1000
-  stop = stop + 50
+  stop = stop + 51
   results = await lookupAllOrcs({start, stop})
   results.map((orc)=>{
     updateDatabase(orc) 

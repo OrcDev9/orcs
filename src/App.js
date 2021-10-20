@@ -12,6 +12,7 @@ getContract
   
 } from "./utils/interact.js";
 import Leaderboard from "./Leaderboard";
+import Owners from "./OwnersCount";
 const history = createBrowserHistory();
 //bg-light-image
 function App() {
@@ -43,6 +44,7 @@ function App() {
                 <Route path="/admin">   
                 <Horde contract={nftContract} />
                 <Leaderboard />
+                <Owners />
                 {/*<Activity contract={nftContract} web3={web3} />*/}
                 </Route>
                 <Route path="/">   

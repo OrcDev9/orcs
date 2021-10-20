@@ -55,7 +55,7 @@ const lookupsOrc = async ()=>{
 
  },[tokenid])
 
- let additionalClasses = "bg-yellow-50 border-yellow-600 border-2 p-2 my-2"
+ let additionalClasses = "bg-yellow-50 border-yellow-600 border-2 p-4 my-2"
  let baseClass = "p-2"
 
  if(allData){

@@ -4,7 +4,7 @@ import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue
 
 export const updateDatabase = async (orc) => {
       
-    const orcDataref = ref(db, 'orcs/' + orc.tokenid)
+    const orcDataref = ref(db, 'etherorcs/orcs/' + orc.tokenid)
     
       await set(orcDataref, {
         owner: orc.owner.toLowerCase(),

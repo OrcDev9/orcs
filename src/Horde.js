@@ -68,7 +68,7 @@ const getStats = async (merged) => {
     }
   })
 
-  let s = ((tokenSupply - n)/tokenSupply).toFixed(2)
+  let s = (((5050 - n)/tokenSupply)*100).toFixed(2)
   setFarmCount(f)
   setNothingCount(n)
   setTrainCount(t)
@@ -82,7 +82,7 @@ const init = async () => {
   const dbRef = ref(getDatabase());
  
 
-  get(child(dbRef, `orcs/`)).then((snapshot) => {
+  get(child(dbRef, `etherorcs/orcs/`)).then((snapshot) => {
     if (snapshot.exists()) {
     
 

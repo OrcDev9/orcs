@@ -26,7 +26,7 @@ const handleClick = (e)=>{
 
 
 const getAllStats = async ()=>{
-  const myOrcQuery = query(ref(db, 'orcs'), orderByChild('calcLevel'), limitToLast(20) ) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
+  const myOrcQuery = query(ref(db, 'etherorcs/orcs/'), orderByChild('calcLevel'), limitToLast(20) ) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
 
   let dataArry = []
 
@@ -117,8 +117,7 @@ return (
 </div>
 )}
 <div class="py-5">
-<p class="text-sm">NB: I know the leaderboard is wrong. Thats because I stored the calculated level as a string in the database like an idiot. 
-It will fix it self when people use the new version of the app - Husky</p>
+<p class="text-sm">NB: </p>
 </div>
 
     </>

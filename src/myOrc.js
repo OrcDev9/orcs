@@ -41,7 +41,7 @@ const ethWallet = "0x7d9d3659dcfbea08a87777c52020bc672deece13"
 
 const summonOrcs = async (address) => { //TODO: implement
     
-  const myOrcQuery = query(ref(db, 'orcs'), orderByChild('owner'), equalTo(address.toLowerCase())) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
+  const myOrcQuery = query(ref(db, 'etherorcs/orcs/'), orderByChild('owner'), equalTo(address.toLowerCase())) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
   console.log("2.", address, "3.", myOrcQuery)    
   let dataArry = []
   let tokenArr = []
@@ -89,7 +89,7 @@ useEffect(async () => {
 },[displayOrcs])
 
 const toggle = index => {
-          
+  setStatus(`Orc# ${index} clicked`);
             let newArr = []
          
                     if(clicked.includes(index)){
@@ -98,12 +98,13 @@ const toggle = index => {
                                 return(null)
                             }else{
                                 newArr.push(a)
+                               
                             }
                       })
                     }else{
                         newArr.push(index)
                         clicked.map((a, i)=>{
-                            
+                         
                                 newArr.push(a)
                         })
                     }
@@ -111,14 +112,14 @@ const toggle = index => {
               setClicked(newArr)
               if(newArr.length > 1 ){
                   setShowPillage(false)
-                  setStatus("Select just one Orc")
+                
               }
               if(newArr.length === 1 ){
                 setShowPillage(true)
             }
             if(newArr.length === 0 ){
                 setShowPillage(false)
-                setStatus("Select just one Orc")
+               
             }
 
 }
@@ -243,9 +244,7 @@ return (
             <div class="flex flex-wrap justify-between">
             {showPillage ? (
                 <Pillage tokenid={clicked[0]} />
-            ) : (  <button variant="dark" disabled>
-                  Pillage with selected Orc!
-                </button>)}
+            ) : ( null )}
 
             <button variant="dark" onClick={()=>doActionClick(2)}>
               Train selected Orcs & Level Up!
@@ -282,3 +281,5 @@ return (
 };
 
 export default MyOrcs;
+
+

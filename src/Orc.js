@@ -3,6 +3,8 @@ import { updateDatabase } from "./utils/services";
 import { lookupOrc } from "./utils/interact"; 
 import React, { useCallback, useRef } from 'react';
 import { toPng } from 'html-to-image';
+import { TwitterTimelineEmbed, TwitterShareButton, TwitterFollowButton, TwitterHashtagButton, TwitterMentionButton, TwitterTweetEmbed, TwitterMomentShare, TwitterDMButton, TwitterVideoEmbed, TwitterOnAirButton } from 'react-twitter-embed';
+
 
 function Orc({tokenid, allData}) {
  
@@ -115,6 +117,7 @@ return(<div key={orcData.name + i}>
 )}
 
 </div>
+
 {allData && (
 <button onClick={onButtonClick}>Download PNG</button>
 )}

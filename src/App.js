@@ -41,11 +41,14 @@ function App() {
          
               <Switch>
                 
-                <Route path="/admin">   
+                <Route path="/admin">  
+                 {/*
                 <Horde contract={nftContract} />
                 <Leaderboard />
                 <Owners />
-                {/*<Activity contract={nftContract} web3={web3} />*/}
+                
+              
+             <Activity contract={nftContract} web3={web3} />*/}
                 </Route>
                 <Route path="/">   
                 <Home />

@@ -29,10 +29,10 @@ const [tokenSupply, setTokenSupply] = useState();
 const [walletAddress, setWallet] = useState("");
 const [isMetamask, setIsMetamask] = useState(true);
 const [gasPrice, setGasPrice] = useState(0);
-const [showOrc, setShowOrc] = useState(false);
-const [orcId, setOrcId] = useState();
+const [showOrc, setShowOrc] = useState(true);
+const [orcId, setOrcId] = useState(1);
 
-const orcLookupRef = useRef();
+const orcLookupRef = useRef(1);
 
 
 useEffect(async () => {
@@ -95,8 +95,8 @@ setShowOrc(true)
               {showOrc && <Orc allData={true} tokenid={orcId} />}
               </div>
 
-              <div class="md:w-1/3 border-2 shadow-lg p-2">
-               <Leaderboard tokenid={orcLookupRef} />
+              <div class="md:w-2/3 border-2 shadow-lg p-2">
+               <Leaderboard />
               </div>
 
 

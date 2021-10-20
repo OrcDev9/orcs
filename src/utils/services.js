@@ -13,7 +13,7 @@ export const updateDatabase = async (orc) => {
         tokenid: parseInt(orc.tokenid),
         claimable: orc.claimable,
         level: orc.level,
-        calcLevel: orc.calcLevel,
+        calcLevel: parseInt(orc.calcLevel),
         time: orc.time,
         body: orc.body,
         helm: orc.helm,

@@ -13,31 +13,9 @@ const Leaderboard = ({tokenid}) => {
 const {nftContract, web3} = getContract()
 const contract = nftContract
 const [orcObject, setorcObject] = useState();
-const [trainCount, setTrainCount] = useState(0);
-const [farmCount, setFarmCount] = useState(0);
-const [nothingCount, setNothingCount] = useState(0);
-const [stakingCount, setStakingCount] = useState(0);
-const [tokenSupply, setTokenSupply] = useState();
 const [showData, setShowData] = useState(false);
 const [csvReport, setCsvReport] = useState([1,2,3])
 const [loading, setLoading] = useState();
-
-///For file export
-const headers = [
-  { label: "tokenid", key: "tokenid" },
-  { label: "owner", key: "owner" },
-  { label: "actions", key: "action" },
-  { label: "actionString", key: "actionString" },
-  { label: "level", key: "level" },
-  { label: "calcLevel", key: "calcLevel" },
-  { label: "claimable", key: "claimable" },
-  { label: "body", key: "body" },
-  { label: "helm", key: "helm" },
-  { label: "mainhand", key: "mainhand" },
-  { label: "offhand", key: "offhand" },
-  { label: "time", key: "time" },
-  { label: "totalZug", key: "totalZug" }
-];
 
 const handleClick = (e)=>{
 
@@ -46,37 +24,9 @@ const handleClick = (e)=>{
   setShowData(!showData)
   }
 
- 
-const getStats = async (merged) => {
-
-  let f = 0
-  let t = 0
-  let n = 0
-
-  merged.map((orc)=>{
-
-    switch(parseInt(orc.action)) {
-      case 1:
-       f++          
-        break;
-      case 2:
-       t++
-        break;
-      default:
-      n++
-        
-    }
-  })
-
-  let s = (((tokenSupply - n)/5050)*100).toFixed(2)
-  setFarmCount(f)
-  setNothingCount(n)
-  setTrainCount(t)
-  setStakingCount(s)
-}
 
 const getAllStats = async ()=>{
-  const myOrcQuery = query(ref(db, 'orcs'), orderByChild('calcLevel'), limitToLast(20)) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
+  const myOrcQuery = query(ref(db, 'orcs'), orderByChild('calcLevel'), limitToLast(20) ) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
 
   let dataArry = []
 
@@ -89,6 +39,18 @@ onValue(myOrcQuery, (snapshot)=>{
   
         dataArry.push(value)         
         })
+        function compare( a, b ) {
+          if ( a.calcLevel < b.calcLevel){
+            return 1;
+          }
+          if ( a.calcLevel > b.calcLevel ){
+            return -1;
+          }
+          return 0;
+        }
+        
+        dataArry.sort( compare );
+        
 
 
   console.log("Found Orcs. Orc of them",  dataArry)   
@@ -103,67 +65,31 @@ onValue(myOrcQuery, (snapshot)=>{
       setorcObject(dataArry)
 }
 
-const init = async () => {
-
-  const dbRef = ref(getDatabase());
- 
-
-  get(child(dbRef, `orcs/`)).then((snapshot) => {
-    if (snapshot.exists()) {
-      console.log("getDbase",snapshot.val())
-
-      let csv = {data: snapshot.val(),
-        headers: headers,
-        filename: 'OrcActivityReport.csv'}
-        setCsvReport(csv) ///for export
-     //   setorcObject(snapshot.val())
-     ///   getStats(snapshot.val())
-    } else {
-      console.log("No data available");
-    }
-  }).catch((error) => {
-    console.error(error);
-  });
-  
-        
-  setLoading(false)
-};
-
 useEffect(async () => {
 
-setTokenSupply(await contract.methods.totalSupply().call());
-
-if(tokenid){
+if(!showData){
   getAllStats()
-
-
   }
-
-
-}, [tokenid]);
-
-
-
-
-
+}, [showData]);
 
 
 return (
     <>
 
-<div class="text-lg font-bold font-serif flex flex-wrap justify-center">Leaderboard</div>  
+<div class="text-lg font-bold font-serif flex flex-wrap justify-center">LEADERBOARD</div>  
+<div class="py-4 text-lg font-bold font-serif flex flex-wrap justify-center"><button onClick={handleClick}>Ye Orcs are mighty... Load Leaderboard</button></div>  
 
 
 {orcObject && (
-  <>
+  <div class="flex flex-wrap justify-center">
 
-<table class="table-auto border-collapse border border-green-800">
+<table class="table-auto border-collapse border-1 border-yellow-800">
 
   <thead>
     <tr class="text-center text-xs">
-    <th class="border border-green-600"> Token ID</th>
-    <th class="border border-green-600"> Owner</th>
-     <th class="border border-green-600"> Level</th>
+    <th class="border-1 border-yellow-600">Token ID</th>
+    <th class="border-1 border-yellow-600">Owner</th>
+     <th class="border-1 border-yellow-600">Level</th>
  
     </tr>
     </thead>
@@ -175,24 +101,25 @@ return (
 
   return(<>
      <tr key={orc.tokenid} class="text-center text-sm">
-    <td class="border border-green-600"> 
+    <td class="border-1 border-yellow-600"> 
     <a target="_blank" href={`https://opensea.io/assets/0x7d9d3659dcfbea08a87777c52020BC672deece13/${orc.tokenid}`}>{orc.tokenid}</a>
     </td>
-    <td class="border border-green-600">
+    <td class="border-1 border-yellow-600">
     <a target="_blank" href={`https://etherscan.io/address/${orc.owner}/`}>{orc.owner}</a>
     </td>
-    <td class="border border-green-600"> {orc.calcLevel}</td>
-
-
-    
+    <td class="border-1 border-yellow-600"> {orc.calcLevel}</td>    
     </tr>
     </>)
 
     }))}
 </tbody>
 </table>
-</>
+</div>
 )}
+<div class="py-5">
+<p class="text-sm">NB: I know the leaderboard is wrong. Thats because I stored the calculated level as a string in the database like an idiot. 
+It will fix it self when people use the new version of the app - Husky</p>
+</div>
 
     </>
   );

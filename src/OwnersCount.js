@@ -96,8 +96,8 @@ if(!showData){
 return (
     <>
 
-<div class="text-lg font-bold font-serif flex flex-wrap justify-center">LEADERBOARD</div>  
-<div class="py-4 text-lg font-bold font-serif flex flex-wrap justify-center"><button onClick={handleClick}>Ye Orcs are mighty... Load Leaderboard</button></div>  
+<div class="text-lg font-bold font-serif flex flex-wrap justify-center">OWNERS</div>  
+<div class="py-4 text-lg font-bold font-serif flex flex-wrap justify-center"><button onClick={handleClick}>Ye Orcs are mighty... Load ORC WRANGLERS</button></div>  
 
 
 {orcObject && (

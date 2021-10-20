@@ -23,9 +23,30 @@ const init = async () => {
   // set school contract
 
   setLoading(true)
+  let results = []
   let start = 1
-  let stop = tokenSupply
-  let results = await lookupAllOrcs({start, stop})
+  let stop = 1000///tokenSupply
+
+  
+
+  results[0] = await lookupAllOrcs({start, stop})
+  start = start + 1000
+  stop = stop + 1000
+  results[1] = await lookupAllOrcs({start, stop})
+  start = start + 1000
+  stop = stop + 1000
+  results[2] = await lookupAllOrcs({start, stop})
+  start = start + 1000
+  stop = stop + 1000
+  results[3] = await lookupAllOrcs({start, stop})
+  start = start + 1000
+  stop = stop + 1000
+  results[4] = await lookupAllOrcs({start, stop})
+  start = start + 1000
+  stop = stop + 1000
+  results[5] = await lookupAllOrcs({start, stop})
+
+  results = [...results[0], ...results[1],...results[2], ...results[3],...results[4],...results[4]]
 
   results.map((orc)=>{
     updateDatabase(orc) 

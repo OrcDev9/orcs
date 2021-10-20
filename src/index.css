@@ -21,7 +21,7 @@
        @apply border-2 p-1 bg-yellow-700 hover:shadow-lg text-white font-bold;
       }
       input {
-        @apply border-2 p-1 bg-yellow-700 hover:shadow-lg text-white font-bold;
+        @apply border-2 p-1 bg-yellow-400 hover:shadow-lg text-white font-bold text-center;
        }
 
       

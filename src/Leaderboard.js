@@ -8,7 +8,7 @@ import { db } from "./initFirebase";
 import { getDatabase, ref, set, onValue, equalTo, query, get,child, orderByValue, push, orderByChild, limitToFirst, limitToLast, startAt, endAt} from "firebase/database";
 import Activity from "./Activity";
 
-const Horde = () => {
+const Leaderboard = ({tokenid}) => {
   
 const {nftContract, web3} = getContract()
 const contract = nftContract
@@ -68,14 +68,40 @@ const getStats = async (merged) => {
     }
   })
 
-  let s = ((tokenSupply - n)/tokenSupply).toFixed(2)
+  let s = (((tokenSupply - n)/5050)*100).toFixed(2)
   setFarmCount(f)
   setNothingCount(n)
   setTrainCount(t)
   setStakingCount(s)
 }
 
+const getAllStats = async ()=>{
+  const myOrcQuery = query(ref(db, 'orcs'), orderByChild('calcLevel'), limitToLast(20)) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
 
+  let dataArry = []
+
+
+onValue(myOrcQuery, (snapshot)=>{
+ 
+      if(snapshot.exists()){    
+        
+        Object.entries(snapshot.val()).forEach(([key, value])=>{
+  
+        dataArry.push(value)         
+        })
+
+
+  console.log("Found Orcs. Orc of them",  dataArry)   
+
+}else{
+ 
+  console.log("Got No Orcs. NOrc of them") 
+}
+      
+      },{onlyOnce: true})
+
+      setorcObject(dataArry)
+}
 
 const init = async () => {
 
@@ -84,14 +110,14 @@ const init = async () => {
 
   get(child(dbRef, `orcs/`)).then((snapshot) => {
     if (snapshot.exists()) {
-    
+      console.log("getDbase",snapshot.val())
 
       let csv = {data: snapshot.val(),
         headers: headers,
         filename: 'OrcActivityReport.csv'}
         setCsvReport(csv) ///for export
-        setorcObject(snapshot.val())
-        getStats(snapshot.val())
+     //   setorcObject(snapshot.val())
+     ///   getStats(snapshot.val())
     } else {
       console.log("No data available");
     }
@@ -107,13 +133,14 @@ useEffect(async () => {
 
 setTokenSupply(await contract.methods.totalSupply().call());
 
-if(showData){
-   init()
+if(tokenid){
+  getAllStats()
+
 
   }
 
 
-}, [showData]);
+}, [tokenid]);
 
 
 
@@ -124,57 +151,24 @@ if(showData){
 return (
     <>
 
-<h2>What is everybody doing?</h2>
+<div class="text-lg font-bold font-serif flex flex-wrap justify-center">Leaderboard</div>  
 
-<Button onClick={handleClick}>{showData ? ("Reload Data") : "Fetch Orc Data from Dbase"}</Button>
-<p>It will take a second or two</p>
-<Activity contract={contract}/>
 
 {orcObject && (
   <>
 
-
-<CSVLink {...csvReport}>Export to CSV</CSVLink>
-
-
-
-  <table class="w-80">
-  <tbody>
-    <tr class="text-center font-semibold">
-      <td>Farming</td>
-      <td>Training</td>
-      <td>Nothing</td>
-      <td>Staking</td>
-    </tr>
-    <tr class="text-center">
-      <td>{farmCount}</td>
-      <td>{trainCount}</td>
-      <td>{nothingCount}</td>
-      <td>{stakingCount} % </td>
-    </tr>
-  </tbody>
-</table>
-<br/>
 <table class="table-auto border-collapse border border-green-800">
 
   <thead>
     <tr class="text-center text-xs">
     <th class="border border-green-600"> Token ID</th>
     <th class="border border-green-600"> Owner</th>
-    <th class="border border-green-600"> Activity</th>
-      <th class="border border-green-600"> Body</th>  
-      <th class="border border-green-600"> Helm</th>
-      <th class="border border-green-600"> Mainhand</th>
-      <th class="border border-green-600"> Offhand</th>
-      <th class="border border-green-600"> Level</th>
-      <th class="border border-green-600"> Claimable</th>
-      <th class="border border-green-600"> Total Zug</th>
-      <th class="border border-green-600"> Activity Timestamp</th>
-
+     <th class="border border-green-600"> Level</th>
+ 
     </tr>
     </thead>
     <tbody>
-  {( orcObject.map((orc, index)=>{
+  {(orcObject.map((orc, index)=>{
 
     let t = new Date(orc.time*1000)
     t = t.toLocaleString()
@@ -187,15 +181,8 @@ return (
     <td class="border border-green-600">
     <a target="_blank" href={`https://etherscan.io/address/${orc.owner}/`}>{orc.owner}</a>
     </td>
-    <td class="border border-green-600"> {orc.action}</td>
-    <td class="border border-green-600"> {orc.body}</td>
-    <td class="border border-green-600"> {orc.helm}</td>
-    <td class="border border-green-600"> {orc.mainhand}</td>
-    <td class="border border-green-600"> {orc.offhand}</td>
-    <td class="border border-green-600"> {orc.level}</td>
-    <td class="border border-green-600"> {orc.claimable}</td>
-    <td class="border border-green-600"> {4 + parseInt(orc.totalZug)}</td>
-    <td class="border border-green-600"> {t}</td>
+    <td class="border border-green-600"> {orc.calcLevel}</td>
+
 
     
     </tr>
@@ -211,4 +198,4 @@ return (
   );
 };
 
-export default Horde;
+export default Leaderboard;

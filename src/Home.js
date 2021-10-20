@@ -12,6 +12,7 @@ import Horde from "./Horde";
 import MyOrcs from "./myOrc";
 import InputGroup from 'react-bootstrap/InputGroup'
 import Chat from "./orcChat"
+import Leaderboard from "./Leaderboard.js";
 function App() {
 
 const {nftContract, ercContract, web3} = getContract()
@@ -81,7 +82,7 @@ setShowOrc(true)
 
 <div class="space-y-2 p-2 border-2">        
          
-          <div class="flex flex-wrap justify-between">
+          <div class="flex flex-wrap justify-arround">
 
                   <div class="md:w-1/3 border-2 shadow-lg p-2">
                   <div class="text-lg font-bold font-serif flex flex-wrap justify-center">LOOK UP ORC</div>  
@@ -93,6 +94,12 @@ setShowOrc(true)
                   </div>  
               {showOrc && <Orc allData={true} tokenid={orcId} />}
               </div>
+
+              <div class="md:w-1/3 border-2 shadow-lg p-2">
+               <Leaderboard tokenid={orcLookupRef} />
+              </div>
+
+
               
               </div> 
        

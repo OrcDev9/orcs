@@ -53,12 +53,18 @@ const lookupsOrc = async ()=>{
 
  },[tokenid])
 
+ let additionalClasses = "bg-yellow-50 border-yellow-600 border-2 p-2 my-2"
+ let baseClass = "p-2"
+
+ if(allData){
+  baseClass = additionalClasses
+ }
 
 return (
     <>
 
 
-<div ref={ref} class="p-2 max-w-md">
+<div ref={ref} class={baseClass}>
 
 {orcData && (
 <div class="space-y-2 pb-3">

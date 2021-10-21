@@ -23,10 +23,8 @@ const places = [
     {place: "TAINTED KINGDOM", level:15, image:kingdom, index:6},
     {place: "OOZING DEN", level:25, image:den, index:7},
     {place: "ANCIENT CHAMBER", level:45, image:chamber, index:8},
-    {place: null, level:null, image:null, index:null}, ///alignment hack. Terrible way to do it. I know.
     {place: "ORC GODS", level:52, image:gods, index:9},
-    {place: null, level:null, image:null, index:null}, ///alignment hack. Terrible way to do it. I know.
-  ]
+   ]
 
   /*
 // Here's whats available in each place
@@ -92,7 +90,7 @@ const handleChangeOffhand = () => {
 
 const Checkbox = ({ label, value, onChange }) => {
     return (
-      <label class="font-semibold text-2xl">
+      <label class="font-bold text-sm">
         <input type="checkbox" checked={value} onChange={onChange} />
         {"   "}
         {label}
@@ -103,9 +101,9 @@ const Checkbox = ({ label, value, onChange }) => {
   function LootItems() {
 
     return(<>
-        <div class="border-4 p-3 mt-3">  
+        <div class="border-2 p-2 my-1">  
         <div>
-            <p>Select item slots to pillage for.</p>
+            Select item slots to pillage for.
         </div>
         <div class="flex flex-wrap justify-between" >
                     <Checkbox
@@ -138,7 +136,7 @@ function PlaceModal(props) {
     return (
       <Modal
         {...props}
-        size="lg"
+        size="xl"
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
@@ -149,6 +147,9 @@ function PlaceModal(props) {
         </Modal.Header>
         <Modal.Body>
         <LootItems />
+        <div class="flex flex-wrap font-serif font-bold justify-center text-xl border-2 border-red-200">
+        {prompt}
+        </div>
          <div class="flex flex-wrap"> 
         {places.map((obj, i)=>{
             let tempvar = true
@@ -156,12 +157,12 @@ function PlaceModal(props) {
               tempvar=false
             }
             return(
-                <div class="w-1/3 py-4 flex justify-center border-white border-2 hover:bg-gray-100" onClick={()=>openSecondModal(obj.index)}>
+                <div class="w-1/5 py-4 flex justify-center border-white border-2 hover:bg-gray-100" onClick={()=>openSecondModal(obj.index)}>
                   {tempvar && (
                     <div>
-                    <div class="font-bold">{obj.place}</div>
-                    <div class="w-32">Orc must be Level {obj.level}+ to Pillage</div>
-                    <div class="w-36 border-1 flex flex-wrap justify-center text-center"><img src={obj.image} /></div>
+                    <div class="font-bold text-sm">{obj.place}</div>
+                    <div class="w-28 text-sm">Orc must be Level {obj.level}+ to Pillage</div>
+                    <div class="w-28 border-1 flex flex-wrap justify-center text-center"><img src={obj.image} /></div>
                     
                   </div>
                   )}
@@ -171,9 +172,7 @@ function PlaceModal(props) {
             })}
         </div>
 
-        <div class="flex flex-wrap font-serif font-bold justify-center text-xl border-2 border-red-200">
-        {prompt}
-        </div>
+       
 
         </Modal.Body>
         <Modal.Footer>

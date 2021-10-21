@@ -140,7 +140,15 @@ setShowOrc(true)
 
 <p class="font-medium">Credits: Frontend concept by Husky Studios, creators of <a target="_blank" href="https://hilarioushuskies.life">Hilarious Huskies </a>. Support the creator by getting yours <a target="_blank" href="https://hilarioushuskies.life/mint">now!</a></p>
 
+<div class="border-2 p-y-2">
+  <h2>Resources</h2>
+<p>https://etherscan.io/address/0x3abedba3052845ce3f57818032bfa747cded3fca#code</p>
+
 </div>
+
+</div>
+
+
 
 
 

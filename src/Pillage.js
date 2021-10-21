@@ -9,7 +9,7 @@ import ether from "./media/images/Ether.png"
 import kingdom from "./media/images/taintedkingdom1.jpg"
 import den from "./media/images/oozingden.jpg"
 import chamber from "./media/images/ancientchamber.png"
-//import gods from "./media/images/gods.png"
+import gods from "./media/images/orcsgods.png"
 import Modal from 'react-bootstrap/Modal'
 import Orc from "./Orc";
 
@@ -23,7 +23,7 @@ const places = [
     {place: "TAINTED KINGDOM", level:15, image:kingdom, index:6},
     {place: "OOZING DEN", level:25, image:den, index:7},
     {place: "ANCIENT CHAMBER", level:45, image:chamber, index:8},
-    {place: "ORC GODS", level:52, image:ether, index:9},
+    {place: "ORC GODS", level:52, image:gods, index:9},
   ]
 
   /*

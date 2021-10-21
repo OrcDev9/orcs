@@ -143,7 +143,7 @@ setShowOrc(true)
 <div class="border-2 p-y-2">
   <h2>Resources</h2>
 <p>Contract: https://etherscan.io/address/0x3abedba3052845ce3f57818032bfa747cded3fca#code</p>
-<p>Contract: https://dune.xyz/Marcov/EtherOrcs</p>
+<p>Dune Analytics: https://dune.xyz/Marcov/EtherOrcs</p>
 
 </div>
 

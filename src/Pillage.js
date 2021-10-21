@@ -6,6 +6,10 @@ import crypt from "./media/images/Crypt.png"
 import castle from "./media/images/Castle.png"
 import dragon from "./media/images/Dragon.png"
 import ether from "./media/images/Ether.png"
+import kingdom from "./media/images/taintedkingdom1.jpg"
+import den from "./media/images/oozingden.jpg"
+import chamber from "./media/images/ancientchamber.png"
+//import gods from "./media/images/gods.png"
 import Modal from 'react-bootstrap/Modal'
 import Orc from "./Orc";
 
@@ -15,8 +19,39 @@ const places = [
     {place: "CRYPT", level:6, image:crypt, index:2},
     {place: "CASTLE", level:15, image:castle, index:3},
     {place: "DRAGON'S LAIR", level:25, image:dragon, index:4},
-    {place: "THE ETHER", level:36, image:ether, index:5}]
+    {place: "THE ETHER", level:36, image:ether, index:5},
+    {place: "TAINTED KINGDOM", level:15, image:kingdom, index:6},
+    {place: "OOZING DEN", level:25, image:den, index:7},
+    {place: "ANCIENT CHAMBER", level:45, image:chamber, index:8},
+    {place: "ORC GODS", level:52, image:ether, index:9},
+  ]
 
+  /*
+// Here's whats available in each place
+        LootPool memory town           = LootPool({ minLevel: 1,  minLootTier:  1, cost:   0, total: 1000, tier_1: 800,  tier_2: 150,  tier_3: 50,  tier_4:   0 });
+        LootPool memory dungeon        = LootPool({ minLevel: 3,  minLootTier:  2, cost:   0, total: 1000, tier_1: 800,  tier_2: 150,  tier_3: 50,  tier_4:   0 });
+        LootPool memory crypt          = LootPool({ minLevel: 6,  minLootTier:  3, cost:   0, total: 2619, tier_1: 1459, tier_2: 1025, tier_3: 135, tier_4:   0 });
+        LootPool memory castle         = LootPool({ minLevel: 15, minLootTier:  4, cost:   0, total: 6000, tier_1: 3300, tier_2: 2400, tier_3: 300, tier_4:   0 });
+        LootPool memory dragonsLair    = LootPool({ minLevel: 25, minLootTier:  5, cost:   0, total: 6000, tier_1: 3300, tier_2: 2400, tier_3: 300, tier_4:   0 });
+        LootPool memory theEther       = LootPool({ minLevel: 36, minLootTier:  6, cost:   0, total: 3000, tier_1: 1200, tier_2: 1500, tier_3: 300, tier_4:   0 });
+        LootPool memory taintedKingdom = LootPool({ minLevel: 15, minLootTier:  4, cost:  50, total:  600, tier_1:  150, tier_2:  150, tier_3: 150, tier_4: 150 });
+        LootPool memory oozingDen      = LootPool({ minLevel: 25, minLootTier:  5, cost:  50, total:  600, tier_1:  150, tier_2:  150, tier_3: 150, tier_4: 150 });
+        LootPool memory ancientChamber = LootPool({ minLevel: 45, minLootTier:  9, cost: 125, total:  225, tier_1:  225, tier_2:    0, tier_3:   0, tier_4:   0 });
+        LootPool memory orcGods        = LootPool({ minLevel: 52, minLootTier: 10, cost: 300, total:   12, tier_1:    0, tier_2:    0, tier_3:   0, tier_4:   0 });
+
+        lootPools[Places.TOWN]            = town;
+        lootPools[Places.DUNGEON]         = dungeon;
+        lootPools[Places.CRYPT]           = crypt;
+        lootPools[Places.CASTLE]          = castle;
+        lootPools[Places.DRAGONS_LAIR]    = dragonsLair;
+        lootPools[Places.THE_ETHER]       = theEther;
+        lootPools[Places.TAINTED_KINGDOM] = taintedKingdom;
+        lootPools[Places.OOZING_DEN]      = oozingDen;
+        lootPools[Places.ANCIENT_CHAMBER] = ancientChamber;
+        lootPools[Places.ORC_GODS]        = orcGods;
+  */
+
+  
 //const places = [{ "places": ["TOWN", "DUNGEON", "CRYPT", "CASTLE", "DRAGONS_LAIR", "THE_ETHER", 
 //  "TAINTED_KINGDOM", "OOZING_DEN", "ANCIENT_CHAMBER", "ORC_GODS"] }]
 
@@ -120,7 +155,7 @@ function PlaceModal(props) {
                   <div>
                     <div class="font-bold">{obj.place}</div>
                     <div class="w-32">Orc must be Level {obj.level}+ to Pillage</div>
-                    <div><img src={obj.image} /></div>
+                    <div class="w-36 border-1"><img src={obj.image} /></div>
                     
                   </div>
                 </div>
@@ -258,5 +293,6 @@ const onMintPressed = async (event) => { //TODO: implement
 }
 
 export default Pillage;
+
 
 

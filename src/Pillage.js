@@ -23,7 +23,9 @@ const places = [
     {place: "TAINTED KINGDOM", level:15, image:kingdom, index:6},
     {place: "OOZING DEN", level:25, image:den, index:7},
     {place: "ANCIENT CHAMBER", level:45, image:chamber, index:8},
+    {place: null, level:null, image:null, index:null}, ///alignment hack. Terrible way to do it. I know.
     {place: "ORC GODS", level:52, image:gods, index:9},
+    {place: null, level:null, image:null, index:null}, ///alignment hack. Terrible way to do it. I know.
   ]
 
   /*
@@ -149,15 +151,20 @@ function PlaceModal(props) {
         <LootItems />
          <div class="flex flex-wrap"> 
         {places.map((obj, i)=>{
-
+            let tempvar = true
+            if(obj.place === null){
+              tempvar=false
+            }
             return(
                 <div class="w-1/3 py-4 flex justify-center border-white border-2 hover:bg-gray-100" onClick={()=>openSecondModal(obj.index)}>
-                  <div>
+                  {tempvar && (
+                    <div>
                     <div class="font-bold">{obj.place}</div>
                     <div class="w-32">Orc must be Level {obj.level}+ to Pillage</div>
-                    <div class="w-36 border-1"><img src={obj.image} /></div>
+                    <div class="w-36 border-1 flex flex-wrap justify-center text-center"><img src={obj.image} /></div>
                     
                   </div>
+                  )}
                 </div>
             )
 

@@ -85,7 +85,6 @@ const init = async () => {
   get(child(dbRef, `etherorcs/orcs/`)).then((snapshot) => {
     if (snapshot.exists()) {
     
-
       let csv = {data: snapshot.val(),
         headers: headers,
         filename: 'OrcActivityReport.csv'}
@@ -114,12 +113,6 @@ if(showData){
 
 
 }, [showData]);
-
-
-
-
-
-
 
 return (
     <>

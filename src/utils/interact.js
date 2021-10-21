@@ -81,6 +81,7 @@ export const lookupAllOrcs = async ({start, stop, array})=>{
       calls: [{ reference: 'orcsCall'+i.toString(), methodName: 'orcs', methodParameters: [i]},
       { reference: 'claimableCall'+i.toString(), methodName: 'claimable', methodParameters: [i]},
       { reference: 'activitiesCall'+i.toString(), methodName: 'activities', methodParameters: [i]},
+      { reference: 'ownerOfCall'+i.toString(), methodName: 'ownerOf', methodParameters: [i]},
      ]
     };
     tempArr.push(tx);
@@ -96,6 +97,7 @@ export const lookupAllOrcs = async ({start, stop, array})=>{
      calls: [{ reference: 'orcsCall'+i.toString(), methodName: 'orcs', methodParameters: [i]},
      { reference: 'claimableCall'+i.toString(), methodName: 'claimable', methodParameters: [i]},
      { reference: 'activitiesCall'+i.toString(), methodName: 'activities', methodParameters: [i]},
+     { reference: 'ownerOfCall'+i.toString(), methodName: 'ownerOf', methodParameters: [i]},
     ]
    };
    tempArr.push(tx);
@@ -122,8 +124,14 @@ for(let i=loopStart; i<loopEnd; i++){
   
 const {calcLevel, activitymap} = calcuclateLevel({action, claimable, level, lvlProgress})
 
+let ownerAdd = results.results[`EtherOrcs${i}`].callsReturnContext[2].returnValues[0]
+
+if(ownerAdd === "0x0000000000000000000000000000000000000000" || parseInt(activity) === 0 ){
+   ownerAdd = results.results[`EtherOrcs${i}`].callsReturnContext[3].returnValues[0]
+}
+console.log(ownerAdd)
 orcObj = {
-    owner: results.results[`EtherOrcs${i}`].callsReturnContext[2].returnValues[0],
+    owner: ownerAdd,
     tokenid: i,
     time: parseInt(results.results[`EtherOrcs${i}`].callsReturnContext[2].returnValues[1].hex,16),  
     action: results.results[`EtherOrcs${i}`].callsReturnContext[2].returnValues[2].toString(),  
@@ -151,7 +159,8 @@ return orcArry
 export const lookupOrc = async (tokenid)=>{
 
   let orcs = await nftContract.methods.orcs(tokenid).call()
-
+  let ownerNotStaked = await nftContract.methods.ownerOf(tokenid).call()
+  
   let a = await nftContract.methods.tokenURI(tokenid).call()
   var b = a.split(",")
   var orc = JSON.parse(atob(b[1]))
@@ -159,15 +168,19 @@ export const lookupOrc = async (tokenid)=>{
   let activity = await nftContract.methods.activities(tokenid).call()
   let claimable = parseInt(await nftContract.methods.claimable(tokenid).call())
   
- 
   let level = orcs.level
   let lvlProgress = orcs.lvlProgress
   let action = activity.action
+  let owner = activity.owner.toLowerCase()
+
+    if(owner === "0x0000000000000000000000000000000000000000" || action === 0){
+      owner = ownerNotStaked
+    }
   
 const {calcLevel, activitymap} = calcuclateLevel({action, claimable, level, lvlProgress})
 
 const  orcObj = {
-      owner: activity.owner.toLowerCase(),
+      owner: owner.toLowerCase(),
       tokenid: tokenid, 
       time: activity.timestamp,  
       action: activity.action,  

@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import Horde from "./Horde";
 import {
-getContract
+getContract, getCurrentWalletConnected
   
 } from "./utils/interact.js";
 import Leaderboard from "./Leaderboard";
@@ -16,10 +16,24 @@ import Owners from "./OwnersCount";
 const history = createBrowserHistory();
 //bg-light-image
 function App() {
-
+  
   const {nftContract, ercContract, web3} = getContract()
+  const [wallet, setWallet] = useState("")
+  const [flip, setFlip] = useState(false)
+  
+  let adminWallet = "0xCcB6D1e4ACec2373077Cb4A6151b1506F873a1a5"
 
-  return (
+  useEffect(async() => {
+    const {address} = await getCurrentWalletConnected()
+    setWallet(address)
+    if(address.toLowerCase() === adminWallet.toLowerCase()){
+      setFlip(true)
+    }
+
+  }, [])
+
+  
+ return (
     <>
       {/*  <Helmet>
     <title>Orcs</title>
@@ -42,9 +56,15 @@ function App() {
               <Switch>
                 
                 <Route path="/admin">  
-                 {/*
+
+                {flip ? ( <>
                 <Horde contract={nftContract} />
-                <Leaderboard />
+
+          </>) :(`${wallet} Not allowed`)}
+               
+
+                 {/*
+                                <Leaderboard />
                 <Owners />
                 
               

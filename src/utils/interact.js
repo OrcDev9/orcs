@@ -7,9 +7,6 @@ const {
   ContractCallContext,
 } = require("ethereum-multicall");
 
-
-
-
 const infuraKey = process.env.REACT_APP_INFURA_KEY;
 
 ///Alchemy and web3
@@ -35,6 +32,24 @@ const multiCallOrcs = async (multicallArray)=>{
   const results: ContractCallResults = await multicall.call(contractCallContext);
 
   return results
+}
+
+export async function getUsername(owner){
+
+  const init = {method: 'GET', headers: { }}
+
+  let osRequest 
+  let osResponse 
+  let username = null
+
+  try{
+  osRequest = await fetch(`https://api.opensea.io/api/v1/assets?owner=${owner}&order_direction=desc&offset=0&limit=1`, init);
+  osResponse = await osRequest.json()
+  username = osResponse.assets[0].owner.user.username
+  }catch(e){console.log(e)}
+
+  return(username)
+
 }
 
 export const calcuclateLevel = ({action, claimable, level, lvlProgress})=>{
@@ -105,7 +120,7 @@ export const lookupAllOrcs = async ({start, stop, array})=>{
 }
 
 let results = await multiCallOrcs(tempArr)
-console.log(results)
+//console.log(results)
 ///0 is orcs
 ///1 claimable
 ///2 activities
@@ -176,11 +191,14 @@ export const lookupOrc = async (tokenid)=>{
     if(owner === "0x0000000000000000000000000000000000000000" || action === 0){
       owner = ownerNotStaked
     }
+
+    let username = await getUsername(owner)
   
 const {calcLevel, activitymap} = calcuclateLevel({action, claimable, level, lvlProgress})
 
 const  orcObj = {
       owner: owner.toLowerCase(),
+      username: username,
       tokenid: tokenid, 
       time: activity.timestamp,  
       action: activity.action,  

@@ -145,6 +145,7 @@ setShowOrc(true)
 <p>Contract: https://etherscan.io/address/0x3abedba3052845ce3f57818032bfa747cded3fca#code</p>
 <p>Dune Analytics: https://dune.xyz/Marcov/EtherOrcs</p>
 <p>Open Sea: https://opensea.io/collection/ether-orcs</p>
+<p>Guide: https://docs.google.com/document/d/1gFynXAc5UcbleE0Yt7AopDtyCQl5aMIp8VwUU-xPlsw/edit#</p>
 
 
 </div>

@@ -91,6 +91,7 @@ const init = async () => {
         setCsvReport(csv) ///for export
         setorcObject(snapshot.val())
         getStats(snapshot.val())
+
     } else {
       console.log("No data available");
     }

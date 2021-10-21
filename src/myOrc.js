@@ -38,6 +38,7 @@ let another = "0xd23c8be03abb97f6885016b3e96de48c600d06e3"
 let a = "0x430d192e0EA959c7BB6B26eD6534B55B187b487A"
 let claimwallet = "0xfcdbada91ca1aaa80efbe3b62102863d32a2fed4"
 const ethWallet = "0x7d9d3659dcfbea08a87777c52020bc672deece13"
+let puck = "0xa8fbe0452eedfc4598d4c64c33615d942a70af6e"
 
 const summonOrcs = async (address) => { //TODO: implement
     

@@ -110,7 +110,7 @@ return(<div key={orcData.name + i}>
 </div>)
 }))}
 
-{allData && <div class="break-all text-xs">Owner: {orcData.owner}</div> }
+{allData && <div class="break-all text-xs">Owner: {orcData.username && (`${orcData.username} | `) }{orcData.owner}</div> }
 </div>
 
 

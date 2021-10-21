@@ -2,12 +2,14 @@
 import { db } from "../initFirebase";
 import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue, push, orderByChild, limitToLast} from "firebase/database";
 
+
 export const updateDatabase = async (orc) => {
       
     const orcDataref = ref(db, 'etherorcs/orcs/' + orc.tokenid)
     
       await set(orcDataref, {
         owner: orc.owner.toLowerCase(),
+        username: orc.username ? orc.username : null,
         action: orc.action,
         actionString: orc.actionString,
         tokenid: parseInt(orc.tokenid),

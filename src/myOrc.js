@@ -228,7 +228,7 @@ return (
                       <p>If Orcs are missing from your Tavern, try looking them up in, <strong>"LOOK UP ORC"</strong></p>
 
                      <p><button onClick={onClaimZugPressed}>
-                        {claimtoggle ? ("Calculate $ZUG owed!") : "Claim $ZUG!"}</button> and <button onClick={onMintPressed}>Mint!</button> your Orcs!
+                        {claimtoggle ? ("Calculate $ZUG owed!") : "Claim $ZUG!"}</button>.
                      </p>
                    
                     </div>

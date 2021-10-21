@@ -2,9 +2,9 @@ import {pillage} from "./utils/interact.js";
 import { useState, useEffect, useRef } from "react";
 import town from "./media/images/Town.png"
 import dungeon from "./media/images/Dungeon.png"
-import crypt from "./media/images/Crypt.png"
+import crypt from "./media/images/crypt.png"
 import castle from "./media/images/Castle.png"
-import dragon from "./media/images/Dragon.png"
+import dragon from "./media/images/dragon.png"
 import ether from "./media/images/Ether.png"
 import kingdom from "./media/images/taintedkingdom1.jpg"
 import den from "./media/images/oozingden.jpg"
@@ -206,21 +206,49 @@ function LootPoolModal(props) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-         
-         <div class="flex flex-wrap justify-center animate-pulse"> 
-            
-       <Orc allData={false} tokenid={tokenid} />
-        </div>
 
+          <div class="flex flex-wrap justify-evenly"> 
+         
+        
+
+        <div class="flex flex-wrap justify-center animate-pulse"> 
+        {places.map((obj)=>{
+                let place
+                if(lootPool === obj.index){
+                    place = obj.image
+                    return(
+                    <div>
+                    <div class="text-center font-bold text-xl"> 
+                      {obj.place} 
+                    </div>
+                    <div class="border-1 w-64 flex flex-wrap justify-center text-center"><img src={obj.image} />
+                    </div>
+                    </div>
+                    )
+                }
+                
+              })
+              
+              }
+          </div>
+
+              <div class="flex flex-wrap justify-center animate-pulse"> 
+            
+            <Orc allData={false} tokenid={tokenid} />
+             </div>
+
+</div>
         <div class="flex flex-wrap justify-between">
                 <div>
                 {status && (<>{status} <button variant="dark" onClick={props.onHide}>Close</button> </>)}
                
                 </div>
-                <div>
-                <button variant="dark" onClick={onMintPressed}>Pillage!</button>
-                </div>
+               
             </div>
+
+            <div class="flex flex-wrap justify-center py-3">
+                <button class="px-3" onClick={onMintPressed}>Pillage!</button>
+                </div>
         
         </Modal.Body>
         <Modal.Footer>

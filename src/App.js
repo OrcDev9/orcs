@@ -20,13 +20,17 @@ function App() {
   const {nftContract, ercContract, web3} = getContract()
   const [wallet, setWallet] = useState("")
   const [flip, setFlip] = useState(false)
+
+  let husky ="0xCcB6D1e4ACec2373077Cb4A6151b1506F873a1a5"
+  let john = "0x6Ab133Af137fd94294aFbc4dFDEbb6ded94A572d"
+  let wrangler = "0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"
   
-  let adminWallet = "0xCcB6D1e4ACec2373077Cb4A6151b1506F873a1a5"
+  let adminWallet = [husky.toLowerCase(), john.toLowerCase(), wrangler.toLowerCase() ]
 
   useEffect(async() => {
     const {address} = await getCurrentWalletConnected()
     setWallet(address)
-    if(address.toLowerCase() === adminWallet.toLowerCase()){
+    if(adminWallet.includes(address.toLowerCase())){
       setFlip(true)
     }
 

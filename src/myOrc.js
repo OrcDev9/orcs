@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {getMyOrcsObject} from "./utils/services"
 import Orc from "./Orc";
-import {doAction, collectZug, getCurrentWalletConnected, mintNFT, lookupAllOrcs, getContract} from "./utils/interact.js";
+import {doAction, collectZug, getCurrentWalletConnected, mintNFT, lookupAllOrcs, getContract, lookupOrc} from "./utils/interact.js";
 import Pillage from "./Pillage";
 import ConnectWallet from "./ConnectWallet";
 import logo from "./media/logo.svg"
@@ -11,6 +11,7 @@ import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue
 const MyOrcs = () => {
 
 const [myOrcs, setMyOrcs] = useState();
+const [myOrcsArr, setMyOrcsArr] = useState([]);
 const [showPillage, setShowPillage] = useState(false);
 const [clicked, setClicked] = useState([]);
 const [status, setStatus] = useState();
@@ -46,6 +47,7 @@ const summonOrcs = async (address) => { //TODO: implement
   console.log("2.", address, "3.", myOrcQuery)    
   let dataArry = []
   let tokenArr = []
+  let OrcObjArr = []
 
 onValue(myOrcQuery, (snapshot)=>{
   console.log("4.", snapshot.val())
@@ -54,11 +56,12 @@ onValue(myOrcQuery, (snapshot)=>{
         Object.entries(snapshot.val()).forEach(([key, value])=>{
   
         dataArry.push({tokenId:value.tokenid, claimable:value.claimable, action:value.action})         
-        tokenArr.push(value.tokenid)      
+        tokenArr.push(value.tokenid)   
+        OrcObjArr.push(lookupOrc(value.tokenid))   
         })
 
   setStatus(`Found ${tokenArr.length} Orc(s) for ${address}... Loading!`);
-  setMyOrcs({orcs: dataArry, tokens:tokenArr})
+  setMyOrcs({orcs: dataArry, tokens:tokenArr, orcObj: OrcObjArr})
   console.log("Found Orcs. Orc of them", address, dataArry, "Orcs held:", tokenArr)   
 
 }else{
@@ -204,6 +207,7 @@ const onClaimZugPressed = async (event) => { //TODO: implement
     
      };
     
+     console.log(myOrcs)
 
         
 

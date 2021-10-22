@@ -157,7 +157,7 @@ function PlaceModal(props) {
               tempvar=false
             }
             return(
-                <div class="w-1/5 py-4 flex justify-center border-white border-2 hover:bg-gray-100" onClick={()=>openSecondModal(obj.index)}>
+                <div class="w-1/2 md:w-1/3 lg:w-1/5 py-4 flex justify-center border-white border-2 hover:bg-gray-100" onClick={()=>openSecondModal(obj.index)}>
                   {tempvar && (
                     <div>
                     <div class="font-bold text-sm">{obj.place}</div>

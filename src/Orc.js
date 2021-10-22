@@ -6,7 +6,7 @@ import { toPng } from 'html-to-image';
 import { TwitterTimelineEmbed, TwitterShareButton, TwitterFollowButton, TwitterHashtagButton, TwitterMentionButton, TwitterTweetEmbed, TwitterMomentShare, TwitterDMButton, TwitterVideoEmbed, TwitterOnAirButton } from 'react-twitter-embed';
 
 
-function Orc({tokenid, allData}) {
+function Orc({tokenid, allData, orc}) {
  
 const [orcData, setOrcData] = useState(null);
 const [loading, setLoading] = useState(false);
@@ -39,8 +39,13 @@ useEffect(async () => {
 const lookupsOrc = async ()=>{
 
     setLoading(true)
+    let orcObj
+    if(orc){
+      orcObj = orc
+    }else{
+      orcObj = await lookupOrc(tokenid)
+    }
     
-    let orcObj = await lookupOrc(tokenid)
     setOrcData(orcObj)
 
     setClaimable(((parseInt(orcObj.claimable))/Math.pow(10, 18)).toFixed(2))

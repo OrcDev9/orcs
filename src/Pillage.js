@@ -76,7 +76,7 @@ const updatePillage = async (obj) => {
   const db = getDatabase();
   const timestamp = Date.now()
  
-  const userDataRef = ref(db, `etherorcs/address/${obj.address}/tokens/${obj.token}`)
+  const userDataRef = ref(db, `etherorcs/pillage/${obj.token}`)
 
 await set(userDataRef, {
     lastPillage: timestamp,

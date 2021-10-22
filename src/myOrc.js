@@ -41,6 +41,26 @@ let claimwallet = "0xfcdbada91ca1aaa80efbe3b62102863d32a2fed4"
 const ethWallet = "0x7d9d3659dcfbea08a87777c52020bc672deece13"
 let puck = "0xa8fbe0452eedfc4598d4c64c33615d942a70af6e"
 
+
+
+const updateOrcsDb = async (obj) => {
+ 
+  const db = getDatabase();
+  const timestamp = Date.now()
+ 
+ 
+  const userDataRef = ref(db, `etherorcs/address/${obj.address}/tokens/` + obj.token)
+
+  
+  await set(userDataRef, {
+    lastSeen: timestamp,
+   
+  });
+
+}
+
+
+
 const summonOrcs = async (address) => { //TODO: implement
     
   const myOrcQuery = query(ref(db, 'etherorcs/orcs/'), orderByChild('owner'), equalTo(address.toLowerCase())) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
@@ -56,12 +76,13 @@ onValue(myOrcQuery, (snapshot)=>{
         Object.entries(snapshot.val()).forEach(([key, value])=>{
   
         dataArry.push({tokenId:value.tokenid, claimable:value.claimable, action:value.action})         
-        tokenArr.push(value.tokenid)   
-        OrcObjArr.push(lookupOrc(value.tokenid))   
+        tokenArr.push(value.tokenid)
+        updateOrcsDb({token: value.tokenid, address: address})   
+        //OrcObjArr.push(lookupOrc(value.tokenid))  orcObj: OrcObjArr 
         })
 
   setStatus(`Found ${tokenArr.length} Orc(s) for ${address}... Loading!`);
-  setMyOrcs({orcs: dataArry, tokens:tokenArr, orcObj: OrcObjArr})
+  setMyOrcs({orcs: dataArry, tokens:tokenArr})
   console.log("Found Orcs. Orc of them", address, dataArry, "Orcs held:", tokenArr)   
 
 }else{
@@ -252,7 +273,7 @@ return (
 
             <div class="flex flex-wrap justify-between">
             {showPillage ? (
-                <Pillage tokenid={clicked[0]} />
+                <Pillage wallet={walletAddress} orc={null} tokenid={clicked[0]} />
             ) : ( <button>Select only one Orc</button> )}
 
             <button variant="dark" onClick={()=>doActionClick(2)}>

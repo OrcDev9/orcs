@@ -12,6 +12,8 @@ import chamber from "./media/images/ancientchamber.png"
 import gods from "./media/images/orcsgods.png"
 import Modal from 'react-bootstrap/Modal'
 import Orc from "./Orc";
+import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue, push, orderByChild, limitToLast} from "firebase/database";
+
 
 const places = [
     {place: "TOWN", level:1, image:town, index:0},
@@ -56,7 +58,7 @@ const places = [
 //  "TAINTED_KINGDOM", "OOZING_DEN", "ANCIENT_CHAMBER", "ORC_GODS"] }]
 
 
-function Pillage({tokenid}) {
+function Pillage({tokenid, wallet}) {
 
 const [lootPool, setLootPool] = useState(0);
 const [status, setStatus] = useState();
@@ -68,6 +70,21 @@ const [checkedHelm, setCheckedHelm] = useState(false);
 const [checkedMainhand, setCheckedMainhand] = useState(false);
 const [checkedOffhand, setCheckedOffhand] = useState(false);
 const [checkedAll, setCheckedAll] = useState(false);
+
+const updatePillage = async (obj) => {
+ 
+  const db = getDatabase();
+  const timestamp = Date.now()
+ 
+  const userDataRef = ref(db, `etherorcs/address/${obj.address}/tokens/${obj.token}`)
+
+await set(userDataRef, {
+    lastPillage: timestamp,
+   
+  });
+
+}
+
 
 const handleChangeHelm = () => {
   setCheckedHelm(!checkedHelm);
@@ -283,17 +300,21 @@ const onMintPressed = async (event) => { //TODO: implement
     let tryHelm = checkedHelm
     let tryMainhand = checkedMainhand
     let tryOffhand = checkedOffhand
+    let obj = {address: wallet, token:tokenid}
+
+    console.log(place, tryHelm, tryMainhand, tryOffhand, obj)
 
      const { status, txHash, success } = await pillage({tokenid, place, tryHelm, tryMainhand, tryOffhand} );
      setStatus(status);
      
      ///check for successful transaction
        if(success ===true){
-        
+       
+            updatePillage(obj)
             
          }else{
  
-            setStatus("Something went");
+            setStatus("Something went wrong");
   
        }
    };

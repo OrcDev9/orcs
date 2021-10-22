@@ -1,8 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import {
   getCurrentWalletConnected, //import here
-  connectWallet, 
+  connectWallet, getUsername
 } from "./utils/interact.js";
+import { getDatabase, ref, set, onValue, equalTo, query, get,child, orderByValue, push, orderByChild, limitToFirst, limitToLast, startAt, endAt} from "firebase/database";
+
 
 import Button from 'react-bootstrap/Button'
 const ConnectWallet = (props) => {
@@ -16,6 +18,7 @@ const ConnectWallet = (props) => {
 
   useEffect(async () => {
     const {address, status} = await getCurrentWalletConnected();
+    login(address)
     setWallet(address)
     setStatus(status);
     addWalletListener(); 
@@ -53,6 +56,26 @@ function addWalletListener() {
     );
   }
 }
+
+
+const login = async (wallet) => {
+ 
+  const db = getDatabase();
+  const timestamp = Date.now()
+ 
+ 
+  const userDataRef = ref(db, 'etherorcs/address/' + wallet)
+
+  //let username = await getUsername(wallet)
+
+ 
+  await set(userDataRef, {
+    lastSeen: timestamp,
+    
+  });
+
+}
+
 
 const isMetaMaskInstalled = async () => {
 

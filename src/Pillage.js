@@ -2,7 +2,7 @@ import {pillage} from "./utils/interact.js";
 import { useState, useEffect, useRef } from "react";
 import town from "./media/images/Town.png"
 import dungeon from "./media/images/Dungeon.png"
-import crypt from "./media/images/crypt.png"
+import crypt from "./media/images/crypt1.png"
 import castle from "./media/images/Castle.png"
 import dragon from "./media/images/dragosl.png"
 import ether from "./media/images/ether2.png"

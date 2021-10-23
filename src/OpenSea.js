@@ -18,7 +18,7 @@ import {
   useEffect(async () => {
   
     let osData = await getContractEvents()
-    setOSEvents(osEvents)
+    setOSEvents(osData)
   
   },[])
   
@@ -30,7 +30,7 @@ import {
         <>
 
         {osEvents && osEvents.map((event)=>{
-
+console.log(event)
 return(<>{event.user.username}
 
 {event.event_type}

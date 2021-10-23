@@ -15,6 +15,7 @@ import Chat from "./orcChat"
 import Leaderboard from "./Leaderboard.js";
 import Intro from "./intro"
 import logo from "./media/logo.svg"
+import OpenSea from "./OpenSea.js";
 
 function App() {
 
@@ -142,8 +143,8 @@ setShowOrc(true)
               })}
               </div> 
   </Tab>
-  <Tab eventKey="os" title="Open Sea" disabled>
-    Opensea
+  <Tab eventKey="os" title="Open Sea">
+    <OpenSea />
   </Tab>
   <Tab eventKey="resources" title="Resources">
   <h2 class="font-bold font-serif" >Resources</h2>

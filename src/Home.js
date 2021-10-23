@@ -90,7 +90,7 @@ setShowOrc(true)
   return (
     
 <div class="container mx-auto space-y-5">
-      <Intro />
+
  
 
 <div class="space-y-2 p-2 border-2">
@@ -112,7 +112,12 @@ setShowOrc(true)
 
               {/* <Leaderboard /> */}<div class="md:w-2/3 border-2 shadow-lg p-2">
               <Tabs defaultActiveKey="home" id="uncontrolled-tab-example" className="mb-3">
-  <Tab eventKey="home" title="My Orcs">
+                
+              <Tab eventKey="home" title="Start Here">
+              <Intro />
+              </Tab>
+      
+  <Tab eventKey="myorcs" title="My Orcs">
   <MyOrcs />
   </Tab>
   <Tab eventKey="random" title="Random Orcs">
@@ -134,6 +139,22 @@ setShowOrc(true)
   <Tab eventKey="os" title="Open Sea" disabled>
     Opensea
   </Tab>
+  <Tab eventKey="resources" title="Resources">
+  <div class="border-2 p-y-2">
+  <h2>Resources</h2>
+<p>Contract: https://etherscan.io/address/0x3abedba3052845ce3f57818032bfa747cded3fca#code</p>
+<p>Dune Analytics: https://dune.xyz/Marcov/EtherOrcs</p>
+<p>Open Sea: https://opensea.io/collection/ether-orcs</p>
+<p>Guide: https://docs.google.com/document/d/1gFynXAc5UcbleE0Yt7AopDtyCQl5aMIp8VwUU-xPlsw/edit#</p>
+
+
+</div>
+  </Tab>
+
+
+
+
+
 </Tabs>
              
               
@@ -157,15 +178,7 @@ setShowOrc(true)
 
 <p class="font-medium">Credits: Frontend concept by Husky Studios, creators of <a target="_blank" href="https://hilarioushuskies.life">Hilarious Huskies </a>. Support the creator by getting yours <a target="_blank" href="https://hilarioushuskies.life/mint">now!</a></p>
 
-<div class="border-2 p-y-2">
-  <h2>Resources</h2>
-<p>Contract: https://etherscan.io/address/0x3abedba3052845ce3f57818032bfa747cded3fca#code</p>
-<p>Dune Analytics: https://dune.xyz/Marcov/EtherOrcs</p>
-<p>Open Sea: https://opensea.io/collection/ether-orcs</p>
-<p>Guide: https://docs.google.com/document/d/1gFynXAc5UcbleE0Yt7AopDtyCQl5aMIp8VwUU-xPlsw/edit#</p>
 
-
-</div>
 
 </div>
 

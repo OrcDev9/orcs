@@ -17,7 +17,7 @@ const [clicked, setClicked] = useState([]);
 const [status, setStatus] = useState();
 const [claimableZug, setClaimableZug] = useState();
 const [claimtoggle, setClaimtoggle] = useState(true);
-const [displayOrcs, setDisplayOrcs] = useState(false);
+const [displayOrcs, setDisplayOrcs] = useState(true);
 
 const {web3} = getContract()
 
@@ -235,12 +235,7 @@ const onClaimZugPressed = async (event) => { //TODO: implement
 return (
                
 <>
-                <div class="py-3 flex flex-wrap space-x-4">
-               
-                <button onClick={onDisplayOrcsPressed}>Summon the Orcs!</button>
 
-                
-                </div>
 <div>
 <h3 class="bold font-serif">Actions</h3>
 </div>

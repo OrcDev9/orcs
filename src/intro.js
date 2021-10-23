@@ -251,7 +251,7 @@ return (
                     <p>Battle your Orcs in the very first 100% on-chain NFT RPG. Pillage loot pools to upgrade your equipment and meta-data, another industry first. For the Horde!
 </p>
                     <p>If its the first time you are using this app, click on <strong><ConnectWallet /></strong></p>
-                    <p>Click on Summon the orcs. Click to toggle select orcs, then make them do something. If nothing happens, refresh the page or reconnect your wallet.</p>
+                    <p>Click on My Orcs to get started. Click to toggle select orcs, then make them do something. If nothing happens, refresh the page or reconnect your wallet.</p>
                       <p>If Orcs are missing from your Tavern, try looking them up in, <strong>"LOOK UP ORC"</strong></p>
 
                      <p>

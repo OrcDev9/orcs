@@ -140,15 +140,12 @@ setShowOrc(true)
     Opensea
   </Tab>
   <Tab eventKey="resources" title="Resources">
-  <div class="border-2 p-y-2">
   <h2>Resources</h2>
-<p>Contract: https://etherscan.io/address/0x3abedba3052845ce3f57818032bfa747cded3fca#code</p>
-<p>Dune Analytics: https://dune.xyz/Marcov/EtherOrcs</p>
-<p>Open Sea: https://opensea.io/collection/ether-orcs</p>
-<p>Guide: https://docs.google.com/document/d/1gFynXAc5UcbleE0Yt7AopDtyCQl5aMIp8VwUU-xPlsw/edit#</p>
+<li><a href="https://etherscan.io/address/0x3abedba3052845ce3f57818032bfa747cded3fca#code">Contract</a></li>
+<li><a href="https://dune.xyz/Marcov/EtherOrcs">Dune Analytics</a></li>
+<li><a href="https://opensea.io/collection/ether-orcs">Open Sea</a></li>
+<li><a href="https://docs.google.com/document/d/1gFynXAc5UcbleE0Yt7AopDtyCQl5aMIp8VwUU-xPlsw/edit#">Guide</a></li>
 
-
-</div>
   </Tab>
 
 
@@ -176,7 +173,7 @@ setShowOrc(true)
 </div>
    
 
-<p class="font-medium">Credits: Frontend concept by Husky Studios, creators of <a target="_blank" href="https://hilarioushuskies.life">Hilarious Huskies </a>. Support the creator by getting yours <a target="_blank" href="https://hilarioushuskies.life/mint">now!</a></p>
+<p class="font-medium">Frontend concept by Husky Studios, creators of <a target="_blank" href="https://hilarioushuskies.life">Hilarious Huskies </a>. Support the creator by getting yours <a target="_blank" href="https://hilarioushuskies.life/mint">now!</a></p>
 
 
 

@@ -242,12 +242,14 @@ try {
           params: [tx],
       })
       
-  
+  const receipt = await web3.eth.getTransactionReceipt(txHash);
+
       
   return {
       success: true,
       status: (<>✅ Check out your transaction on <a target="_blank" href={`https://etherscan.io/tx/${txHash}`}>Etherscan</a> </>),
-      txHash: txHash
+      txHash: txHash,
+      receipt: receipt
       
 
   }

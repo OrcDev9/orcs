@@ -244,7 +244,7 @@ return (
             <button onClick={onDisplayOrcsPressed}>Refresh</button>
 
             <button onClick={onClaimZugPressed}>
-                        {claimtoggle ? ("Calculate $ZUG owed!") : "Claim $ZUG!"}</button>.
+                        {claimtoggle ? ("Calculate $ZUG owed!") : "Claim $ZUG!"}</button>
 
             {showPillage ? (
                 <Pillage wallet={walletAddress} orc={null} tokenid={clicked[0]} />

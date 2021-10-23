@@ -304,8 +304,10 @@ const onMintPressed = async (event) => { //TODO: implement
 
     console.log(place, tryHelm, tryMainhand, tryOffhand, obj)
 
-     const { status, txHash, success } = await pillage({tokenid, place, tryHelm, tryMainhand, tryOffhand} );
+     const { status, txHash, success, receipt } = await pillage({tokenid, place, tryHelm, tryMainhand, tryOffhand} );
      setStatus(status);
+
+     console.log("WRANGLER:", receipt)
      
      ///check for successful transaction
        if(success ===true){

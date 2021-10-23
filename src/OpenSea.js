@@ -31,7 +31,14 @@ import {
 
         {osEvents && osEvents.map((event)=>{
 
-return(<>{event.user.username}</>)
+return(<>{event.user.username}
+
+{event.event_type}
+
+{event.starting_price}
+
+{event.starting_price}
+</>)
         })}
   
   

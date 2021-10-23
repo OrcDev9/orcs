@@ -143,8 +143,8 @@ setShowOrc(true)
               })}
               </div> 
   </Tab>
-  <Tab eventKey="os" title="Open Sea">
-    <OpenSea />
+  <Tab eventKey="os" title="Open Sea" disabled>
+   {/*<OpenSea />*/ } 
   </Tab>
   <Tab eventKey="resources" title="Resources">
   <h2 class="font-bold font-serif" >Resources</h2>

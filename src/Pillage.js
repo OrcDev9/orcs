@@ -300,7 +300,7 @@ const onMintPressed = async (event) => { //TODO: implement
     let tryHelm = checkedHelm
     let tryMainhand = checkedMainhand
     let tryOffhand = checkedOffhand
-    let obj = {address: wallet, token:tokenid}
+   
 
     console.log(place, tryHelm, tryMainhand, tryOffhand, obj)
 
@@ -308,7 +308,7 @@ const onMintPressed = async (event) => { //TODO: implement
      setStatus(status);
 
      console.log("WRANGLER:", receipt)
-     
+     let obj = {address: wallet, token:tokenid, tx:receipt}
      ///check for successful transaction
        if(success ===true){
        

@@ -19,6 +19,7 @@ import {
   
     let osData = await getContractEvents()
     setOSEvents(osData)
+    console.log(osData)
   
   },[])
   
@@ -31,17 +32,7 @@ import {
 
         <h3 class="font-bold sans-serif"></h3>
 
-        {osEvents && osEvents.map((event)=>{
-console.log(event)
-return(<>{event.user.username}
 
-{event.event_type}
-
-{event.starting_price}
-
-{event.starting_price}
-</>)
-        })}
   
   
   </>

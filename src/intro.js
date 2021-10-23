@@ -8,7 +8,7 @@ import logo from "./media/logo.svg"
 import { db } from "./initFirebase";
 import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue, push, orderByChild, limitToLast} from "firebase/database";
 import {Tab,Tabs} from "bootstrap"
-const MyOrcs = () => {
+const Intro = () => {
 
 const [myOrcs, setMyOrcs] = useState();
 const [myOrcsArr, setMyOrcsArr] = useState([]);
@@ -233,61 +233,39 @@ const onClaimZugPressed = async (event) => { //TODO: implement
         
 
 return (
+
+    <div class="border-2 p-3">
+
+                        <div class="flex xs:justify-between md:justify-left md:align-items-baseline">
+                        
+                        <h1 class="text-5xl md:text-6xl xl:text-7xl font-bold font-serif pr-2 ">Ether</h1>
+                        
+                        <h1 class="text-xl md:text-6xl xl:text-7xl font-bold font-serif ">Orcs Tavern</h1>
+                        <img class="rounded-full xs:w-1/3 md:w-1/8" width={80} src={logo} alt="Orcs Logo" />
+                        </div> 
+
+              <div class="flex flex-wrap justify-between">
+
+                    <div>
+                    <h3 class="bold font-serif">TRAIN, FARM AND PILLAGE</h3>
+                    <p>Battle your Orcs in the very first 100% on-chain NFT RPG. Pillage loot pools to upgrade your equipment and meta-data, another industry first. For the Horde!
+</p>
+                    <p>If its the first time you are using this app, click on <strong><ConnectWallet /></strong></p>
+                    <p>Click on Summon the orcs. Click to toggle select orcs, then make them do something. If nothing happens, refresh the page or reconnect your wallet.</p>
+                      <p>If Orcs are missing from your Tavern, try looking them up in, <strong>"LOOK UP ORC"</strong></p>
+
+                     <p>
+                     </p>
+                   
+                    </div>
+
+                  </div>
+                   
+   </div>           
                
-<>
-                <div class="py-3 flex flex-wrap space-x-4">
-               
-                <button onClick={onDisplayOrcsPressed}>Summon the Orcs!</button>
-
-                
-                </div>
-<div>
-<h3 class="bold font-serif">Actions</h3>
-</div>
-            <div class="flex flex-wrap justify-between">
-
-            <button onClick={onClaimZugPressed}>
-                        {claimtoggle ? ("Calculate $ZUG owed!") : "Claim $ZUG!"}</button>.
-
-            {showPillage ? (
-                <Pillage wallet={walletAddress} orc={null} tokenid={clicked[0]} />
-            ) : ( <button>Pillage</button> )}
-
-            <button variant="dark" onClick={()=>doActionClick(2)}>
-              Train!
-            </button>
-            <button variant="dark" onClick={()=>doActionClick(1)}>
-              Farm!
-            </button>
-            <button variant="dark" onClick={()=>doActionClick(0)}>
-              Unstake
-            </button>
-
-            </div>
-      
-
-            <div class="border-2 p-2 mt-3"><strong class="font-serif">OrcBot says: {" "}</strong>{status}</div>
-
-<div class="flex flex-wrap">
-
-{myOrcs && myOrcs.orcs.map((orc, index)=>{
-    let classes = "border-white border-2 hover:bg-gray-100"
-    if(clicked.includes(parseInt(orc.tokenId))){
-        classes="border-2 bg-grey bg-gray-300"
-    }
-    return(
-    <div key={orc.name} class={`w-1/2 md:w-1/4 pointer-events-auto ${classes}`} onClick={()=> toggle(parseInt(orc.tokenId))}>
-    <Orc allData={false} key={orc.name} tokenid={parseInt(orc.tokenId)} />
-    </div>
-    )
-})}
-</div>
-
-
-    </>
   );
 };
 
-export default MyOrcs;
+export default Intro;
 
 

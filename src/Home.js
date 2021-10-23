@@ -13,6 +13,7 @@ import MyOrcs from "./myOrc";
 import InputGroup from 'react-bootstrap/InputGroup'
 import Chat from "./orcChat"
 import Leaderboard from "./Leaderboard.js";
+import Intro from "./intro"
 function App() {
 
 const {nftContract, ercContract, web3} = getContract()
@@ -87,9 +88,10 @@ setShowOrc(true)
 
 
   return (
+    
 <div class="container mx-auto space-y-5">
-      
-  <MyOrcs />
+      <Intro />
+ 
 
 <div class="space-y-2 p-2 border-2">
 
@@ -109,22 +111,37 @@ setShowOrc(true)
               </div>
 
               {/* <Leaderboard /> */}<div class="md:w-2/3 border-2 shadow-lg p-2">
-              <div class="text-lg font-bold font-serif flex flex-wrap justify-center">SOME RANDOM ORCS</div>  
-
+              <Tabs defaultActiveKey="home" id="uncontrolled-tab-example" className="mb-3">
+  <Tab eventKey="home" title="My Orcs">
+  <MyOrcs />
+  </Tab>
+  <Tab eventKey="random" title="Random Orcs">
+  <div class="text-lg font-bold font-serif flex flex-wrap justify-center">SOME RANDOM ORCS</div>  
             
-              <div class="flex flex-wrap">
+            <div class="flex flex-wrap">
 
-                {myOrcs && myOrcs.map((orc, index)=>{
-                    let classes = "hover:bg-gray-100"
+              {myOrcs && myOrcs.map((orc, index)=>{
+                  let classes = "hover:bg-gray-100"
+              
+                  return(
+                  <div key={orc.tokenId} class={`w-1/2 md:w-1/4 pointer-events-auto ${classes}`} onClick={()=> setOrcId(orc.tokenId)}>
+                  <Orc allData={false} key={orc.tokenId} tokenid={parseInt(orc.tokenId)} />
+                  </div>
+                  )
+              })}
+              </div> 
+  </Tab>
+  <Tab eventKey="os" title="Open Sea" disabled>
+    Opensea
+  </Tab>
+</Tabs>
+             
+              
+
+
+
+                 </div>
                 
-                    return(
-                    <div key={orc.tokenId} class={`w-1/2 md:w-1/4 pointer-events-auto ${classes}`} onClick={()=> setOrcId(orc.tokenId)}>
-                    <Orc allData={false} key={orc.tokenId} tokenid={parseInt(orc.tokenId)} />
-                    </div>
-                    )
-                })}
-                </div>                    </div>
-           
 
               
               </div> 

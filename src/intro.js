@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {getMyOrcsObject} from "./utils/services"
-import Orc from "./Orc";
 import {doAction, collectZug, getCurrentWalletConnected, mintNFT, lookupAllOrcs, getContract, lookupOrc} from "./utils/interact.js";
-import Pillage from "./Pillage";
 import ConnectWallet from "./ConnectWallet";
-import logo from "./media/logo.svg"
 import { db } from "./initFirebase";
 import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue, push, orderByChild, limitToLast} from "firebase/database";
 import {Tab,Tabs} from "bootstrap"
@@ -234,15 +230,9 @@ const onClaimZugPressed = async (event) => { //TODO: implement
 
 return (
 
-    <div class="border-2 p-3">
+    <div>
 
-                        <div class="flex xs:justify-between md:justify-left md:align-items-baseline">
-                        
-                        <h1 class="text-5xl md:text-6xl xl:text-7xl font-bold font-serif pr-2 ">Ether</h1>
-                        
-                        <h1 class="text-xl md:text-6xl xl:text-7xl font-bold font-serif ">Orcs Tavern</h1>
-                        <img class="rounded-full xs:w-1/3 md:w-1/8" width={80} src={logo} alt="Orcs Logo" />
-                        </div> 
+                     
 
               <div class="flex flex-wrap justify-between">
 

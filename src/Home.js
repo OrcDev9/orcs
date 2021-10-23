@@ -14,6 +14,8 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import Chat from "./orcChat"
 import Leaderboard from "./Leaderboard.js";
 import Intro from "./intro"
+import logo from "./media/logo.svg"
+
 function App() {
 
 const {nftContract, ercContract, web3} = getContract()
@@ -91,9 +93,13 @@ setShowOrc(true)
     
 <div class="container mx-auto space-y-5">
 
- 
-
-<div class="space-y-2 p-2 border-2">
+<div class="flex xs:justify-between md:justify-left md:align-items-baseline pt-3">
+                        
+                        <h1 class="text-5xl md:text-6xl xl:text-7xl font-bold font-serif pr-2 ">Ether</h1>
+                        
+                        <h1 class="text-xl md:text-6xl xl:text-7xl font-bold font-serif ">Orcs Tavern</h1>
+                        <img class="rounded-full xs:w-1/3 md:w-1/8" width={80} src={logo} alt="Orcs Logo" />
+                        </div> 
 
 <div class="space-y-2 p-2 border-2">        
          
@@ -140,7 +146,7 @@ setShowOrc(true)
     Opensea
   </Tab>
   <Tab eventKey="resources" title="Resources">
-  <h2>Resources</h2>
+  <h2 class="font-bold font-serif" >Resources</h2>
 <li><a href="https://etherscan.io/address/0x3abedba3052845ce3f57818032bfa747cded3fca#code">Contract</a></li>
 <li><a href="https://dune.xyz/Marcov/EtherOrcs">Dune Analytics</a></li>
 <li><a href="https://opensea.io/collection/ether-orcs">Open Sea</a></li>
@@ -170,10 +176,10 @@ setShowOrc(true)
         </div>
     
 
-</div>
+
    
 
-<p class="font-medium">Frontend concept by Husky Studios, creators of <a target="_blank" href="https://hilarioushuskies.life">Hilarious Huskies </a>. Support the creator by getting yours <a target="_blank" href="https://hilarioushuskies.life/mint">now!</a></p>
+<p class="font-medium"> Frontend concept by Husky Studios, creators of <a target="_blank" href="https://hilarioushuskies.life">Hilarious Huskies </a>. Support the creator by getting yours <a target="_blank" href="https://hilarioushuskies.life/mint">now!</a></p>
 
 
 

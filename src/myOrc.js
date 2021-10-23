@@ -241,6 +241,8 @@ return (
 </div>
             <div class="flex flex-wrap justify-between">
 
+            <button onClick={onDisplayOrcsPressed}>Refresh</button>
+
             <button onClick={onClaimZugPressed}>
                         {claimtoggle ? ("Calculate $ZUG owed!") : "Claim $ZUG!"}</button>.
 
@@ -265,7 +267,7 @@ return (
 
 <div class="flex flex-wrap">
 
-{myOrcs && myOrcs.orcs.map((orc, index)=>{
+{myOrcs && displayOrcs && myOrcs.orcs.map((orc, index)=>{
     let classes = "border-white border-2 hover:bg-gray-100"
     if(clicked.includes(parseInt(orc.tokenId))){
         classes="border-2 bg-grey bg-gray-300"

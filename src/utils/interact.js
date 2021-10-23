@@ -41,14 +41,18 @@ export async function getUsername(owner){
   let osRequest 
   let osResponse 
   let username = null
-
+if(owner){
   try{
-  osRequest = await fetch(`https://api.opensea.io/api/v1/assets?owner=${owner}&order_direction=desc&offset=0&limit=1`, init);
-  osResponse = await osRequest.json()
-  username = osResponse.assets[0].owner.user.username
-  }catch(e){console.log(e)}
+    osRequest = await fetch(`https://api.opensea.io/api/v1/assets?owner=${owner}&order_direction=desc&offset=0&limit=1`, init);
+    osResponse = await osRequest.json()
+    username = osResponse.assets[0].owner.user.username
+    }catch(e){console.log(e)}
+  
+    return(username)
+}else{
+  return(null)
+}
 
-  return(username)
 
 }
 
@@ -247,6 +251,27 @@ export const txReceipt = async({txHash, interval})=>{
         throw new Error("Invalid Type: " + txHash);
     }
 };
+
+}
+
+
+
+export async function getContractEvents(){
+
+  const init = {method: 'GET', headers: { }}
+
+  let osRequest 
+  let osResponse = null
+
+
+  try{
+  osRequest = await fetch(`https://api.opensea.io/api/v1/events?asset_contract_address=0x3abedba3052845ce3f57818032bfa747cded3fca&only_opensea=false&offset=0&limit=20
+  `, init);
+  osResponse = await osRequest.json()
+ 
+  }catch(e){console.log(e)}
+
+  return(osResponse)
 
 }
 

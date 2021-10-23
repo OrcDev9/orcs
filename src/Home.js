@@ -1,5 +1,5 @@
 import {
-  getCurrentWalletConnected, getGasPrice, getEthPrice, getContract  
+  getCurrentWalletConnected, getGasPrice, getEthPrice, getContract, getContractEvents 
 } from "./utils/interact.js";
 import { useState, useEffect, useRef } from "react";
 import { Button } from "react-bootstrap";
@@ -55,7 +55,7 @@ setMyorcs(objarry)
 useEffect(async () => {
 
 setTokenSupply(await nftContract.methods.totalSupply().call());
-
+console.log("osdata:",getContractEvents())
 
 getEthPrice().then((ethprice)=>{
   setEthPrice(parseFloat(ethprice.result.ethusd));

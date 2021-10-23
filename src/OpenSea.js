@@ -29,6 +29,8 @@ import {
     return (
         <>
 
+        <h3 class="font-bold sans-serif"></h3>
+
         {osEvents && osEvents.map((event)=>{
 console.log(event)
 return(<>{event.user.username}

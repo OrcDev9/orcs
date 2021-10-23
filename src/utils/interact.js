@@ -220,6 +220,36 @@ const  orcObj = {
 
 }
 
+export const txReceipt = async({txHash, interval})=>{
+
+  module.exports = function getTransactionReceiptMined(txHash, interval) {
+    const self = this;
+    const transactionReceiptAsync = function(resolve, reject) {
+        self.getTransactionReceipt(txHash, (error, receipt) => {
+            if (error) {
+                reject(error);
+            } else if (receipt == null) {
+                setTimeout(
+                    () => transactionReceiptAsync(resolve, reject),
+                    interval ? interval : 500);
+            } else {
+                resolve(receipt);
+            }
+        });
+    };
+
+    if (Array.isArray(txHash)) {
+        return Promise.all(txHash.map(
+            oneTxHash => self.getTransactionReceiptMined(oneTxHash, interval)));
+    } else if (typeof txHash === "string") {
+        return new Promise(transactionReceiptAsync);
+    } else {
+        throw new Error("Invalid Type: " + txHash);
+    }
+};
+
+}
+
 
 export const pillage = async({tokenid, place, tryHelm, tryMainhand, tryOffhand}) => {
   
@@ -242,7 +272,10 @@ try {
           params: [tx],
       })
       
-  const receipt = await web3.eth.getTransactionReceipt(txHash);
+      let interval = 500
+  const receipt =  await txReceipt({txHash, interval})
+
+ 
 
       
   return {

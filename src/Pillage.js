@@ -25,7 +25,7 @@ const places = [
     {place: "TAINTED KINGDOM", level:15, image:kingdom, index:6},
     {place: "OOZING DEN", level:25, image:den, index:7},
     {place: "ANCIENT CHAMBER", level:45, image:chamber, index:8},
-    {place: "ORC GODS", level:52, image:gods, index:9},
+  //  {place: "ORC GODS", level:52, image:gods, index:9},
    ]
 
   /*

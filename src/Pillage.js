@@ -19,7 +19,7 @@ import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue
 const places = [
     {place: "TOWN", level:1, image:town, index:0},
     {place: "DUNGEON", level:3, image:dungeon, index:1},
-    {place: "THE CAVERN", cost: 120, image:cavern, index:2},
+    {place: "THE CAVERN", level:10, cost: 120, image:cavern, index:2},
  //   {place: "CRYPT", level:6, image:crypt, index:2},
  //   {place: "CASTLE", level:15, image:castle, index:3},
  //   {place: "DRAGON'S LAIR", level:25, image:dragon, index:4},

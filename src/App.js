@@ -7,17 +7,14 @@ import {
   Route,
 } from "react-router-dom";
 import Horde from "./Horde";
-import {
-getContract, getCurrentWalletConnected
-  
-} from "./utils/interact.js";
-import Leaderboard from "./Leaderboard";
-import Owners from "./OwnersCount";
+import {getContract, getCurrentWalletConnected} from "./utils/interact.js";
+
+import { Helmet } from "react-helmet";
 const history = createBrowserHistory();
-//bg-light-image
+
 function App() {
   
-  const {nftContract, ercContract, web3} = getContract()
+  const {nftContract} = getContract()
   const [wallet, setWallet] = useState("")
   const [flip, setFlip] = useState(false)
 
@@ -39,18 +36,14 @@ function App() {
   
  return (
     <>
-      {/*  <Helmet>
-    <title>Orcs</title>
-      <meta name="Hilarious Huskies is an NFT collection inspired a beautiful pup named Hazel." content="Hilarious Huskies is an NFT collection inspired a beautiful pup named Hazel." />
+<Helmet>
+    <title>EtherOrcs Contract GUI</title>
+      <meta name="EtherORcs" content="EtherOrcs is a collection of 5050 Orcs ready to pillage the blockchain. With no IPFS or API, these Orcs are the very first role-playing game that takes place 100% on-chain. For the HORDE!" />
       <meta content="summary_large_image" property="twitter:card" />
-      <meta content="HilariousHuskies Marketplace: Mint and explore digital assets" property="og:title" />
-      </Helmet>
-      //class="bg-light-image">
-      */ }
-<div> 
+      <meta content="EtherOrcs GUI by HilariousHuskies" property="og:title" />
+</Helmet>
 
-
-<div class="container mx-auto space-y-5 ">
+<div class="container mx-auto space-y-5">
   
 
   <Router history={history}>
@@ -58,24 +51,14 @@ function App() {
       <div class="container mx-auto">             
          
               <Switch>
-                
                 <Route path="/admin">  
+                      {flip ? ( <>
+                      <Horde contract={nftContract} />
 
-                {flip ? ( <>
-                <Horde contract={nftContract} />
-
-          </>) :(`${wallet} Not allowed`)}
-               
-
-                 {/*
-                                <Leaderboard />
-                <Owners />
-                
-              
-             <Activity contract={nftContract} web3={web3} />*/}
+                </>) :(`${wallet} Not allowed`)}
                 </Route>
                 <Route path="/">   
-                <Home />
+                    <Home />
                 </Route>
               </Switch>
 
@@ -87,14 +70,8 @@ function App() {
 
 
 </div>
-
-</div>
-
 </>
-
-
-  );
-}
+)}
 
 export default App;
 

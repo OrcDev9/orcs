@@ -6,6 +6,8 @@ module.exports = {
         fontFamily: {
             sans: ['Iskara', 'sans-serif'],
             serif: ['MedievalSharp', 'cursive'],
+            display: ["'Press Start 2P'", 'cursive'],
+            body: ["'Press Start 2P'", 'cursive'],            
         },
         backgroundImage: {
           'light-image': "url('https://i.imgur.com/Nu7emt2.png')",

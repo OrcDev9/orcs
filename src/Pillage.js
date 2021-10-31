@@ -10,6 +10,7 @@ import kingdom from "./media/images/taintedkingdom1.jpg"
 import den from "./media/images/oozingden.jpg"
 import chamber from "./media/images/ancientchamber.png"
 import gods from "./media/images/orcsgods.png"
+import cavern from "./media/images/cavern.png"
 import Modal from 'react-bootstrap/Modal'
 import Orc from "./Orc";
 import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue, push, orderByChild, limitToLast} from "firebase/database";
@@ -18,6 +19,7 @@ import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue
 const places = [
     {place: "TOWN", level:1, image:town, index:0},
     {place: "DUNGEON", level:3, image:dungeon, index:1},
+    {place: "THE CAVERN", cost: 120, image:cavern, index:2},
  //   {place: "CRYPT", level:6, image:crypt, index:2},
  //   {place: "CASTLE", level:15, image:castle, index:3},
  //   {place: "DRAGON'S LAIR", level:25, image:dragon, index:4},
@@ -175,14 +177,21 @@ function PlaceModal(props) {
             }
             return(
                 <div class="w-1/2 md:w-1/3 lg:w-1/5 py-4 flex justify-center border-white border-2 hover:bg-gray-100" onClick={()=>openSecondModal(obj.index)}>
-                  {tempvar && (
-                    <div>
+                   <div>
+                      {tempvar && (
+                  <>
                     <div class="font-bold text-sm">{obj.place}</div>
-                    <div class="w-28 text-sm">Orc must be Level {obj.level}+ to Pillage</div>
-                    <div class="w-28 border-1 flex flex-wrap justify-center text-center"><img src={obj.image} /></div>
+                               
+                   
+                    </>
+                  
+                  )}
+                  {obj.level && (<div class="w-28 text-sm">Orc must be Level {obj.level}+ to Pillage</div>)}
+                    {obj.cost && (<div class="w-28 text-sm">Cost: {obj.cost} $ZUG</div>)}
+                    {obj.image && (<div class="w-28 border-1 flex flex-wrap justify-center text-center"><img src={obj.image} /></div>)}
+
                     
                   </div>
-                  )}
                 </div>
             )
 

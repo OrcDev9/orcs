@@ -3,11 +3,10 @@ import {getMyOrcsObject} from "./utils/services"
 import Orc from "./Orc";
 import {doAction, collectZug, getCurrentWalletConnected, mintNFT, lookupAllOrcs, getContract, lookupOrc} from "./utils/interact.js";
 import Pillage from "./Pillage";
-import ConnectWallet from "./ConnectWallet";
-import logo from "./media/logo.svg"
+import Title from "./Title";
 import { db } from "./initFirebase";
 import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue, push, orderByChild, limitToLast} from "firebase/database";
-import {Tab,Tabs} from "bootstrap"
+
 const MyOrcs = () => {
 
 const [myOrcs, setMyOrcs] = useState();
@@ -19,12 +18,9 @@ const [claimableZug, setClaimableZug] = useState();
 const [claimtoggle, setClaimtoggle] = useState(true);
 const [displayOrcs, setDisplayOrcs] = useState(true);
 
-const {web3} = getContract()
-
-
 const [walletAddress, setWallet] = useState("");
 
-const [isMetamask, setIsMetamask] = useState(true);
+
 
 
 ///test Wallets
@@ -47,18 +43,12 @@ const updateOrcsDb = async (obj) => {
  
   const db = getDatabase();
   const timestamp = Date.now()
- 
- 
   const userDataRef = ref(db, `etherorcs/address/${obj.address}/tokens/` + obj.token)
-
   
   await set(userDataRef, {
     lastSeen: timestamp,
-   
   });
-
 }
-
 
 
 const summonOrcs = async (address) => { //TODO: implement
@@ -236,8 +226,8 @@ return (
                
 <>
 
-<div>
-<h3 class="bold font-serif">Actions</h3>
+<div class="text-xl pb-2">
+<Title text={"ACTIONS"} />
 </div>
             <div class="flex flex-wrap justify-between">
 
@@ -263,14 +253,14 @@ return (
             </div>
       
 
-            <div class="border-2 p-2 mt-3"><strong class="font-serif">OrcBot says: {" "}</strong>{status}</div>
+            <div class="border-2 p-2 m-3"><strong class="font-serif">OrcBot says: {" "}</strong>{status}</div>
 
 <div class="flex flex-wrap">
 
 {myOrcs && displayOrcs && myOrcs.orcs.map((orc, index)=>{
-    let classes = "border-white border-2 hover:bg-gray-100"
+    let classes = "border-white border-2 hover:bg-yellow-500"
     if(clicked.includes(parseInt(orc.tokenId))){
-        classes="border-2 bg-grey bg-gray-300"
+        classes="border-2 bg-grey bg-yellow-600"
     }
     return(
     <div key={orc.name} class={`w-1/2 md:w-1/4 pointer-events-auto ${classes}`} onClick={()=> toggle(parseInt(orc.tokenId))}>

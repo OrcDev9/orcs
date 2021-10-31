@@ -43,7 +43,7 @@ function App() {
       <meta content="EtherOrcs GUI by HilariousHuskies" property="og:title" />
 </Helmet>
 
-<div class="container mx-auto space-y-5">
+<div class="container mx-auto space-y-5 text-white">
   
 
   <Router history={history}>

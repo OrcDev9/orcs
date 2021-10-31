@@ -72,7 +72,7 @@ const isMetaMaskInstalled = async () => {
     <>
     {isMetamask ? (
 
-<Button variant="dark" onClick={connectWalletPressed}>
+<Button variant="light" onClick={connectWalletPressed}>
 {walletAddress.length > 0 ? (
   "Connected: " +
   String(walletAddress).substring(0, 6) +
@@ -86,7 +86,7 @@ const isMetaMaskInstalled = async () => {
     ) : (
 
       <Button 
-      variant="dark"
+      variant="light"
       onClick={(e) => {
         e.preventDefault();
         window.location.href='https://metamask.app.link/dapp/hilarioushuskies.life/';

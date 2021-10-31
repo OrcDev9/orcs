@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 @tailwind base;
 @layer base {
+   
     h1 {
       @apply text-3xl font-bold font-sans text-yellow-400;
     }
@@ -13,16 +14,16 @@
       @apply text-lg ;
     }
     a {
-      @apply text-blue-900 underline;
+      @apply text-white underline;
     }
     p {
-        @apply lg:text-base xl:text-lg pb-2 ;
+        @apply lg:text-base xl:text-lg pb-2 font-display;
       }
     button {
-       @apply border-2 p-1 bg-yellow-700 hover:shadow-lg text-white font-bold;
+       @apply border-2 p-1 bg-yellow-800 hover:shadow-lg text-white font-bold font-display;
       }
       input {
-        @apply border-2 p-1 bg-yellow-400 hover:shadow-lg text-white font-bold text-center;
+        @apply border-2 p-1 bg-yellow-300 hover:shadow-lg text-white font-bold text-center;
        }
 
       

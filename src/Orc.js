@@ -86,7 +86,7 @@ return (
        <div class="font-semibold text-xl">Lvl: {orcData.calcLevel}</div>
    </div>
    <div class="flex justify-center">
-       <div class="font-semibold text-xs">{orcData.actionString} {showClaimable && `| ${claimable} Zug claimable`}</div>
+       <div class="font-semibold text-xs text-center">{orcData.actionString} {showClaimable && `| ${claimable} Zug claimable`}</div>
    </div>
    <div class="flex justify-center">
        <div class="font-semibold text-xs">{`$Zug Bonus ${orcData.zugModifier}+`}</div>

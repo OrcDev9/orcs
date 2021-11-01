@@ -7,16 +7,13 @@ import { Tab } from "react-bootstrap";
 import { Tabs } from "react-bootstrap";
 import MyOrcs from "./myOrc";
 import Intro from "./intro"
-import logo from "./media/logo.png"
 import Title from "./Title.js";
+import ConnectWallet from "./ConnectWallet"
 
 function App() {
 
-const {nftContract, ercContract, web3} = getContract()
 //setZug((await ercContract.methods.balanceOf(address).call()))
 const [myOrcs, setMyorcs] = useState();
-const [ethprice, setEthPrice] = useState(0);
-const [tokenSupply, setTokenSupply] = useState();
 
 const [showOrc, setShowOrc] = useState(true);
 const [orcId, setOrcId] = useState(1);
@@ -24,7 +21,6 @@ const [orcId, setOrcId] = useState(1);
 const orcLookupRef = useRef(1);
 
 useEffect(async () => {
-const rndInt = Math.floor(Math.random() * 5050) + 1
 
 let arry = []
 let objarry = []
@@ -62,12 +58,14 @@ setShowOrc(true)
     
 <div class="container mx-auto space-y-5">
 
-<div class="flex xs:justify-between md:justify-left">
-                        
-                        
-                        <img class="xs:w-1/3 md:w-1/8" src={"https://etherorcs.com/static/media/etherorcs-logo.d8a3762c.png"} alt="Orcs Logo" />
-                        <h1 class="hidden">EtherOrcs Tavern</h1>
+                  <div class="flex justify-center align-items-baseline">
+                        <img src={"https://etherorcs.com/static/media/etherorcs-logo.d8a3762c.png"} alt="EtherOrcs Tavern" />
+                       
                         </div> 
+                  
+ 
+                        
+
 
 <div class="space-y-2 p-2 border-2">        
          
@@ -86,6 +84,11 @@ setShowOrc(true)
               </div>
 
               {/* <Leaderboard /> */}<div class="md:w-2/3 border-2 shadow-lg p-2">
+
+                            
+              <div class="flex justify-end">
+                        <ConnectWallet />
+                        </div>  
               <Tabs defaultActiveKey="home" id="uncontrolled-tab-example" className="mb-3">
                 
               <Tab eventKey="home" title="Start Here">

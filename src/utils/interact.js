@@ -184,6 +184,8 @@ export const lookupOrc = async (tokenid)=>{
   var b = a.split(",")
   var orc = JSON.parse(atob(b[1]))
 
+  console.log("SID HERE", orc)
+
   let activity = await nftContract.methods.activities(tokenid).call()
   let claimable = parseInt(await nftContract.methods.claimable(tokenid).call())
   

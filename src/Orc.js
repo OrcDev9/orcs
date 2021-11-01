@@ -141,26 +141,26 @@ return(<div key={orcData.name + i}>
 )}
 
 </div>
+
+
+
+
+{allData && orcData && (
+<>
 <div class="flex justify-evenly">
 
 <button onClick={onButtonClick}>Download Stats PNG</button>
   </div>
 
-
-{orcData && (
 <div>
 <img ref={pfpref}  src={orcData.image} alt={orcData.name} />
 </div>
 
-)}
-
-
-{allData && (
   <div class="flex justify-evenly py-2">
 
 <button onClick={onpfpClick}>Download PFP</button>
   </div>
-
+</>
 )}
 </>
   )

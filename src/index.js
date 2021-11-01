@@ -15,7 +15,7 @@ ReactDOM.render(
       <Background>
         <App />
           </Background>
-    </ThemeProvider>,
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

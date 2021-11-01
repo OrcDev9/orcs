@@ -7,12 +7,14 @@ import { toPng } from 'html-to-image';
 function Orc({tokenid, allData, orc}) {
  
 const [orcData, setOrcData] = useState(null);
+const [showpfpOrc, setPfpOrc] = useState(true);
 const [loading, setLoading] = useState(false);
 const [showClaimable, setShowClaimable] = useState(false);
 const [claimable, setClaimable] = useState(false);
 
  
 const ref = useRef()
+const pfpref = useRef()
 
   const onButtonClick = useCallback(() => {
     if (ref.current === null) {
@@ -30,6 +32,25 @@ const ref = useRef()
         console.log(err)
       })
   }, [ref])
+
+
+  const onpfpClick = useCallback(() => {
+    if (pfpref.current === null) {
+      return
+    }
+
+    toPng(pfpref.current, { cacheBust: true, })
+      .then((dataUrl) => {
+        const link = document.createElement('a')
+        link.download = `Orc${tokenid}PFP.png`
+        link.href = dataUrl
+        link.click()
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+
+  }, [pfpref])
 
 useEffect(async () => {
 
@@ -77,7 +98,7 @@ return (
        <div class="font-semibold text-xl ">{orcData.name}</div>
    </div>
   <div class="flex justify-center">
-    <img  width={150} src={orcData.image} alt={orcData.name} />
+    <img width={150} src={orcData.image} alt={orcData.name} />
    </div>
 
    <div class="flex justify-center">
@@ -121,8 +142,21 @@ return(<div key={orcData.name + i}>
 
 </div>
 
+
+{orcData && (
+<div>
+<img ref={pfpref}  src={orcData.image} alt={orcData.name} />
+</div>
+
+)}
+
+
 {allData && (
-<button onClick={onButtonClick}>Download PNG</button>
+  <div>
+<button onClick={onButtonClick}>Download Stats PNG</button>
+<button onClick={onpfpClick}>Download PFP</button>
+  </div>
+
 )}
 </>
   )

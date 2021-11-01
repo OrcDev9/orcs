@@ -64,8 +64,9 @@ setShowOrc(true)
 
 <div class="flex xs:justify-between md:justify-left">
                         
-                        <h1 class="text-xl md:text-6xl xl:text-7xl font-bold font-serif pt-3">EtherOrcs Tavern</h1>
-                        <img class="xs:w-1/3 md:w-1/8" width={80} src={logo} alt="Orcs Logo" />
+                        
+                        <img class="xs:w-1/3 md:w-1/8" src={"https://etherorcs.com/static/media/etherorcs-logo.d8a3762c.png"} alt="Orcs Logo" />
+                        <h1 class="hidden">EtherOrcs Tavern</h1>
                         </div> 
 
 <div class="space-y-2 p-2 border-2">        

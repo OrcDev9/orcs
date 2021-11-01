@@ -229,12 +229,16 @@ return (
 <div class="text-xl pb-2">
 <Title text={"ACTIONS"} />
 </div>
-            <div class="flex flex-wrap justify-between">
+            <div class="flex flex-wrap justify-between pb-3">
 
             <button onClick={onDisplayOrcsPressed}>Refresh</button>
 
             <button onClick={onClaimZugPressed}>
                         {claimtoggle ? ("Calculate $ZUG owed!") : "Claim $ZUG!"}</button>
+
+            </div>
+
+            <div class="flex flex-wrap justify-between">
 
             {showPillage ? (
                 <Pillage wallet={walletAddress} orc={null} tokenid={clicked[0]} />

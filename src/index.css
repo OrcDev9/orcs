@@ -17,7 +17,7 @@
       @apply text-white underline;
     }
     p {
-        @apply lg:text-base xl:text-lg pb-2 font-display;
+        @apply lg:text-base xl:text-lg pb-3 font-display;
       }
     button {
        @apply border-2 p-1 bg-yellow-800 hover:shadow-lg text-white font-bold font-display;

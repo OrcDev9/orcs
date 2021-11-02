@@ -5,7 +5,7 @@ const Background = ( { children } ) =>
 {
     return (
        
-        <body className="bg-black transition-all">
+        <body style={{background: "#111111"}}>
             {children}
         </body>
     )

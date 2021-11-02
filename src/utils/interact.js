@@ -88,8 +88,6 @@ export const lookupAllOrcs = async ({start, stop, array})=>{
   let loopEnd = stop
   let tempArr = []
 
-  console.log("3.", array)
-
   if(array){
   array.map((i, index)=>{
     console.log(i)
@@ -124,10 +122,7 @@ export const lookupAllOrcs = async ({start, stop, array})=>{
 }
 
 let results = await multiCallOrcs(tempArr)
-//console.log(results)
-///0 is orcs
-///1 claimable
-///2 activities
+
 let orcObj 
 let orcArry = []
 
@@ -175,6 +170,81 @@ return orcArry
 
 }
 
+
+export const lookupMultipleOrcs = async ({array})=>{
+
+  let tempArr = []
+
+  if(array){
+  array.map((i, index)=>{
+    var tx = {
+      reference: 'EtherOrcs'+i.toString(),
+      contractAddress: contractAddress,
+      abi: orcs.abi,
+      calls: [{ reference: 'orcsCall'+i.toString(), methodName: 'orcs', methodParameters: [i]},
+      { reference: 'claimableCall'+i.toString(), methodName: 'claimable', methodParameters: [i]},
+      { reference: 'activitiesCall'+i.toString(), methodName: 'activities', methodParameters: [i]},
+      { reference: 'ownerOfCall'+i.toString(), methodName: 'ownerOf', methodParameters: [i]},
+      { reference: 'tokenURI'+i.toString(), methodName: 'tokenURI', methodParameters: [i]},
+     ]
+    };
+    tempArr.push(tx);
+  })
+}
+
+let results = await multiCallOrcs(tempArr)
+
+let orcObj 
+let orcArry = []
+
+array.forEach(i => {
+  
+  let orcData = results.results[`EtherOrcs${i}`].callsReturnContext[0].returnValues
+  let activity = results.results[`EtherOrcs${i}`].callsReturnContext[2].returnValues[2]
+  let claimable = parseInt(results.results[`EtherOrcs${i}`].callsReturnContext[1].returnValues[0].hex, 16)
+
+  let orcTokenData = results.results[`EtherOrcs${i}`].callsReturnContext[4].returnValues[0]
+  var b = orcTokenData.split(",")
+  var orcTokenObj = JSON.parse(atob(b[1]))
+
+  let level =  orcData[4]
+  let lvlProgress =  orcData[6]
+  let action = activity
+  
+const {calcLevel, activitymap} = calcuclateLevel({action, claimable, level, lvlProgress})
+
+let ownerAdd = results.results[`EtherOrcs${i}`].callsReturnContext[2].returnValues[0]
+
+if(ownerAdd === "0x0000000000000000000000000000000000000000" || parseInt(activity) === 0 ){
+   ownerAdd = results.results[`EtherOrcs${i}`].callsReturnContext[3].returnValues[0]
+}
+
+orcObj = {
+    owner: ownerAdd,
+    tokenid: i,
+    time: parseInt(results.results[`EtherOrcs${i}`].callsReturnContext[2].returnValues[1].hex,16),  
+    action: results.results[`EtherOrcs${i}`].callsReturnContext[2].returnValues[2].toString(),  
+    actionString: activitymap,
+    level:orcData[4], 
+    calcLevel: calcLevel,
+    claimable: claimable,
+    image: orcTokenObj.image,
+    name: `Orc #${i}`,
+    body: orcData[0],
+    helm: orcData[1],
+    mainhand: orcData[2],
+    offhand: orcData[3],
+    zugModifier: orcData[5], 
+    attributes: orcTokenObj.attributes
+  }
+
+  orcArry.push(orcObj)
+})
+
+return orcArry
+
+}
+
 export const lookupOrc = async (tokenid)=>{
 
   let orcs = await nftContract.methods.orcs(tokenid).call()
@@ -184,7 +254,7 @@ export const lookupOrc = async (tokenid)=>{
   var b = a.split(",")
   var orc = JSON.parse(atob(b[1]))
 
-  console.log("SID HERE", orc)
+  //console.log("SID HERE", JSON.parse(atob(orc.image)))
 
   let activity = await nftContract.methods.activities(tokenid).call()
   let claimable = parseInt(await nftContract.methods.claimable(tokenid).call())

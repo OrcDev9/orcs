@@ -60,7 +60,7 @@ const places = [
 //  "TAINTED_KINGDOM", "OOZING_DEN", "ANCIENT_CHAMBER", "ORC_GODS"] }]
 
 
-function Pillage({tokenid, wallet}) {
+function Pillage({tokenid, wallet, orcs}) {
 
 const [lootPool, setLootPool] = useState(0);
 const [status, setStatus] = useState();
@@ -86,6 +86,15 @@ await set(userDataRef, {
   });
 
 }
+
+let OrcObjectoPass 
+
+orcs.map((orc)=>{
+
+  if(orc.tokenid === tokenid)
+  OrcObjectoPass = orc
+
+})
 
 
 const handleChangeHelm = () => {
@@ -237,18 +246,23 @@ function LootPoolModal(props) {
          
         
 
-        <div class="flex flex-wrap justify-center animate-pulse"> 
+        <div class="flex flex-wrap justify-center"> 
         {places.map((obj)=>{
                 let place
                 if(lootPool === obj.index){
-                    place = obj.image
+                    
                     return(
-                    <div>
+                    <div class="relative">
                     <div class="text-center font-bold text-xl"> 
                       {obj.place} 
                     </div>
-                    <div class="border-1 w-64 flex flex-wrap justify-center text-center"><img src={obj.image} />
+                    <div class="border-1 flex flex-wrap justify-center text-center"><img src={obj.image} />
                     </div>
+
+                    <div class="flex flex-wrap justify-center animate-pulse absolute bottom-0 right-0"> 
+            
+            <Orc class="absolute" format={"image"} orc={OrcObjectoPass}/>
+             </div>
                     </div>
                     )
                 }
@@ -258,10 +272,7 @@ function LootPoolModal(props) {
               }
           </div>
 
-              <div class="flex flex-wrap justify-center animate-pulse"> 
-            
-            <Orc allData={false} tokenid={tokenid} />
-             </div>
+              
 
 </div>
         <div class="flex flex-wrap justify-between">
@@ -316,7 +327,6 @@ const onMintPressed = async (event) => { //TODO: implement
      const { status, txHash, success, receipt } = await pillage({tokenid, place, tryHelm, tryMainhand, tryOffhand} );
      setStatus(status);
 
-     console.log("WRANGLER:", receipt)
      let obj = {address: wallet, token:tokenid, tx:receipt}
      ///check for successful transaction
        if(success ===true){

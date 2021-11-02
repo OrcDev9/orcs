@@ -1,5 +1,5 @@
 import {
-getGasPrice, getEthPrice, getContract, getContractEvents 
+getGasPrice, getEthPrice, getContract, getContractEvents, lookupAllOrcs, lookupMultipleOrcs
 } from "./utils/interact.js";
 import { useState, useEffect, useRef } from "react";
 import Orc from "./Orc"
@@ -9,6 +9,10 @@ import MyOrcs from "./myOrc";
 import Intro from "./intro"
 import Title from "./Title.js";
 import ConnectWallet from "./ConnectWallet"
+import Resources from "./Resources.js";
+import RandomOrcs from "./RandomOrcs.js";
+import OrcGods from "./OrcGods.js";
+import LookupOrc from "./LookupOrc.js";
 
 function App() {
 
@@ -16,25 +20,16 @@ function App() {
 const [myOrcs, setMyorcs] = useState();
 
 const [showOrc, setShowOrc] = useState(true);
-const [orcId, setOrcId] = useState(1);
+const [orcId, setOrcId] = useState([1]);
 
 const orcLookupRef = useRef(1);
 
 useEffect(async () => {
-
-let arry = []
-let objarry = []
-
-arry = Array.from({length: 12}, () => Math.floor(Math.random() * 5050));
-
-arry.map((a)=>{
-  objarry.push({tokenId: a})
-})
-
-setMyorcs(objarry)
+let arry = Array.from({length: 12}, () => Math.floor(Math.random() * 5050));
+let multiOrcs = await lookupMultipleOrcs({array: arry})
+setMyorcs(multiOrcs)
 
 },[0])
-
 
 const handleOrcSubmit = (e) => {
   e.preventDefault()
@@ -52,79 +47,44 @@ setShowOrc(true)
 };
 
 
-
-
-  return (
+return (
     
 <div class="container mx-auto space-y-5">
 
-                  <div class="flex justify-center align-items-baseline">
+                 <div class="flex justify-center align-items-baseline">
                         <img src={"https://etherorcs.com/static/media/etherorcs-logo.d8a3762c.png"} alt="EtherOrcs Tavern" />
-                       
-                        </div> 
-                  
+                  </div> 
  
-                        
+<div class="space-y-2 p-2">     
 
-
-<div class="space-y-2 p-2 border-2">        
-         
-          <div class="flex flex-wrap justify-arround">
-
-                  <div class="md:w-1/3 border-2 shadow-lg p-2 text-black">
-                   
-                  <div class="text-center"> <Title size="sm" text={"LOOK UP ORC"}/></div>  
-                  <div class="flex flex-wrap justify-center">
-                       <form onSubmit={handleOrcSubmit}>
-                    <input  placeholder={"Type Orc Id here"} ref={orcLookupRef} />
-                    <button class="hidden" type="submit">Unleash the Orc</button> 
-                    </form>    
-                  </div>  
-              {showOrc && <Orc allData={true} tokenid={orcId} />}
-              </div>
-
-              {/* <Leaderboard /> */}<div class="md:w-2/3 border-2 shadow-lg p-2">
-
-                            
-              <div class="flex justify-end">
+<div class="flex justify-end">
                         <ConnectWallet />
-                        </div>  
+                        </div> 
+         
               <Tabs defaultActiveKey="home" id="uncontrolled-tab-example" className="mb-3">
                 
               <Tab eventKey="home" title="Start Here">
               <Intro />
               </Tab>
+
+              <Tab eventKey="orcslookup" title="Look Up Orc">
+               <LookupOrc />
+                    </Tab>
       
   <Tab eventKey="myorcs" title="My Orcs">
   <MyOrcs />
   </Tab>
   <Tab eventKey="random" title="Random Orcs">
-  <div class="text-lg font-bold font-serif flex flex-wrap justify-center"><Title text={"SOME RANDOM ORCS"} /></div>  
-            
-            <div class="flex flex-wrap">
-
-              {myOrcs && myOrcs.map((orc, index)=>{
-                  let classes = "hover:bg-yellow-800"
-              
-                  return(
-                  <div key={orc.tokenId} class={`w-1/2 md:w-1/4 pointer-events-auto ${classes}`} onClick={()=> setOrcId(orc.tokenId)}>
-                  <Orc allData={false} key={orc.tokenId} tokenid={parseInt(orc.tokenId)} />
-                  </div>
-                  )
-              })}
-              </div> 
+  <RandomOrcs />
+  </Tab>
+  <Tab eventKey="god" title="Orc Gods">
+  <OrcGods />
   </Tab>
   <Tab eventKey="os" title="Open Sea" disabled>
    {/*<OpenSea />*/ } 
   </Tab>
 <Tab eventKey="resources" title="Resources">
-<div class="text-lg flex flex-wrap justify-center"><Title text={"Resources"} /></div>  
-<div class="font-display">
-<li><a href="https://etherscan.io/address/0x3abedba3052845ce3f57818032bfa747cded3fca#code">Contract</a></li>
-<li><a href="https://dune.xyz/Marcov/EtherOrcs">Dune Analytics</a></li>
-<li><a href="https://opensea.io/collection/ether-orcs">Open Sea</a></li>
-<li><a href="https://docs.google.com/document/d/1gFynXAc5UcbleE0Yt7AopDtyCQl5aMIp8VwUU-xPlsw/edit#">Guide</a></li>
-</div>
+<Resources />
   </Tab>
 
 
@@ -137,17 +97,12 @@ setShowOrc(true)
 
 
 
-                 </div>
+
                 
 
               
               </div> 
-       
-
-        
-
-        </div>
-    
+      
 
 
    

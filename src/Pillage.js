@@ -14,6 +14,7 @@ import cavern from "./media/images/cavern.png"
 import Modal from 'react-bootstrap/Modal'
 import Orc from "./Orc";
 import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue, push, orderByChild, limitToLast} from "firebase/database";
+import Title from "./Title.js";
 
 
 const places = [
@@ -66,7 +67,9 @@ const [lootPool, setLootPool] = useState(0);
 const [status, setStatus] = useState();
 const [prompt, setPrompt] = useState();
 const [modalShow, setModalShow] = useState(false);
-const [secondModalShow, setSecondModalShow] = useState(false);
+const [toggleItemsShow, setToggleItemsShow] = useState(true);
+const [togglePlaceShow, setTogglePlaceShow] = useState(false);
+const [togglePillageShow, setTogglePillageShow] = useState(false);
 
 const [checkedHelm, setCheckedHelm] = useState(false);
 const [checkedMainhand, setCheckedMainhand] = useState(false);
@@ -129,11 +132,12 @@ const Checkbox = ({ label, value, onChange }) => {
   function LootItems() {
 
     return(<>
-        <div class="border-2 p-2 my-1">  
+        <div class="p-2 my-1">  
         <div>
-            Select item slots to pillage for.
+          <Title text={"Select item slots to pillage for..."} />
+            
         </div>
-        <div class="flex flex-wrap justify-between" >
+        <div class="flex flex-wrap justify-between font-body my-3" >
                     <Checkbox
                         label="Helm"
                         value={checkedHelm}
@@ -155,93 +159,77 @@ const Checkbox = ({ label, value, onChange }) => {
                         onChange={handleChangeAll}
                     />
              </div>
+             {prompt && (
+               <div class="flex flex-wrap font-display font-bold justify-center text-lg border-4 my-4 border-red-900">
+               {prompt}
+               </div>
+             )}
+             
+            <button onClick={()=>handleItems()} >Continue</button>
         </div>
     </>)
   }
 
 
-function PlaceModal(props) {
-    return (
-      <Modal
-        {...props}
-        size="xl"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closebutton>
-          <Modal.Title id="contained-modal-title-vcenter">
-          <div class="font-serif"> Pick Your Loot Pool (Click to proceed)</div>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        <LootItems />
-        <div class="flex flex-wrap font-serif font-bold justify-center text-xl border-2 border-red-200">
-        {prompt}
-        </div>
-         <div class="flex flex-wrap"> 
-        {places.map((obj, i)=>{
-            let tempvar = true
-            if(obj.place === null){
-              tempvar=false
-            }
-            return(
-                <div class="w-1/2 md:w-1/3 lg:w-1/5 py-4 flex justify-center border-white border-2 hover:bg-gray-100" onClick={()=>openSecondModal(obj.index)}>
-                   <div>
-                      {tempvar && (
-                  <>
-                    <div class="font-bold text-sm">{obj.place}</div>
-                               
-                   
-                    </>
+  function LootPools() {
+
+    return(
+      <>
+      <Title text={"Pick Your Loot Pool (Click to proceed)"} />
+       <div class="flex flex-wrap"> 
+      {places.map((obj, i)=>{
+          let tempvar = true
+          if(obj.place === null){
+            tempvar=false
+          }
+          return(
+              <div class="w-1/2 md:w-1/3 lg:w-1/5 py-4 flex justify-center border-green-500 text-white text-xl border-2 hover:bg-green-800" onClick={()=>openSecondModal(obj.index)}>
+                 <div>
+                    {tempvar && (
+                <>
+                  <div class="font-bold text-sm">{obj.place}</div>
+                             
+                 
+                  </>
+                
+                )}
+                {obj.level && (<div class="w-28 text-sm">Orc must be Level {obj.level}+ to Pillage</div>)}
+                  {obj.cost && (<div class="w-28 text-sm">Cost: {obj.cost} $ZUG</div>)}
+                  {obj.image && (<div class="w-28 border-1 flex flex-wrap justify-center text-center"><img src={obj.image} /></div>)}
+
                   
-                  )}
-                  {obj.level && (<div class="w-28 text-sm">Orc must be Level {obj.level}+ to Pillage</div>)}
-                    {obj.cost && (<div class="w-28 text-sm">Cost: {obj.cost} $ZUG</div>)}
-                    {obj.image && (<div class="w-28 border-1 flex flex-wrap justify-center text-center"><img src={obj.image} /></div>)}
-
-                    
-                  </div>
                 </div>
-            )
+              </div>
+          )
 
-            })}
-        </div>
+          })}
+      </div>
+      </>
+      )
+  }
 
-       
 
-        </Modal.Body>
-        <Modal.Footer>
-         <button onClick={props.onHide}>Close</button>
-        </Modal.Footer>
-      </Modal>
-    );
-  }  
-
-function LootPoolModal(props) {
-    return (
-      <Modal
-        {...props}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closebutton>
-          <Modal.Title id="contained-modal-title-vcenter">
-              {places.map((obj)=>{
+  function PillageAnimate(props){
+    return(
+      <>
+      
+      {places.map((obj)=>{
                 let place
                 if(lootPool === obj.index){
                     place = obj.place
-                    return(`Send Orc #${tokenid} to Pillage the ${place} for Weapons and Gear`)
+                    return(
+                      <div class="text-center">
+                         <Title text={`Send Orc #${tokenid} to Pillage the ${place} for Weapons and Gear`} />
+                      </div>
+                     
+                      )
                 }
                 
               })
               
               }
-         
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
 
+              
           <div class="flex flex-wrap justify-evenly"> 
          
         
@@ -253,10 +241,7 @@ function LootPoolModal(props) {
                     
                     return(
                     <div class="relative">
-                    <div class="text-center font-bold text-xl"> 
-                      {obj.place} 
-                    </div>
-                    <div class="border-1 flex flex-wrap justify-center text-center"><img src={obj.image} />
+                     <div class="border-1 flex flex-wrap justify-center text-center"><img src={obj.image} />
                     </div>
 
                     <div class="flex flex-wrap justify-center animate-pulse absolute bottom-0 right-0"> 
@@ -275,6 +260,34 @@ function LootPoolModal(props) {
               
 
 </div>
+   
+
+            <div class="flex flex-wrap justify-center py-3">
+                <button class="px-3" onClick={onMintPressed}>Pillage!</button>
+                </div>
+      </>
+    )
+  }
+
+
+function PlaceModal(props) {
+    return (
+      <>
+      <Modal
+        {...props}
+        size="xl"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        
+        <Modal.Body class="bg-green-600 p-2">
+        {toggleItemsShow && <LootItems /> }
+        {togglePlaceShow && <LootPools /> }
+        {togglePillageShow &&  <PillageAnimate /> }
+        
+        
+       
+
         <div class="flex flex-wrap justify-between">
                 <div>
                 {status && (<>{status} <button variant="dark" onClick={props.onHide}>Close</button> </>)}
@@ -282,19 +295,26 @@ function LootPoolModal(props) {
                 </div>
                
             </div>
+   
+       
+      
 
-            <div class="flex flex-wrap justify-center py-3">
-                <button class="px-3" onClick={onMintPressed}>Pillage!</button>
-                </div>
-        
         </Modal.Body>
-        <Modal.Footer>
-            
-          
-          
-        </Modal.Footer>
+ 
       </Modal>
+      </>
     );
+  }  
+
+  const handleItems = async () => { //TODO: implement)
+
+    if(!checkedHelm && !checkedMainhand && !checkedOffhand){
+      setPrompt("You have to pick something to loot for!")
+    }else{
+      setToggleItemsShow(!toggleItemsShow)
+      setTogglePlaceShow(!togglePlaceShow)
+            
+    }            
   }
   
 
@@ -304,13 +324,10 @@ const openSecondModal = async (lootpoolIndex) => { //TODO: implement)
     setPrompt("You have to pick something to loot for!")
   }else{
     setLootPool(lootpoolIndex)
-            setSecondModalShow(true)
-            setModalShow(false)
-  }
-
-
-
-            
+    setTogglePlaceShow(!togglePlaceShow)
+    setTogglePillageShow(!togglePillageShow)
+          
+  }            
 }
 
 const onMintPressed = async (event) => { //TODO: implement
@@ -322,12 +339,14 @@ const onMintPressed = async (event) => { //TODO: implement
     let tryOffhand = checkedOffhand
    
 
-    console.log(place, tryHelm, tryMainhand, tryOffhand, obj)
+    
 
      const { status, txHash, success, receipt } = await pillage({tokenid, place, tryHelm, tryMainhand, tryOffhand} );
      setStatus(status);
 
      let obj = {address: wallet, token:tokenid, tx:receipt}
+
+     console.log(place, tryHelm, tryMainhand, tryOffhand, obj)
      ///check for successful transaction
        if(success ===true){
        
@@ -340,10 +359,6 @@ const onMintPressed = async (event) => { //TODO: implement
        }
    };
   
-
-
-
-
   return (
 <>
          
@@ -354,11 +369,6 @@ const onMintPressed = async (event) => { //TODO: implement
         <PlaceModal
           show={modalShow}
           onHide={() => setModalShow(false)}
-        />
-
-        <LootPoolModal
-          show={secondModalShow}
-          onHide={() => setSecondModalShow(false)}
         />
 
 </>

@@ -56,6 +56,9 @@ function App() {
                 <Route path="/admin">  
                       {flip ? ( <>
                       <Horde contract={nftContract} />
+                      <br/>
+                      Experimental - Dont use.
+                      <br/>
                       <GetAllOrcMetaData />
                       <OrcImages />
 

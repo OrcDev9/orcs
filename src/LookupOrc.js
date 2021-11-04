@@ -4,6 +4,7 @@ import {
     import { useState, useEffect, useRef } from "react";
     import Orc from "./Orc"
     import Title from "./Title.js";
+import OrcPFP from "./OrcPfp.js";
     
     function LookupOrc() {
     
@@ -56,18 +57,25 @@ import {
         </div>
 
         <div class="w-2/3">
-        <div>
+          <div class="pl-4 mb-4">
+          <Title text={"PFP"}/>
+          {showOrc && <OrcPFP orc={myOrcs[0]} />}
+          </div>
+          <div class="pl-4">
+        <Title text={"ITEMS"}/>
         {showOrc && <Orc format={"poofparts"} orc={myOrcs[0]} />}
         </div>
-        <div class="flex flex-wrap justify-center">
+        <div class="flex flex-wrap">
         
-        <div class="w-1/2">
+        <div class="w-1/4">
         {showOrc && <Orc format={"pfp"} orc={myOrcs[0]} />}
         </div>
 
-       <div class="w-1/2">
+       <div class="w-1/4">
         {showOrc && <Orc format={"image"} orc={myOrcs[0]} />}
         </div>
+
+        
 
     
         </div>

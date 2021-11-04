@@ -57,15 +57,13 @@ function App() {
                       {flip ? ( <>
                       <Horde contract={nftContract} />
                       <GetAllOrcMetaData />
+                      <OrcImages />
 
 
                 </>) :(`${wallet} Not allowed`)}
                 </Route>
 
-                <Route path="/tests">   
-                   <OrcImages />
-                </Route>
-
+     
                 <Route path="/">   
                     <Home />
                 </Route>

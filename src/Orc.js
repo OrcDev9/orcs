@@ -18,9 +18,25 @@ let allData = false
 ///pfp
 ///card
 ///figure
+
+var decodedImageStringAtoB = atob(orc.image.split(',')[1]);
+var extractImages = decodedImageStringAtoB.split(`xlink:href="`)
+var cleanExtract = extractImages.map((string)=>{
+
+  if(string.includes(`data:image`)){
+    var a = string.split(`"/>`)
+
+    return(a[0])
+  }
+
+  return null
  
+})
+
+
 const ref = useRef()
 const pfpref = useRef()
+const partsref = useRef()
 
   const onButtonClick = useCallback(() => {
     if (ref.current === null) {
@@ -177,6 +193,40 @@ if(format==="figure"){
   )
 }
 
+
+if(format==="poofparts"){
+
+
+  return(
+<>
+<div class="flex flex-wrap">
+
+
+    {orcData && (
+
+cleanExtract.map((image, i)=>{
+
+  if(image !== null){
+    return(<>
+         
+      <div>
+      <img style={{imageRendering: 'pixelated' }} width={200} src={image} alt={orcData.name} />
+      </div>
+     
+
+      </>)
+  }
+
+  
+})
+      
+      )}
+
+</div>
+      </>
+  )
+}
+
 if(format==="pfp"){
 
 
@@ -207,7 +257,7 @@ if(format==="image"){
     {orcData && (
       <>
          
-      <div class="w-40" ref={pfpref}>
+      <div>
       <img  src={orcData.image} alt={orcData.name} />
       </div>
       

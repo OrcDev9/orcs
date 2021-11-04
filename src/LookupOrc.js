@@ -24,7 +24,7 @@ import {
       let tempArr = [] 
       tempArr.push(t) 
     
-      if((t > 0) && (t < 5050)){
+      if((t > 0) && (t < 5051)){
         let multiOrcs = await lookupMultipleOrcs({array: tempArr})
         console.log(multiOrcs, tempArr)
         setMyorcs(multiOrcs)
@@ -55,13 +55,29 @@ import {
                    
         </div>
 
-        <div class="w-1/3">
+        <div class="w-2/3">
+        <div>
+        {showOrc && <Orc format={"poofparts"} orc={myOrcs[0]} />}
+        </div>
+        <div class="flex flex-wrap justify-center">
+        
+        <div class="w-1/2">
         {showOrc && <Orc format={"pfp"} orc={myOrcs[0]} />}
         </div>
 
-        <div class="w-1/3">
+       <div class="w-1/2">
         {showOrc && <Orc format={"image"} orc={myOrcs[0]} />}
         </div>
+
+    
+        </div>
+
+        
+
+
+        </div>
+
+        
         
                       
 

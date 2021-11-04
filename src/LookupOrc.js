@@ -58,12 +58,15 @@ import OrcPFP from "./OrcPfp.js";
 
         <div class="w-2/3">
           <div class="pl-4 mb-4">
-          <Title text={"PFP"}/>
-          {showOrc && <OrcPFP orc={myOrcs[0]} />}
+            
+              {showOrc && <OrcPFP orc={myOrcs[0]} />}
+          
           </div>
           <div class="pl-4">
+        
+        {/*showOrc &&
         <Title text={"ITEMS"}/>
-        {showOrc && <Orc format={"poofparts"} orc={myOrcs[0]} />}
+        <Orc format={"poofparts"} orc={myOrcs[0]} />*/}
         </div>
         <div class="flex flex-wrap">
         

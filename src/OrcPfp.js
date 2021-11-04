@@ -28,7 +28,7 @@ return (
     <>
 <div style={{imageRendering: "pixelated"}} class="p2">
 
-<svg id="orc" width={150} height={150} version="1.1" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+<svg class="rounded-full" id="orc" width={300} height={300} version="1.1" viewBox="13 0 30 40" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
     <image x="1" y="1" width="60" height="60" imageRendering="pixelated" preserveAspectRatio="xMidYMid" xlinkHref={`${cleanExtract[1]}`}/>
     <image x="1" y="1" width="60" height="60" imageRendering="pixelated" preserveAspectRatio="xMidYMid" xlinkHref={`${cleanExtract[2]}`}/>
   

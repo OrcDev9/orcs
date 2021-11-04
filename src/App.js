@@ -10,6 +10,8 @@ import Horde from "./Horde";
 import {getContract, getCurrentWalletConnected} from "./utils/interact.js";
 
 import { Helmet } from "react-helmet";
+import GetAllOrcMetaData from "./OrcMetaData";
+import OrcImages from "./OrcImages";
 const history = createBrowserHistory();
 
 function App() {
@@ -54,9 +56,16 @@ function App() {
                 <Route path="/admin">  
                       {flip ? ( <>
                       <Horde contract={nftContract} />
+                      <GetAllOrcMetaData />
+
 
                 </>) :(`${wallet} Not allowed`)}
                 </Route>
+
+                <Route path="/tests">   
+                   <OrcImages />
+                </Route>
+
                 <Route path="/">   
                     <Home />
                 </Route>

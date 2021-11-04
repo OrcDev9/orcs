@@ -94,6 +94,8 @@ const init = async () => {
         let csv = {data: arrObj,
         headers: headers,
         filename: 'OrcActivityReport.csv'}
+
+        console.log(csv)
         setCsvReport(csv) ///for export
         setorcObject(arrObj)
         getStats(arrObj)

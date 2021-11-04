@@ -204,8 +204,16 @@ array.forEach(i => {
   let claimable = parseInt(results.results[`EtherOrcs${i}`].callsReturnContext[1].returnValues[0].hex, 16)
 
   let orcTokenData = results.results[`EtherOrcs${i}`].callsReturnContext[4].returnValues[0]
-  var b = orcTokenData.split(",")
-  var orcTokenObj = JSON.parse(atob(b[1]))
+  var b 
+  var orcTokenObj
+  try {
+    b = orcTokenData.split(",")
+    orcTokenObj = JSON.parse(atob(b[1]))
+    console.log(orcTokenObj)
+  } catch (error) {
+    orcTokenObj = {image: null, name: null, body: null, helm: null, mainhand: null, offhand: null, attributes: null}
+  }
+ 
 
   let level =  orcData[4]
   let lvlProgress =  orcData[6]

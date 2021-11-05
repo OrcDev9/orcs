@@ -5,7 +5,9 @@ import Form from 'react-bootstrap/Form'
 import InputGroup from 'react-bootstrap/InputGroup'
 import { timeAgo } from "./utils/dateFunctions";
 
-const Chat = ({pfp, wallet, user}) => {
+const Chat = ({wallet, orcs}) => {
+
+  let pfp = [orcs.tokenid]
  
     const [chatText, setChatText] = useState("")
     const [chatData, setChatData] = useState("")
@@ -15,7 +17,7 @@ const Chat = ({pfp, wallet, user}) => {
     const dbRef = ref(getDatabase());
     const timestamp = Date.now()
    
-    const profileImage = `https://huskies.s3.eu-west-2.amazonaws.com/images/${pfp[0]}.png`
+    const profileImage = orcs.image
     const chatsDisplayRef = query(ref(db, 'messages'), orderByChild('timeStamp'), limitToLast(100));
     const isTypingRef = query(ref(db, 'isTyping'), );
   
@@ -43,7 +45,7 @@ const Chat = ({pfp, wallet, user}) => {
       const typingDataRef = ref(db, 'isTyping/' + wallet)      
       await set(typingDataRef, {
        typing: typingBool,
-       username: user ? user : `Husky #${pfp[0]}`,
+       username: `Orc #${pfp[0]}`,
        tokenid:pfp[0],
      })
 
@@ -83,7 +85,7 @@ const Chat = ({pfp, wallet, user}) => {
             timeStamp: timestamp,
             chat: chatEntry,
             image: profileImage,
-            username: user
+            username: `Orc #${pfp[0]}`
           });
          
           setChatText("")
@@ -156,9 +158,9 @@ return (
 
 
 
-  <div class="lg:w-3/4 mx-auto"> 
+  <div class="mx-auto"> 
  
-      <div class="border-2 shadow-lg rounded-xl bg-white">
+      <div class="border-2 shadow-lg rounded-xl bg-white text-black text-sm">
           
           <div class="h-96 overflow-y-scroll mb-2 p-2">
               {chatData && chatData.map((items, index)=>{
@@ -174,20 +176,18 @@ return (
 
 <div class="p-2">
 
-<Form onSubmit={sendMessage}>
-<InputGroup className="mb-3">
+<form onSubmit={sendMessage}>
+
   
-    <Form.Control type="text" placeholder={"start typing..."}
+    <input type="text" placeholder={"start typing..."}
     value={chatText}
     onChange={e => typing(e)}    
+    style={{width: "100%", textAlign: "left"}}
     />
-    <Button type="submit" disabled={!chatText}>
-      Send
-    </Button>
 
-    </InputGroup>
+
   
-</Form>
+</form>
 </div>
 </div> 
   </div>
@@ -209,12 +209,12 @@ const Chats = ({items, wallet}) => {
   const messageClass = auth ? 'flex-row-reverse' : 'flex-row';
   const messageBodyClass = auth ? 'bg-green-500 text-white' : 'bg-gray-100';
   const imageClass = auth ? 'ml-2' : 'mr-2';
-  let nickname = items.username ? items.username : `Husky #${items.tokenid}`
+  let nickname = items.username ? items.username : `Orc #${items.tokenid}`
   
 return (
   <div className={`px-3 py-2 flex no-wrap items-start ${messageClass}`}>
   <div>
-    <img className={`block rounded-full object-cover w-10 ${imageClass}`} src={items.image || 'https://i.imgur.com/rFbS5ms.png'} alt="{items.tokenid}'s pfp" />
+    <img className={`block rounded-full object-cover w-16 ${imageClass}`} src={items.image || 'https://i.imgur.com/rFbS5ms.png'} alt="{items.tokenid}'s pfp" />
   </div>
   <div className={`block w-80 break-words p-2 rounded-md ${messageBodyClass}`}>
   <div class="flex flex-wrap items-baseline	space-x-2">

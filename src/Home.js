@@ -1,13 +1,8 @@
-import {
-getGasPrice, getEthPrice, getContract, getContractEvents, lookupAllOrcs, lookupMultipleOrcs
-} from "./utils/interact.js";
 import { useState, useEffect, useRef } from "react";
-import Orc from "./Orc"
 import { Tab } from "react-bootstrap";
 import { Tabs } from "react-bootstrap";
 import MyOrcs from "./myOrc";
 import Intro from "./intro"
-import Title from "./Title.js";
 import ConnectWallet from "./ConnectWallet"
 import Resources from "./Resources.js";
 import RandomOrcs from "./RandomOrcs.js";
@@ -15,22 +10,17 @@ import OrcGods from "./OrcGods.js";
 import LookupOrc from "./LookupOrc.js";
 import OrcPFP from "./OrcPfp.js";
 
+
 function App() {
 
 //setZug((await ercContract.methods.balanceOf(address).call()))
-const [myOrcs, setMyorcs] = useState();
 
 const [showOrc, setShowOrc] = useState(true);
 const [orcId, setOrcId] = useState([1]);
 
 const orcLookupRef = useRef(1);
 
-useEffect(async () => {
-let arry = Array.from({length: 12}, () => Math.floor(Math.random() * 5050));
-let multiOrcs = await lookupMultipleOrcs({array: arry})
-setMyorcs(multiOrcs)
 
-},[0])
 
 const handleOrcSubmit = (e) => {
   e.preventDefault()
@@ -84,16 +74,14 @@ return (
   <Tab eventKey="god" title="Orc Gods">
   <OrcGods />
   </Tab>
-  <Tab eventKey="os" title="Open Sea" disabled>
-   {/*<OpenSea />*/ } 
-  </Tab>
+
 <Tab eventKey="resources" title="Resources">
 <Resources />
   </Tab>
 
-
-
-
+  <Tab eventKey="os" title="Open Sea" disabled>
+   {/*<OpenSea />*/ } 
+  </Tab>
 
 </Tabs>
              

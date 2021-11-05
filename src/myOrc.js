@@ -7,6 +7,8 @@ import Title from "./Title";
 import { db } from "./initFirebase";
 import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue, push, orderByChild, limitToLast} from "firebase/database";
 import Battle from "./Battle";
+import Chat from "./orcChat";
+
 const MyOrcs = () => {
 
 const [myOrcs, setMyOrcs] = useState();
@@ -223,6 +225,7 @@ const onClaimZugPressed = async (event) => { //TODO: implement
 return (
                
 <>
+<div>
 
 <div class="text-3xl pb-2">
 <Title text={"ACTIONS"} />
@@ -279,6 +282,14 @@ return(
 
 </div>
 
+<div class="p-3">
+<div class="text-3xl pb-2">
+<Title text={"MESSAGE BOARD"} />
+</div>
+<Chat orcs={myOrcsArr.orcs[0]} wallet={walletAddress} />
+
+</div>
+</div>
 
     </>
   );

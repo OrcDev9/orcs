@@ -264,6 +264,12 @@ if(format==="image"){
 }
 
 
+if(format==="pngString"){
+  return orcData && orcData.image
+}
+
+
+
 
 return (
     <>

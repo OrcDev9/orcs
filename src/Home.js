@@ -13,6 +13,7 @@ import Resources from "./Resources.js";
 import RandomOrcs from "./RandomOrcs.js";
 import OrcGods from "./OrcGods.js";
 import LookupOrc from "./LookupOrc.js";
+import OrcPFP from "./OrcPfp.js";
 
 function App() {
 
@@ -66,14 +67,17 @@ return (
               <Tab eventKey="home" title="Start Here">
               <Intro />
               </Tab>
+              <Tab eventKey="myorcs" title="My Orcs">
+              <MyOrcs />
+              </Tab>
 
               <Tab eventKey="orcslookup" title="Look Up Orc">
                <LookupOrc />
                     </Tab>
-      
-  <Tab eventKey="myorcs" title="My Orcs">
-  <MyOrcs />
-  </Tab>
+                    <Tab eventKey="pfp" title="Create my pfp">
+                    <OrcPFP />
+                    </Tab>
+ 
   <Tab eventKey="random" title="Random Orcs">
   <RandomOrcs />
   </Tab>

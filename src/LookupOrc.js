@@ -29,12 +29,9 @@ import OrcPFP from "./OrcPfp.js";
         let multiOrcs = await lookupMultipleOrcs({array: tempArr})
         console.log(multiOrcs, tempArr)
         setMyorcs(multiOrcs)
-        setShowOrc(true)
-        
+        setShowOrc(true)        
 
-      }
-
-    
+      }   
         
     };
     
@@ -44,7 +41,7 @@ import OrcPFP from "./OrcPfp.js";
     <div class="text-3xl"> <Title text={"LOOK UP ORCS"}/></div>  
     <div class="flex flex-wrap">
 
-        <div class="w-1/3">
+        <div class="md:w-1/3">
        
                        <div class="flex flex-wrap justify-center">
                             <form onSubmit={handleOrcSubmit}>
@@ -56,36 +53,8 @@ import OrcPFP from "./OrcPfp.js";
                    
         </div>
 
-        <div class="w-2/3">
-          <div class="pl-4 mb-4">
-            
-              {showOrc && <OrcPFP orc={myOrcs[0]} />}
-          
-          </div>
-          <div class="pl-4">
-        
-        {/*showOrc &&
-        <Title text={"ITEMS"}/>
-        <Orc format={"poofparts"} orc={myOrcs[0]} />*/}
-        </div>
-        <div class="flex flex-wrap">
-        
-        <div class="w-1/4">
+        <div class="md: w-2/3">
         {showOrc && <Orc format={"pfp"} orc={myOrcs[0]} />}
-        </div>
-
-       <div class="w-1/4">
-        {showOrc && <Orc format={"image"} orc={myOrcs[0]} />}
-        </div>
-
-        
-
-    
-        </div>
-
-        
-
-
         </div>
 
         

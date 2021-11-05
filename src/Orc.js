@@ -241,7 +241,7 @@ if(format==="pfp"){
       
       <div class="flex justify-evenly py-2">
       
-      <button onClick={onpfpClick}>Download PFP</button>
+      <button onClick={onpfpClick}>Download PNG</button>
       </div>
       </>
       )}

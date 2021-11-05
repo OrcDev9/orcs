@@ -6,7 +6,7 @@ import Pillage from "./Pillage";
 import Title from "./Title";
 import { db } from "./initFirebase";
 import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue, push, orderByChild, limitToLast} from "firebase/database";
-
+import Battle from "./Battle";
 const MyOrcs = () => {
 
 const [myOrcs, setMyOrcs] = useState();
@@ -240,6 +240,10 @@ return (
 
             {showPillage ? (
                 <Pillage wallet={walletAddress} orcs={myOrcsArr.orcs} tokenid={clicked[0]} />
+            ) : ( <button>Pillage</button> )}
+
+            {showPillage ? (
+                <Battle wallet={walletAddress} orcs={myOrcsArr.orcs} tokenid={clicked[0]} />
             ) : ( <button>Pillage</button> )}
 
             <button variant="dark" onClick={()=>doActionClick(2)}>

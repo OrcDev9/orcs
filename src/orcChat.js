@@ -7,7 +7,15 @@ import { timeAgo } from "./utils/dateFunctions";
 
 const Chat = ({wallet, orcs}) => {
 
-  let pfp = [orcs.tokenid]
+  let pfp 
+if(orcs){
+  if(orcs.tokenid.length > 0){
+    pfp = orcs.tokenid[0].image
+  }
+
+}
+  
+  console.log("FROM CHAAT", wallet, orcs)
  
     const [chatText, setChatText] = useState("")
     const [chatData, setChatData] = useState("")

@@ -19,6 +19,7 @@ const [status, setStatus] = useState();
 const [claimableZug, setClaimableZug] = useState();
 const [claimtoggle, setClaimtoggle] = useState(true);
 const [displayOrcs, setDisplayOrcs] = useState(true);
+const [loadChat, setLoadChat] = useState(false);
 
 const [walletAddress, setWallet] = useState("");
 
@@ -286,8 +287,13 @@ return(
 <div class="text-3xl pb-2">
 <Title text={"MESSAGE BOARD"} />
 </div>
+<div class="my-4">
+<button onClick={()=>{setLoadChat(!loadChat)}}>
+  {!loadChat ? "Load Orc Chat" : "Close Orc Chat" }
+  </button>
+</div>
 
-
+{loadChat && (<Chat orcs={myOrcsArr.orcs[0]} wallet={walletAddress} />)}
 
 </div>
 </div>

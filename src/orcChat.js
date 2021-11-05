@@ -8,6 +8,12 @@ import { timeAgo } from "./utils/dateFunctions";
 const Chat = ({wallet, orcs, tokenid}) => {
 
   let pfp = [tokenid]
+  let orc = orcs.map((orc)=>{
+
+    if(orcs.tokenid === tokenid){
+      return(orc)
+    }
+  })
 
   
   console.log("FROM CHAAT", wallet, orcs, tokenid)
@@ -20,7 +26,7 @@ const Chat = ({wallet, orcs, tokenid}) => {
     const dbRef = ref(getDatabase());
     const timestamp = Date.now()
    
-    const profileImage = orcs[0].image
+    const profileImage = orc.image
     const chatsDisplayRef = query(ref(db, 'messages'), orderByChild('timeStamp'), limitToLast(100));
     const isTypingRef = query(ref(db, 'isTyping'), );
   
@@ -185,7 +191,7 @@ return (
     <input type="text" placeholder={"start typing..."}
     value={chatText}
     onChange={e => typing(e)}    
-    style={{width: "100%", textAlign: "left"}}
+    style={{width: "100%", textAlign: "left", color: "black"}}
     />
 
 

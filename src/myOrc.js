@@ -247,14 +247,14 @@ return (
             ) : ( <button>Pillage</button> )}
 
             {showPillage ? (
-                <Battle wallet={walletAddress} orcs={myOrcsArr.orcs} tokenid={clicked[0]} />
-            ) : ( <button>Pillage</button> )}
+                <Battle wallet={walletAddress} orcs={myOrcsArr.orcs} tokenid={clicked[0]} />  
+            ) : ( <button>Battle</button> )}
 
             {showPillage ? (
                <button onClick={()=>{setLoadChat(!loadChat)}}>
                {!loadChat ? "Load Orc Chat" : "Close Orc Chat" }
                </button>
-            ) : ( <button>Pillage</button> )}
+            ) : ( <button>Chat</button> )}
 
             <button variant="dark" onClick={()=>doActionClick(2)}>
               Train!

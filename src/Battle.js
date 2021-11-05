@@ -413,7 +413,7 @@ const onMintPressed = async (event) => { //TODO: implement
 <>
          
     <button variant="dark" onClick={() => setModalShow(true)}>
-    Battle (unofficial) with selected Orc!
+    Battle!
         </button>
   
         <PlaceModal

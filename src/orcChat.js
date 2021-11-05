@@ -10,13 +10,14 @@ const Chat = ({wallet, orcs, tokenid}) => {
   let pfp = [tokenid]
   let orc = orcs.map((orc)=>{
 
-    if(orcs.tokenid === tokenid){
+    if(orc.tokenid === tokenid){
+      
       return(orc)
     }
   })
 
   
-  console.log("FROM CHAAT", wallet, orcs, tokenid)
+  console.log("FROM CHAAT", wallet, orcs, tokenid, orc)
  
     const [chatText, setChatText] = useState("")
     const [chatData, setChatData] = useState("")
@@ -26,7 +27,7 @@ const Chat = ({wallet, orcs, tokenid}) => {
     const dbRef = ref(getDatabase());
     const timestamp = Date.now()
    
-    const profileImage = orc.image
+    const profileImage = orc[0].image
     const chatsDisplayRef = query(ref(db, 'messages'), orderByChild('timeStamp'), limitToLast(100));
     const isTypingRef = query(ref(db, 'isTyping'), );
   

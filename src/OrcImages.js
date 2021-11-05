@@ -1490,14 +1490,16 @@ return (
 
 <p class="border-3 border-red-800 m-3 p-3">DNA: {dna}</p>
 
-<div>
+<div class="flex flex-wrap">
 {data.inventory.map(orc => {
 
     return(
-    <div class="flex flex-wrap">
+    
+        <div class="w-1/6">
     <p class="border-3 border-red-800 m-3 p-3">{orc.id}
     <img width={200} src={`data:image/png;base64,${orc.imageData}`}/>
     </p>
+
     </div>)
     
  })}

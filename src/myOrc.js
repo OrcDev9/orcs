@@ -286,7 +286,8 @@ return(
 <div class="text-3xl pb-2">
 <Title text={"MESSAGE BOARD"} />
 </div>
-<Chat orcs={myOrcsArr.orcs[0]} wallet={walletAddress} />
+
+
 
 </div>
 </div>

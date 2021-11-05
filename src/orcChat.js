@@ -163,7 +163,7 @@ return (
 
   <div class="mx-auto"> 
  
-      <div class="border-2 shadow-lg rounded-xl bg-white text-black text-sm">
+      <div class="rounded-xl  text-black text-sm">
           
           <div class="h-96 overflow-y-scroll mb-2 p-2">
               {chatData && chatData.map((items, index)=>{

@@ -18,51 +18,6 @@ import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue
 import Title from "./Title.js";
 
 
-
-const places = [
-    {place: "TOWN", level:1, image:town, index:0},
-    {place: "DUNGEON", level:3, image:dungeon, index:1},
-    {place: "THE CAVERN", level:10, cost: 120, image:cavern, index:2},
- //   {place: "CRYPT", level:6, image:crypt, index:2},
- //   {place: "CASTLE", level:15, image:castle, index:3},
- //   {place: "DRAGON'S LAIR", level:25, image:dragon, index:4},
- //   {place: "THE ETHER", level:36, image:ether, index:5},
- //   {place: "TAINTED KINGDOM", level:15, image:kingdom, index:6},
- //   {place: "OOZING DEN", level:25, image:den, index:7},
- //   {place: "ANCIENT CHAMBER", level:45, image:chamber, index:8},
-  //  {place: "ORC GODS", level:52, image:gods, index:9},
-   ]
-
-  /*
-// Here's whats available in each place
-        LootPool memory town           = LootPool({ minLevel: 1,  minLootTier:  1, cost:   0, total: 1000, tier_1: 800,  tier_2: 150,  tier_3: 50,  tier_4:   0 });
-        LootPool memory dungeon        = LootPool({ minLevel: 3,  minLootTier:  2, cost:   0, total: 1000, tier_1: 800,  tier_2: 150,  tier_3: 50,  tier_4:   0 });
-        LootPool memory crypt          = LootPool({ minLevel: 6,  minLootTier:  3, cost:   0, total: 2619, tier_1: 1459, tier_2: 1025, tier_3: 135, tier_4:   0 });
-        LootPool memory castle         = LootPool({ minLevel: 15, minLootTier:  4, cost:   0, total: 6000, tier_1: 3300, tier_2: 2400, tier_3: 300, tier_4:   0 });
-        LootPool memory dragonsLair    = LootPool({ minLevel: 25, minLootTier:  5, cost:   0, total: 6000, tier_1: 3300, tier_2: 2400, tier_3: 300, tier_4:   0 });
-        LootPool memory theEther       = LootPool({ minLevel: 36, minLootTier:  6, cost:   0, total: 3000, tier_1: 1200, tier_2: 1500, tier_3: 300, tier_4:   0 });
-        LootPool memory taintedKingdom = LootPool({ minLevel: 15, minLootTier:  4, cost:  50, total:  600, tier_1:  150, tier_2:  150, tier_3: 150, tier_4: 150 });
-        LootPool memory oozingDen      = LootPool({ minLevel: 25, minLootTier:  5, cost:  50, total:  600, tier_1:  150, tier_2:  150, tier_3: 150, tier_4: 150 });
-        LootPool memory ancientChamber = LootPool({ minLevel: 45, minLootTier:  9, cost: 125, total:  225, tier_1:  225, tier_2:    0, tier_3:   0, tier_4:   0 });
-        LootPool memory orcGods        = LootPool({ minLevel: 52, minLootTier: 10, cost: 300, total:   12, tier_1:    0, tier_2:    0, tier_3:   0, tier_4:   0 });
-
-        lootPools[Places.TOWN]            = town;
-        lootPools[Places.DUNGEON]         = dungeon;
-        lootPools[Places.CRYPT]           = crypt;
-        lootPools[Places.CASTLE]          = castle;
-        lootPools[Places.DRAGONS_LAIR]    = dragonsLair;
-        lootPools[Places.THE_ETHER]       = theEther;
-        lootPools[Places.TAINTED_KINGDOM] = taintedKingdom;
-        lootPools[Places.OOZING_DEN]      = oozingDen;
-        lootPools[Places.ANCIENT_CHAMBER] = ancientChamber;
-        lootPools[Places.ORC_GODS]        = orcGods;
-  */
-
-  
-//const places = [{ "places": ["TOWN", "DUNGEON", "CRYPT", "CASTLE", "DRAGONS_LAIR", "THE_ETHER", 
-//  "TAINTED_KINGDOM", "OOZING_DEN", "ANCIENT_CHAMBER", "ORC_GODS"] }]
-
-
 function Battle({tokenid, wallet, orcs}) {
 
 const [lootPool, setLootPool] = useState(0);
@@ -71,16 +26,18 @@ const [prompt, setPrompt] = useState();
 const [modalShow, setModalShow] = useState(false);
 const [toggleItemsShow, setToggleItemsShow] = useState(true);
 const [togglePlaceShow, setTogglePlaceShow] = useState(false);
-const [togglePillageShow, setTogglePillageShow] = useState(false);
-
+const [togglBattleButtonShow, setTogglBattleButtonShow] = useState(false);
+const [counter, setCounter] = useState(0);
 const [checkedHelm, setCheckedHelm] = useState(false);
 const [checkedMainhand, setCheckedMainhand] = useState(false);
 const [checkedOffhand, setCheckedOffhand] = useState(false);
-const [checkedAll, setCheckedAll] = useState(false);
+const [fightStatus, setFightStatus] = useState("Round One!");
 
 const [myOrcs, setMyorcs] = useState();    
 const [showOrc, setShowOrc] = useState(false);
+const [winnerId, setWinnerId] = useState();
 const [orcId, setOrcId] = useState();
+let OrcObjectoPass 
 
 const orcLookupRef = useRef();
 
@@ -124,21 +81,28 @@ const handleOrcSubmit = async (e) => {
     
 };
 
-const updatePillage = async (obj) => {
+const updateBattle = async (obj) => {
  
   const db = getDatabase();
   const timestamp = Date.now()
- 
-  const userDataRef = ref(db, `etherorcs/battle/${obj.token}`)
 
-await set(userDataRef, {
-    lastBattle: timestamp,
-   
-  });
+        const battleRef = ref(db, 'etherorcs/battle/')
+        const newBattleRef = push(battleRef);
+      
+        await set(newBattleRef, {
+            lastBattle: timestamp,
+            fighter1: obj.fighter1.tokenid,
+            score1: obj.score1,
+            fighter2: obj.fighter2.tokenid,
+            score2: obj.score2,
+            winner: obj.winner,
+          });
+         
+ 
 
 }
 
-let OrcObjectoPass 
+
 
 orcs.map((orc)=>{
 
@@ -211,12 +175,6 @@ const BattleHandler = () => {
 
   function BattleAction(props) {
 
-    let myScore = OrcObjectoPass.helm*.25 + OrcObjectoPass.mainhand*.5 + OrcObjectoPass.offhand*.25
-let hisScore = myOrcs[0].helm*.25 + myOrcs[0].mainhand*.5 + myOrcs[0].offhand*.25
-
-let winner = myScore > hisScore ? "You win!" : "You lose!"  
-
-console.log(winner, myScore, hisScore)
 
     return(
       <>
@@ -241,15 +199,14 @@ console.log(winner, myScore, hisScore)
              </div>
 
              <div class="text-6xl text-center absolute top-10 right-48"> 
-             <Title text={winner} />
+             <Title text={fightStatus} />
              </div>
         
         </div>
    </div>
    <div class="flex flex-wrap justify-end">
-   <button onClick={props.hide}>
-       Continue
-   </button>
+       {togglBattleButtonShow && <button onClick={()=>handleContinue()}>Fight!</button>}
+
    </div>
    
       </>
@@ -257,70 +214,7 @@ console.log(winner, myScore, hisScore)
   }
 
 
-  function PillageAnimate(props){
-
-
-
-
-    return(
-      <>
-      
-      {places.map((obj)=>{
-                let place
-                if(lootPool === obj.index){
-                    place = obj.place
-                    return(
-                      <div class="text-center">
-                         <Title text={`Send Orc #${tokenid} to Pillage the ${place} for Weapons and Gear`} />
-                      </div>
-                     
-                      )
-                }
-                
-              })
-              
-              }
-
-              
-          <div class="flex flex-wrap justify-evenly"> 
-         
-        
-
-        <div class="flex flex-wrap justify-center"> 
-        {places.map((obj)=>{
-                let place
-                if(lootPool === obj.index){
-                    
-                    return(
-                    <div class="relative">
-                     <div class="border-1 flex flex-wrap justify-center text-center"><img src={obj.image} />
-                    </div>
-
-                    <div class="flex flex-wrap justify-center animate-pulse absolute bottom-0 right-0"> 
-            
-            <Orc class="absolute" format={"image"} orc={OrcObjectoPass}/>
-             </div>
-                    </div>
-                    )
-                }
-                
-              })
-              
-              }
-          </div>
-
-              
-
-</div>
-   
-
-            <div class="flex flex-wrap justify-center py-3">
-                <button class="px-3" onClick={onMintPressed}>Pillage!</button>
-                </div>
-      </>
-    )
-  }
-
+ 
 
 function PlaceModal(props) {
     return (
@@ -335,7 +229,7 @@ function PlaceModal(props) {
         <Modal.Body class="bg-green-600 p-2">
         {toggleItemsShow && <SelectFighter /> }
         {togglePlaceShow && <BattleAction /> }
-        {togglePillageShow &&  <PillageAnimate /> }
+       
         
         
        
@@ -363,51 +257,34 @@ function PlaceModal(props) {
       setPrompt("Battle commencing!")
       setToggleItemsShow(!toggleItemsShow)
       setTogglePlaceShow(!togglePlaceShow)
+      setTogglBattleButtonShow(!togglBattleButtonShow)
             
                 
   }
+
   
+  const handleContinue = async () => {
 
-const openSecondModal = async (lootpoolIndex) => { //TODO: implement)
+    let myScore = OrcObjectoPass.helm*.25 + OrcObjectoPass.mainhand*.5 + OrcObjectoPass.offhand*.25
+let hisScore = myOrcs[0].helm*.25 + myOrcs[0].mainhand*.5 + myOrcs[0].offhand*.25
 
-  if(!checkedHelm && !checkedMainhand && !checkedOffhand){
-    setPrompt("You have to pick something to loot for!")
-  }else{
-    setLootPool(lootpoolIndex)
-    setTogglePlaceShow(!togglePlaceShow)
-    setTogglePillageShow(!togglePillageShow)
-          
-  }            
+let status = myScore > hisScore ? "You win!" : "You lose!"  
+setFightStatus(status)
+let winnerID = myScore > hisScore ? OrcObjectoPass.tokenid : myOrcs[0].tokenid
+let obj = {fighter1: OrcObjectoPass, fighter2: myOrcs[0], winner: winnerID, score1: myScore, score2: hisScore}
+updateBattle(obj)
+setTogglBattleButtonShow(!togglBattleButtonShow)
+console.log(fightStatus, myScore, hisScore)
+        
+              
 }
 
-const onMintPressed = async (event) => { //TODO: implement
-    
-    
-    let place = lootPool
-    let tryHelm = checkedHelm
-    let tryMainhand = checkedMainhand
-    let tryOffhand = checkedOffhand
-   
+const resetModal = () => {
 
-    
+setToggleItemsShow(!toggleItemsShow)
+setTogglePlaceShow(!togglePlaceShow)
 
-     const { status, txHash, success, receipt } = await pillage({tokenid, place, tryHelm, tryMainhand, tryOffhand} );
-     setStatus(status);
-
-     let obj = {address: wallet, token:tokenid, tx:receipt}
-
-     console.log(place, tryHelm, tryMainhand, tryOffhand, obj)
-     ///check for successful transaction
-       if(success ===true){
-       
-            updatePillage(obj)
-            
-         }else{
- 
-            setStatus("Something went wrong");
-  
-       }
-   };
+}
   
   return (
 <>

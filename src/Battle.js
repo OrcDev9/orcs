@@ -11,10 +11,12 @@ import den from "./media/images/oozingden.jpg"
 import chamber from "./media/images/ancientchamber.png"
 import gods from "./media/images/orcsgods.png"
 import cavern from "./media/images/cavern.png"
+import training from "./media/training.gif"
 import Modal from 'react-bootstrap/Modal'
 import Orc from "./Orc";
 import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue, push, orderByChild, limitToLast} from "firebase/database";
 import Title from "./Title.js";
+
 
 
 const places = [
@@ -200,12 +202,7 @@ const BattleHandler = () => {
         {showOrc && <Orc format={"figure"} orc={myOrcs[0]} />}
         </div>
         
-        
-
-
         <BattleHandler />
-
-   
         
         </div>
     </>)
@@ -214,29 +211,57 @@ const BattleHandler = () => {
 
   function BattleAction() {
 
-    console.log(OrcObjectoPass.helm, myOrcs[0].helm)
-    console.log(OrcObjectoPass.mainhand, myOrcs[0].mainhand)
-    console.log(OrcObjectoPass.offhand, myOrcs[0].offhand)
-    console.log(OrcObjectoPass.level, myOrcs[0].level)
+    let myScore = OrcObjectoPass.helm*.25 + OrcObjectoPass.mainhand*.5 + OrcObjectoPass.offhand*.25
+let hisScore = myOrcs[0].helm*.25 + myOrcs[0].mainhand*.5 + myOrcs[0].offhand*.25
+
+let winner = myScore > hisScore ? "You win!" : "You lose!"  
+
+console.log(winner, myScore, hisScore)
 
     return(
       <>
-      <div class="flex flex-wrap justify-around animate-spin">
-          <div class="animate-bounce">
-          <Orc format={"figure"} orc={OrcObjectoPass}/>
+      <div class="flex flex-wrap justify-around">
+          
+      <div class="relative">
+         <div class="border-1 flex flex-wrap justify-center text-center"><img src={training} />
+                    </div>
+
+         <div class="flex flex-wrap justify-center absolute bottom-10 right-96"> 
+         <div class="w-40" style={{
+              transform: "scaleX(-1)" }}>
+          <Orc format={"image"} orc={OrcObjectoPass}/>
           </div>
-          <div class="animate-pulse">
-          <Orc format={"figure"} orc={myOrcs[0]} />
           </div>
-     
-      
+
+         <div class="flex flex-wrap justify-center absolute bottom-10 right-60"> 
+
+          <div class="w-40">
+          <Orc format={"image"} orc={myOrcs[0]} />
+          </div>
+             </div>
+
+             <div class="text-6xl text-center absolute top-10 right-48"> 
+             <Title text={winner} />
+             </div>
+        
         </div>
+   </div>
+   <div class="flex flex-wrap justify-end">
+   <button onClick={()=>{setMyorcs(1)}}>
+       Continue
+   </button>
+   </div>
+   
       </>
       )
   }
 
 
   function PillageAnimate(props){
+
+
+
+
     return(
       <>
       

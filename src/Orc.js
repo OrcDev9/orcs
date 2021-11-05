@@ -255,14 +255,9 @@ if(format==="image"){
   return(
 <>
     {orcData && (
-      <>
-         
-      <div>
-      <img  src={orcData.image} alt={orcData.name} />
-      </div>
-      
 
-      </>
+      <img src={orcData.image} alt={orcData.name} />
+ 
       )}
       </>
   )

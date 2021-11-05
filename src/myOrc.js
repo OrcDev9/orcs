@@ -114,6 +114,9 @@ useEffect(async () => {
 
 
 
+
+
+
 const toggle = index => {
   setStatus(`Orc# ${index} clicked`);
             let newArr = []
@@ -144,6 +147,7 @@ const toggle = index => {
                 setShowPillage(true)
             }
             if(newArr.length === 0 ){
+                setLoadChat(false)
                 setShowPillage(false)
                
             }
@@ -240,22 +244,20 @@ return (
 
             </div>
 
-            <div class="flex flex-wrap justify-between">
+            <div class="flex flex-wrap justify-left gap-4 pb-3">
 
-            {showPillage ? (
+            {showPillage && (
+              <>
                 <Pillage wallet={walletAddress} orcs={myOrcsArr.orcs} tokenid={clicked[0]} />
-            ) : ( <button>Pillage</button> )}
-
-            {showPillage ? (
+          
                 <Battle wallet={walletAddress} orcs={myOrcsArr.orcs} tokenid={clicked[0]} />  
-            ) : ( <button>Battle</button> )}
-
-            {showPillage ? (
                <button onClick={()=>{setLoadChat(!loadChat)}}>
                {!loadChat ? "Load Orc Chat" : "Close Orc Chat" }
                </button>
-            ) : ( <button>Chat</button> )}
 
+              </>)}
+              </div>
+              <div class="flex flex-wrap justify-left gap-4">
             <button variant="dark" onClick={()=>doActionClick(2)}>
               Train!
             </button>

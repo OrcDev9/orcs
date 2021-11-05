@@ -1,13 +1,16 @@
+
 import React from 'react'
 import { initializeApp } from "firebase/app";
 import "firebase/database";
 import "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
 import { getDatabase } from "firebase/database";
+require('dotenv').config();
 
+const googleApi = process.env.REACT_APP_GOOGLE_KEY;
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDk3iL5d1Ut5hu7St74QFJvCRiomAI3rf4",
+  apiKey: googleApi,
   authDomain: "ether-orcs.firebaseapp.com",
   projectId: "ether-orcs",
   storageBucket: "ether-orcs.appspot.com",

@@ -5,12 +5,12 @@ import Form from 'react-bootstrap/Form'
 import InputGroup from 'react-bootstrap/InputGroup'
 import { timeAgo } from "./utils/dateFunctions";
 
-const Chat = ({wallet, orcs}) => {
+const Chat = ({wallet, orcs, tokenid}) => {
 
-  let pfp = [orcs.tokenid]
+  let pfp = [tokenid]
 
   
-  console.log("FROM CHAAT", wallet, orcs)
+  console.log("FROM CHAAT", wallet, orcs, tokenid)
  
     const [chatText, setChatText] = useState("")
     const [chatData, setChatData] = useState("")
@@ -20,7 +20,7 @@ const Chat = ({wallet, orcs}) => {
     const dbRef = ref(getDatabase());
     const timestamp = Date.now()
    
-    const profileImage = orcs.image
+    const profileImage = orcs[0].image
     const chatsDisplayRef = query(ref(db, 'messages'), orderByChild('timeStamp'), limitToLast(100));
     const isTypingRef = query(ref(db, 'isTyping'), );
   
@@ -171,7 +171,7 @@ return (
                         <div ref={messagesEndRef} />
             </div>
 
-            <div class="animate-pulse pl-3 flex flex-wrap space-x-2 h-3">
+            <div class="animate-pulse pl-3 flex flex-wrap space-x-2 h-3 text-white">
             {isTyping && isTyping.map((items, index)=>{
               if(items.typing)
                 return(<div key={index} class="text-xs">{items.username} is typing...</ div>)})}           

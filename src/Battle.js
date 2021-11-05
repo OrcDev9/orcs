@@ -209,7 +209,7 @@ const BattleHandler = () => {
   }
 
 
-  function BattleAction() {
+  function BattleAction(props) {
 
     let myScore = OrcObjectoPass.helm*.25 + OrcObjectoPass.mainhand*.5 + OrcObjectoPass.offhand*.25
 let hisScore = myOrcs[0].helm*.25 + myOrcs[0].mainhand*.5 + myOrcs[0].offhand*.25
@@ -226,14 +226,14 @@ console.log(winner, myScore, hisScore)
          <div class="border-1 flex flex-wrap justify-center text-center"><img src={training} />
                     </div>
 
-         <div class="flex flex-wrap justify-center absolute bottom-10 right-96"> 
+         <div class="flex flex-wrap justify-center absolute bottom-10 left-60"> 
          <div class="w-40" style={{
               transform: "scaleX(-1)" }}>
           <Orc format={"image"} orc={OrcObjectoPass}/>
           </div>
           </div>
 
-         <div class="flex flex-wrap justify-center absolute bottom-10 right-60"> 
+         <div class="flex flex-wrap justify-center absolute bottom-10 left-96"> 
 
           <div class="w-40">
           <Orc format={"image"} orc={myOrcs[0]} />
@@ -247,7 +247,7 @@ console.log(winner, myScore, hisScore)
         </div>
    </div>
    <div class="flex flex-wrap justify-end">
-   <button onClick={()=>{setMyorcs(1)}}>
+   <button onClick={props.hide}>
        Continue
    </button>
    </div>

@@ -250,6 +250,12 @@ return (
                 <Battle wallet={walletAddress} orcs={myOrcsArr.orcs} tokenid={clicked[0]} />
             ) : ( <button>Pillage</button> )}
 
+            {showPillage ? (
+               <button onClick={()=>{setLoadChat(!loadChat)}}>
+               {!loadChat ? "Load Orc Chat" : "Close Orc Chat" }
+               </button>
+            ) : ( <button>Pillage</button> )}
+
             <button variant="dark" onClick={()=>doActionClick(2)}>
               Train!
             </button>
@@ -287,13 +293,8 @@ return(
 <div class="text-3xl pb-2">
 <Title text={"MESSAGE BOARD"} />
 </div>
-<div class="my-4">
-<button onClick={()=>{setLoadChat(!loadChat)}}>
-  {!loadChat ? "Load Orc Chat" : "Close Orc Chat" }
-  </button>
-</div>
 
-{loadChat && (<Chat orcs={myOrcsArr.orcs[0]} wallet={walletAddress} />)}
+{loadChat && (<Chat orcs={myOrcsArr.orcs} tokenid={clicked[0]} wallet={walletAddress} />)}
 
 </div>
 </div>

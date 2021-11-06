@@ -77,7 +77,7 @@ function OrcPFP({orc}) {
 return (
     <>
     <Title text={"ORC PFP"} />
-      <div ref={ref} class="flex flex-wrap justify-center">
+      <div class="flex flex-wrap justify-center">
         <form onSubmit={handleOrcSubmit}>
         <input  placeholder={"Type Orc Id here"} ref={orcLookupRef} />
         <button class="hidden" type="submit">Unleash the Orc</button> 
@@ -85,7 +85,7 @@ return (
       </div>  
 {orcImage &&
 (
-<div style={{imageRendering: "pixelated"}} class="p2">
+<div ref={ref} style={{imageRendering: "pixelated"}} class="p2">
 
 <svg class="rounded-full" id="orc" width={300} height={300} version="1.1" viewBox="13 3 30 40" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
     <image x="1" y="1" width="60" height="60" imageRendering="pixelated" preserveAspectRatio="xMidYMid" xlinkHref={`${orcImage[1]}`}/>
@@ -97,10 +97,12 @@ return (
 </div>
 )}
 
+{orcImage &&(
+
 <div class="flex justify-evenly">
 <button onClick={onButtonClick}>Download PFP</button>
 </div>
-
+)}
 
 </>
   )

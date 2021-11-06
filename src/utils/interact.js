@@ -14,6 +14,39 @@ const infuraKey = process.env.REACT_APP_INFURA_KEY;
 ///const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 //const web3 = createAlchemyWeb3(alchemyKey); 
 
+
+export const txReceipt = async ({ txHash, interval }) => {
+  module.exports = function getTransactionReceiptMined(txHash, interval) {
+    const self = this;
+    const transactionReceiptAsync = function (resolve, reject) {
+      self.getTransactionReceipt(txHash, (error, receipt) => {
+        if (error) {
+          reject(error);
+        } else if (receipt == null) {
+          setTimeout(
+            () => transactionReceiptAsync(resolve, reject),
+            interval ? interval : 500
+          );
+        } else {
+          resolve(receipt);
+        }
+      });
+    };
+
+    if (Array.isArray(txHash)) {
+      return Promise.all(
+        txHash.map((oneTxHash) =>
+          self.getTransactionReceiptMined(oneTxHash, interval)
+        )
+      );
+    } else if (typeof txHash === 'string') {
+      return new Promise(transactionReceiptAsync);
+    } else {
+      throw new Error('Invalid Type: ' + txHash);
+    }
+  };
+};
+
 const contractAddress = "0x3abedba3052845ce3f57818032bfa747cded3fca"
 
 const web3 = new Web3(new Web3.providers.HttpProvider(infuraKey))
@@ -303,38 +336,6 @@ const  orcObj = {
     return(orcObj)
 
 }
-
-export const txReceipt = async({txHash, interval})=>{
-
-  module.exports = function getTransactionReceiptMined(txHash, interval) {
-    const self = this;
-    const transactionReceiptAsync = function(resolve, reject) {
-        self.getTransactionReceipt(txHash, (error, receipt) => {
-            if (error) {
-                reject(error);
-            } else if (receipt == null) {
-                setTimeout(
-                    () => transactionReceiptAsync(resolve, reject),
-                    interval ? interval : 500);
-            } else {
-                resolve(receipt);
-            }
-        });
-    };
-
-    if (Array.isArray(txHash)) {
-        return Promise.all(txHash.map(
-            oneTxHash => self.getTransactionReceiptMined(oneTxHash, interval)));
-    } else if (typeof txHash === "string") {
-        return new Promise(transactionReceiptAsync);
-    } else {
-        throw new Error("Invalid Type: " + txHash);
-    }
-};
-
-}
-
-
 
 export async function getContractEvents(){
 

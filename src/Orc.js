@@ -236,7 +236,7 @@ if(format==="pfp"){
       <>
          
       <div ref={pfpref}>
-      <img class="rounded-full" src={orcData.image} alt={orcData.name} />
+      <img src={orcData.image} alt={orcData.name} />
       </div>
       
       <div class="flex justify-evenly py-2">

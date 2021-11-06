@@ -12,6 +12,7 @@ import chamber from "./media/images/ancientchamber.png"
 import gods from "./media/images/orcsgods.png"
 import cavern from "./media/images/cavern.png"
 import training from "./media/training.gif"
+import trainleft from "./media/train2.gif"
 import Modal from 'react-bootstrap/Modal'
 import Orc from "./Orc";
 import { getDatabase, ref, set, onValue, query, get,child, equalTo, orderByValue, push, orderByChild, limitToLast} from "firebase/database";
@@ -182,8 +183,13 @@ const BattleHandler = () => {
           
       <div class="relative">
          <div class="border-1 flex flex-wrap justify-center text-center"><img src={training} />
-                    </div>
-
+      </div>
+      <div class="flex flex-wrap justify-center absolute bottom-10 left-0"> 
+         <div class="w-40">
+         <img src={trainleft} />
+          </div>
+          </div>
+     
          <div class="flex flex-wrap justify-center absolute bottom-10 left-60"> 
          <div class="w-40" style={{
               transform: "scaleX(-1)" }}>

@@ -39,7 +39,7 @@ function App() {
  return (
     <>
 <Helmet>
-    <title>EtherOrcs Contract GUI</title>
+    <title>EtherOrcs Contract GUI v.2</title>
       <meta name="EtherORcs" content="EtherOrcs is a collection of 5050 Orcs ready to pillage the blockchain. With no IPFS or API, these Orcs are the very first role-playing game that takes place 100% on-chain. For the HORDE!" />
       <meta content="summary_large_image" property="twitter:card" />
       <meta content="EtherOrcs GUI by HilariousHuskies" property="og:title" />

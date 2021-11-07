@@ -21,6 +21,7 @@ const [claimableZug, setClaimableZug] = useState();
 const [claimtoggle, setClaimtoggle] = useState(true);
 const [displayOrcs, setDisplayOrcs] = useState(true);
 const [loadChat, setLoadChat] = useState(false);
+const [numberofOrcs, setNumberofOrcs] = useState(0);
 
 const [walletAddress, setWallet] = useState("");
 
@@ -85,6 +86,7 @@ onValue(myOrcQuery, (snapshot)=>{
         })
 
   setStatus(`Found ${tokenArr.length} Orc(s) for ${address}... Loading!`);
+  setNumberofOrcs(tokenArr.length)
   setMyOrcs({orcs: dataArry, tokens:tokenArr})
   console.log("Found Orcs. Orc of them", address, dataArry, "Orcs held:", tokenArr)   
 
@@ -287,17 +289,39 @@ return (
       
 
             <div class="border-2 p-2 m-3"><strong class="font-serif">OrcBot says: {" "}</strong>{status}</div>
+{/*
+<div class="flex flex-wrap">
+<p>family potrait</p>
+
+{!myOrcsArr.isLoading && displayOrcs && myOrcsArr.orcs.map((obj)=>{
+  let classes = "border-white border-2 hover:bg-yellow-500"
+  let rows = numberofOrcs/3
+  if(clicked.includes(parseInt(obj.tokenid))){
+      classes="border-2 bg-grey bg-yellow-600"
+  }
+return(
+  <div key={obj.name} class={`w-12`} >
+    <Orc format={"image"} key={obj.name} orc={obj} />
+    </div>
+  
+)})}
+
+
+</div>
+
+*/}
+
 
 <div class="flex flex-wrap">
 
 
 {!myOrcsArr.isLoading && displayOrcs && myOrcsArr.orcs.map((obj)=>{
-  let classes = "border-white border-2 hover:bg-yellow-500"
+  let classes = "hover:bg-yellow-500"
   if(clicked.includes(parseInt(obj.tokenid))){
-      classes="border-2 bg-grey bg-yellow-600"
+      classes="bg-yellow-600"
   }
 return(
-  <div key={obj.name} class={`w-1/2 md:w-1/5 pointer-events-auto ${classes}`} onClick={()=> toggle(parseInt(obj.tokenid))}>
+  <div key={obj.name} class={`w-1/2 md:w-32 pointer-events-auto p-1 m-2 ${classes}`} onClick={()=> toggle(parseInt(obj.tokenid))}>
     <Orc format={"figure"} key={obj.name} orc={obj} />
     </div>
   
@@ -307,11 +331,15 @@ return(
 </div>
 
 <div class="p-3">
+
+{loadChat && (
+<>
 <div class="text-3xl pb-2">
 <Title text={"MESSAGE BOARD"} />
 </div>
-
-{loadChat && (<Chat orcs={myOrcsArr.orcs} tokenid={clicked[0]} wallet={walletAddress} />)}
+<Chat orcs={myOrcsArr.orcs} tokenid={clicked[0]} wallet={walletAddress} />
+</>
+)}
 
 </div>
 </div>

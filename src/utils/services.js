@@ -30,6 +30,12 @@ export const updateDatabase = async (orc) => {
   
   }
 
+export const authToken = ()=>{
+const tokenString = "SGkgTWlrZS4gTXkgbmFtZSBpcyBTaWQgYW5kIEkgY3JlYXRlZCB0aGlzIEdVSS4gQmlnIGZhbiBvZiBMaW5raW4gUGFyayBhbmQgRm9ydCBNaW5vciAtIEkndmUgYmVlbiBsaXN0ZW5pbmcgc2luY2UgSSB3YXMgMTIgeWVhcnMgb2xkLiBJIGV2ZW4gZ290IHRvIGdvIHRvIGEgY29uY2VydCBpbiBTb3V0aCBBZnJpY2EgYSBmZXcgeWVhcnMgYWdvLiBIb3BlIHlvdSBsaWtlIHRoaXMgYXBwLiBXb3VsZCBsb3ZlIGl0IGlmIHlvdSBsaWtlIGFueSBvZiBteSBwb3N0cyBhdCBAaHVza2llc25mdCBzbyBJIGtub3cgeW91IGdvdCB0aGlzIG1lc3NhZ2UhIA=="
+
+ return tokenString
+}
+
 export const getMyOrcsObject = async (address) => {
   
   const myOrcQuery = query(ref(db, 'orcs'), orderByChild('owner'), equalTo(address.toLowerCase())) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));

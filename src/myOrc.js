@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {getMyOrcsObject} from "./utils/services"
+import {getMyOrcsObject, authToken} from "./utils/services"
 import Orc from "./Orc";
 import {doAction, collectZug, getCurrentWalletConnected, mintNFT, lookupMultipleOrcs , getContract, lookupOrc} from "./utils/interact.js";
 import Pillage from "./Pillage";
@@ -16,6 +16,7 @@ const [myOrcsArr, setMyOrcsArr] = useState({orcs: [], isLoading:true});
 const [showPillage, setShowPillage] = useState(false);
 const [clicked, setClicked] = useState([]);
 const [status, setStatus] = useState();
+const [welcome, setWelcome] = useState();
 const [claimableZug, setClaimableZug] = useState();
 const [claimtoggle, setClaimtoggle] = useState(true);
 const [displayOrcs, setDisplayOrcs] = useState(true);
@@ -40,7 +41,17 @@ let claimwallet = "0xfcdbada91ca1aaa80efbe3b62102863d32a2fed4"
 const ethWallet = "0x7d9d3659dcfbea08a87777c52020bc672deece13"
 let puck = "0xa8fbe0452eedfc4598d4c64c33615d942a70af6e"
 let saint = "0x0e95ee3a584d95ce952f31b042ac0d5237644431"
+let testAuth = "0xb55eb9bd32d6ab75d7555192e7a3a7ca0bcd5738"
 
+
+const welcomeFunction = (address) => {
+
+  if (address.toLowerCase() === testAuth){
+    let message = authToken();
+    message = atob(message);
+    setWelcome(message)
+  }  
+}
 
 
 const updateOrcsDb = async (obj) => {
@@ -56,7 +67,7 @@ const updateOrcsDb = async (obj) => {
 
 
 const summonOrcs = async (address) => { //TODO: implement
-    
+  welcomeFunction(address) 
   const myOrcQuery = query(ref(db, 'etherorcs/orcs/'), orderByChild('owner'), equalTo(address.toLowerCase())) ///"0x25aBa46Dcb360902Ab8CA72cA8528F1da1D903d8"));
 
   let dataArry = []
@@ -231,6 +242,10 @@ return (
                
 <>
 <div>
+{welcome &&
+  <div class="border-2 p-2 m-3">{welcome}</div>
+}
+
 
 <div class="text-3xl pb-2">
 <Title text={"ACTIONS"} />

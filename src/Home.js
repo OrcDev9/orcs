@@ -9,6 +9,7 @@ import RandomOrcs from "./RandomOrcs.js";
 import OrcGods from "./OrcGods.js";
 import LookupOrc from "./LookupOrc.js";
 import OrcPFP from "./OrcPfp.js";
+import logo from "./media/newlogo.png"
 
 
 function App() {
@@ -41,68 +42,32 @@ setShowOrc(true)
 return (
     
 <div class="container mx-auto space-y-5">
-
+            
                  <div class="flex justify-center align-items-baseline">
-                        <img src={"https://etherorcs.com/static/media/etherorcs-logo.d8a3762c.png"} alt="EtherOrcs Tavern" />
+                        <img src={logo} alt="EtherOrcs Tavern" />
                   </div> 
+
  
 <div class="space-y-2 p-2">     
 
 <div class="flex justify-end">
-                        <ConnectWallet />
-                        </div> 
-         
-              <Tabs defaultActiveKey="home" id="uncontrolled-tab-example" className="mb-3">
-                
-              <Tab eventKey="home" title="Start Here">
-              <Intro />
-              </Tab>
-              <Tab eventKey="myorcs" title="My Orcs">
-              <MyOrcs />
-              </Tab>
+      <ConnectWallet />
+</div> 
 
-              <Tab eventKey="orcslookup" title="Look Up Orc">
-               <LookupOrc />
-                    </Tab>
-                    <Tab eventKey="pfp" title="Create my pfp">
-                    <OrcPFP />
-                    </Tab>
- 
-  <Tab eventKey="random" title="Random Orcs">
-  <RandomOrcs />
-  </Tab>
-  <Tab eventKey="god" title="Orc Gods">
-  <OrcGods />
-  </Tab>
-
-<Tab eventKey="resources" title="Resources">
+<div class="space-y-6">
+<Intro />
+<MyOrcs />
+<LookupOrc />  
+<RandomOrcs />
+<OrcGods />
 <Resources />
-  </Tab>
-
-  <Tab eventKey="os" title="Open Sea" disabled>
-   {/*<OpenSea />*/ } 
-  </Tab>
-
-</Tabs>
-             
-              
 
 
-
-
-                
+</div>
+                           
 
               
-              </div> 
-      
-
-
-   
-
-<p class="font-medium"> Frontend concept by Husky Studios, creators of <a target="_blank" href="https://hilarioushuskies.life">Hilarious Huskies</a>. Support the creator by getting yours <a target="_blank" href="https://hilarioushuskies.life/mint">now!</a></p>
-
-
-
+</div> 
 </div>
 
 

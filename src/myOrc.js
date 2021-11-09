@@ -43,6 +43,7 @@ const ethWallet = "0x7d9d3659dcfbea08a87777c52020bc672deece13"
 let puck = "0xa8fbe0452eedfc4598d4c64c33615d942a70af6e"
 let saint = "0x0e95ee3a584d95ce952f31b042ac0d5237644431"
 let testAuth = "0xb55eb9bd32d6ab75d7555192e7a3a7ca0bcd5738"
+let steven = "0x310Bf09575a8F66b92BcF9dd0668430Fd7104cF4"
 
 
 const welcomeFunction = (address) => {

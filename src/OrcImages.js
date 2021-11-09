@@ -1430,6 +1430,8 @@ let Helmet = 36
 let mainhand = 32
 let offhand = 33
 
+let notbob = "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"
+
 let dna = Math.random() * (99999999 - 10000000) + 100000000
 dna = parseInt(dna)
 dna = dna.toString()
@@ -1483,6 +1485,11 @@ return (
     <image x="1" y="1" width="60" height="60" imageRendering="pixelated" preserveAspectRatio="xMidYMid" xlinkHref={`data:image/png;base64,${h}`}/>
     <image x="1" y="1" width="60" height="60" imageRendering="pixelated" preserveAspectRatio="xMidYMid" xlinkHref={`data:image/png;base64,${m}`}/>
     <image x="1" y="1" width="60" height="60" imageRendering="pixelated" preserveAspectRatio="xMidYMid" xlinkHref={`data:image/png;base64,${o}`}/>
+</svg>
+Not Bob
+<svg id="orc" width={250} height={250} version="1.1" viewBox="0 0 84 97" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+    <image x="1" y="1" width="60" height="60" imageRendering="pixelated" preserveAspectRatio="xMidYMid" xlinkHref={`data:image/png;base64,${notbob}`}/>
+  
 </svg>
 
 

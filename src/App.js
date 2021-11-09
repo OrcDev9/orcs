@@ -12,6 +12,9 @@ import {getContract, getCurrentWalletConnected} from "./utils/interact.js";
 import { Helmet } from "react-helmet";
 import GetAllOrcMetaData from "./OrcMetaData";
 import OrcImages from "./OrcImages";
+
+
+
 const history = createBrowserHistory();
 
 function App() {
@@ -69,6 +72,7 @@ function App() {
      
                 <Route path="/">   
                     <Home />
+               
                 </Route>
               </Switch>
 
@@ -78,8 +82,12 @@ function App() {
       </div>
       </Router>
 
+     
+
 
 </div>
+
+
 </>
 )}
 

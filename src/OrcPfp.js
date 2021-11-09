@@ -1,27 +1,21 @@
 import { useState, useEffect } from "react";
-import React, { useCallback, useRef } from 'react';
+import React, { useRef } from 'react';
 import { toPng } from 'html-to-image';
-import {
-    getGasPrice, getEthPrice, getContract, getContractEvents, lookupAllOrcs, lookupMultipleOrcs
-    } from "./utils/interact.js";
-import Orc from "./Orc"
 import Title from "./Title.js";
 
 function OrcPFP({orc}) {
 
-    const [myOrcs, setMyorcs] = useState();    
-    const [orcImage, setOrcImage] = useState();    
-    const [showOrc, setShowOrc] = useState(false);
-    const [orcId, setOrcId] = useState();    
-    const orcLookupRef = useRef();
+    
+
   //  <image x="1" y="1" width="60" height="60" imageRendering="pixelated" preserveAspectRatio="xMidYMid" xlinkHref={`data:image/png;base64,${m}`}/>
   //  <image x="1" y="1" width="60" height="60" imageRendering="pixelated" preserveAspectRatio="xMidYMid" xlinkHref={`data:image/png;base64,${o}`}/>
+  const [orcImage, setOrcImage] = useState();    
   const ref0 = useRef()
   const ref1 = useRef()
   const ref2 = useRef()
 
   const onButtonClick = (refIndex)=>{
-    let refs = [ref0, ref1, ref2]
+  let refs = [ref0, ref1, ref2]
   console.log(refIndex, refs[refIndex].current)
 
     toPng(refs[refIndex].current, { cacheBust: true, })
@@ -37,57 +31,35 @@ function OrcPFP({orc}) {
 
   }
 
-  const handleOrcSubmit = async (e) => {
-      
-    e.preventDefault()
-    setShowOrc(false)
-    const value = orcLookupRef.current.value;
-    const t = parseInt(value) 
-    let tempArr = [] 
-    tempArr.push(t) 
-  
-    if((t > 0) && (t < 5051)){
-      let multiOrcs = await lookupMultipleOrcs({array: tempArr})
-      console.log(multiOrcs, tempArr)
-      setMyorcs(multiOrcs)
-      setShowOrc(true)
-
-      var decodedImageStringAtoB = atob(multiOrcs[0].image.split(',')[1]);
-      var extractImages = decodedImageStringAtoB.split(`xlink:href="`)
-      var cleanExtract = extractImages.map((string)=>{
-       
-      if(string.includes(`data:image`)){
-        var a = string.split(`"/>`)
+  useEffect(() => {
     
-        return(a[0])
-      }
-    
-      return null
+if(orc){
+    var decodedImageStringAtoB = atob(orc.image.split(',')[1]);
+    var extractImages = decodedImageStringAtoB.split(`xlink:href="`)
+    var cleanExtract = extractImages.map((string)=>{
      
-    })
-    setOrcImage(cleanExtract)
-
-    }
-
+    if(string.includes(`data:image`)){
+      var a = string.split(`"/>`)
   
-      
-  };
+      return(a[0])
+    }
+  
+    return null
+   
+  })
+
+  setOrcImage(cleanExtract) 
+}
+ 
+  }, [orc])
+ 
 
  
 
 
 return (
     <>
-    <div class="text-3xl">
-    <Title text={"ORC PFP"} />
-    </div>
-    
-      <div class="flex flex-wrap justify-center">
-        <form onSubmit={handleOrcSubmit}>
-        <input  placeholder={"Type Orc Id here"} ref={orcLookupRef} />
-        <button class="hidden" type="submit">Unleash the Orc</button> 
-        </form>    
-      </div>  
+
 {orcImage &&
 (
 <div class="flex flex-wrap">

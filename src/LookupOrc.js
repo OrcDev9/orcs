@@ -1,5 +1,5 @@
 import {
-    getGasPrice, getEthPrice, getContract, getContractEvents, lookupAllOrcs, lookupMultipleOrcs
+lookupMultipleOrcs
     } from "./utils/interact.js";
     import { useState, useEffect, useRef } from "react";
     import Orc from "./Orc"
@@ -43,7 +43,7 @@ import OrcPFP from "./OrcPfp.js";
 
         <div class="md:w-1/3">
        
-                       <div class="flex flex-wrap justify-center">
+                       <div class="flex flex-wrap">
                             <form onSubmit={handleOrcSubmit}>
                          <input  placeholder={"Type Orc Id here"} ref={orcLookupRef} />
                          <button class="hidden" type="submit">Unleash the Orc</button> 
@@ -54,7 +54,7 @@ import OrcPFP from "./OrcPfp.js";
         </div>
 
         <div class="md: w-2/3">
-        {showOrc && <Orc format={"pfp"} orc={myOrcs[0]} />}
+        {showOrc && <OrcPFP orc={myOrcs[0]}/>}
         </div>
 
         

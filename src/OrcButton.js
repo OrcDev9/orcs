@@ -1,0 +1,11 @@
+border-radius: 0;
+color: #0f0;
+background-color: #040;
+text-decoration: none;
+display: inline-block;
+box-shadow: 10px 10px 0 rgb(0 0 0 / 75%);
+position: relative;
+font-family: VCR OSD Mono,monospace;
+text-shadow: 2px 2px 0 rgb(0 0 0 / 75%);
+font-size: 1.2rem;
+letter-spacing: 0;
